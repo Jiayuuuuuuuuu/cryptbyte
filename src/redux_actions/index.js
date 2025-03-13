@@ -71,12 +71,31 @@ export const fetchCoinDetails = (coinId) => async (dispatch, getState) => {
   })
 }
 
-export const fetchCoinMarketDetails = (coinId) => async (dispatch, getState) => {
-  const response = await coinGecko.get(`coins/${coinId}/market_chart?vs_currency=usd&days=7`)
-  dispatch({
-    type: GET_COIN_CHART,
-    payload: response.data
-  })
+// export const fetchCoinMarketDetails = (coinId) => async (dispatch, getState) => {
+//   const response = await coinGecko.get(`coins/${coinId}/market_chart?vs_currency=usd&days=7`)
+//   dispatch({
+//     type: GET_COIN_CHART,
+//     payload: response.data
+//   })
+// }
+
+export const fetchCoinMarketDetails = (coinId) => async (dispatch) => {
+  try {
+    const response = await coinGecko.get(`/coins/${coinId}/market_chart`, {
+      params: {
+        vs_currency: 'usd',
+        days: 7,
+        interval: 'daily'
+      }
+    })
+
+    dispatch({
+      type: GET_COIN_CHART,
+      payload: { coinId, data: response.data }
+    })
+  } catch (error) {
+    console.error('Error fetching coin market details:', error)
+  }
 }
 
 export const fetchEvents = () => async (dispatch, getState) => {

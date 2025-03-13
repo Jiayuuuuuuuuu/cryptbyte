@@ -101,12 +101,21 @@ const coinDetailsReducer = (state = {}, action) => {
   }
 }
 
-const coinMarketDetailsReducer = (state = {}, action) => {
-  const { type, payload } = action
+// const coinMarketDetailsReducer = (state = {}, action) => {
+//   const { type, payload } = action
 
-  switch (type) {
+//   switch (type) {
+//   case GET_COIN_CHART:
+//     return payload
+//   default:
+//     return state
+//   }
+// }
+
+const coinMarketDetailsReducer = (state = {}, action) => {
+  switch (action.type) {
   case GET_COIN_CHART:
-    return payload
+    return { ...state, [action.payload.coinId]: action.payload.data }
   default:
     return state
   }
