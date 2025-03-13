@@ -24,7 +24,7 @@ class ReactHeader extends Component {
             <Menu.Item key="logo" onClick={() => this.props.setHeaderMenuItem('home')}>
               <Link to="/">
                 <img alt="daniel corcorans crypto react app logo"
-                  style={{ maxHeight: '40px' }}
+                  style={{ maxHeight: '60px' }}
                   src={logoImage}></img>
               </Link>
             </Menu.Item>
