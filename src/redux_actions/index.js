@@ -10,6 +10,7 @@ export const SET_HEADER_MENU_ITEM = 'SET_HEADER_MENU_ITEM'
 export const SET_SIDER_MENU_ITEM = 'SET_SIDER_MENU_ITEM'
 export const GET_ASSET_PLATFORMS = 'GET_ASSET_PLATFORMS'
 export const GET_TRENDING_COINS = 'GET_TRENDING_COINS'
+export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
 
 export const fetchAssetPlatforms = () => async (dispatch, getState) => {
   const response = await coinGecko.get('/asset_platforms')
@@ -27,12 +28,39 @@ export const fetchTrendingCoins = () => async (dispatch, getState) => {
   })
 }
 
+// export const fetchCoins = () => async (dispatch, getState) => {
+//   const response = await coinGecko.get('/coins/list')
+//   dispatch({
+//     type: GET_COIN_LIST,
+//     payload: response.data
+//   })
+// }
+
 export const fetchCoins = () => async (dispatch, getState) => {
-  const response = await coinGecko.get('/coins/list')
-  dispatch({
-    type: GET_COIN_LIST,
-    payload: response.data
-  })
+  const { lastFetched } = getState().coins
+
+  if (lastFetched && Date.now() - lastFetched < 60000) {
+    console.log('Using cached coin data.')
+    return
+  }
+
+  try {
+    const response = await coinGecko.get('/coins/markets', {
+      params: {
+        vs_currency: 'usd',
+        order: 'market_cap_desc',
+        per_page: 50,
+        page: 1,
+        sparkline: false,
+        price_change_percentage: '24h'
+      }
+    })
+
+    dispatch({ type: GET_COIN_LIST, payload: response.data })
+    dispatch({ type: SET_COIN_FETCHED_TIME, payload: Date.now() })
+  } catch (error) {
+    console.error('Error fetching coin list:', error)
+  }
 }
 
 export const fetchCoinDetails = (coinId) => async (dispatch, getState) => {
