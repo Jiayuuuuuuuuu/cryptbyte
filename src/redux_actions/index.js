@@ -10,6 +10,7 @@ export const SET_HEADER_MENU_ITEM = 'SET_HEADER_MENU_ITEM'
 export const SET_SIDER_MENU_ITEM = 'SET_SIDER_MENU_ITEM'
 export const GET_ASSET_PLATFORMS = 'GET_ASSET_PLATFORMS'
 export const GET_TRENDING_COINS = 'GET_TRENDING_COINS'
+export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
 
 export const fetchAssetPlatforms = () => async (dispatch, getState) => {
   const response = await coinGecko.get('/asset_platforms')
@@ -27,12 +28,29 @@ export const fetchTrendingCoins = () => async (dispatch, getState) => {
   })
 }
 
+// export const fetchCoins = () => async (dispatch, getState) => {
+//   const response = await coinGecko.get('/coins/list')
+//   dispatch({
+//     type: GET_COIN_LIST,
+//     payload: response.data
+//   })
+// }
+
 export const fetchCoins = () => async (dispatch, getState) => {
-  const response = await coinGecko.get('/coins/list')
-  dispatch({
-    type: GET_COIN_LIST,
-    payload: response.data
-  })
+  const { lastFetched } = getState().coins // Get last fetched time
+
+  if (lastFetched && Date.now() - lastFetched < 60000) {
+    console.log('Using cached coin data.')
+    return // Skip fetching if data is fresh (less than 1 min old)
+  }
+
+  try {
+    const response = await coinGecko.get('/coins/list')
+    dispatch({ type: GET_COIN_LIST, payload: response.data })
+    dispatch({ type: SET_COIN_FETCHED_TIME, payload: Date.now() }) // Update fetch time
+  } catch (error) {
+    console.error('Error fetching coin list:', error)
+  }
 }
 
 export const fetchCoinDetails = (coinId) => async (dispatch, getState) => {
