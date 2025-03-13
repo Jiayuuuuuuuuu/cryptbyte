@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import Greeting from './components/greeting';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         chan qing yee dao ci yi you
         chan qing yee dao ci er you
+        <Greeting />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
