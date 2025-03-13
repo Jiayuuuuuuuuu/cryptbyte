@@ -1,17 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import 'react-app-polyfill/ie11'
+import 'react-app-polyfill/stable'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/App'
+import { rootReducer } from './redux_reducers/'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware, compose } from 'redux'
+// [NOTE] import antd css so that it becomes available for all components in App
+import 'antd/dist/antd.min.css'
+// [NOTE] Wrap all components in a Router
+import { HashRouter } from 'react-router-dom'
+import thunk from 'redux-thunk'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
+  applyMiddleware(thunk)
+))
+
+ReactDOM.render(
+  <Provider store={store}>
+    <HashRouter>
+      <App/>
+    </HashRouter>
+  </Provider>,
+  document.getElementById('root'))
