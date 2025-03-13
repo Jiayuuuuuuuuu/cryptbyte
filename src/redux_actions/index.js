@@ -37,17 +37,27 @@ export const fetchTrendingCoins = () => async (dispatch, getState) => {
 // }
 
 export const fetchCoins = () => async (dispatch, getState) => {
-  const { lastFetched } = getState().coins // Get last fetched time
+  const { lastFetched } = getState().coins
 
   if (lastFetched && Date.now() - lastFetched < 60000) {
     console.log('Using cached coin data.')
-    return // Skip fetching if data is fresh (less than 1 min old)
+    return
   }
 
   try {
-    const response = await coinGecko.get('/coins/list')
+    const response = await coinGecko.get('/coins/markets', {
+      params: {
+        vs_currency: 'usd',
+        order: 'market_cap_desc',
+        per_page: 50,
+        page: 1,
+        sparkline: false,
+        price_change_percentage: '24h'
+      }
+    })
+
     dispatch({ type: GET_COIN_LIST, payload: response.data })
-    dispatch({ type: SET_COIN_FETCHED_TIME, payload: Date.now() }) // Update fetch time
+    dispatch({ type: SET_COIN_FETCHED_TIME, payload: Date.now() })
   } catch (error) {
     console.error('Error fetching coin list:', error)
   }

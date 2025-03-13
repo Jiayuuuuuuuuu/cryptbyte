@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { fetchCoins, setSiderMenuItem } from '../../redux_actions'
-import { Layout, Table, Typography, Button, Tag, Input, Spin } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
-import { contentStyle, tableStyle } from '../../styles'
+import { Layout, Table, Typography, Button, Tag, Spin } from 'antd'
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 const { Content } = Layout
 const { Title, Paragraph } = Typography
@@ -12,62 +11,37 @@ const { Title, Paragraph } = Typography
 const ReactCoinsList = () => {
   const dispatch = useDispatch()
   const coins = useSelector(state => state.coins.data)
-  const [searchText, setSearchText] = useState('')
+  const [previousPrices, setPreviousPrices] = useState({})
 
   useEffect(() => {
     dispatch(fetchCoins())
     dispatch(setSiderMenuItem('coin-list'))
 
     const interval = setInterval(() => {
-      dispatch(fetchCoins()) // Auto-fetch every 30 seconds
+      dispatch(fetchCoins())
     }, 30000)
 
-    return () => clearInterval(interval) // Cleanup interval on unmount
+    return () => clearInterval(interval)
   }, [dispatch])
 
-  const handleSearch = (selectedKeys, confirm) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-  }
+  useEffect(() => {
+    // Store previous prices for trend tracking
+    const prices = {}
+    coins.forEach(coin => {
+      prices[coin.id] = coin.current_price
+    })
+    setPreviousPrices(prices)
+  }, [coins])
 
-  const handleReset = clearFilters => {
-    clearFilters()
-    setSearchText('')
+  const getPriceChangeIndicator = (coin) => {
+    const previousPrice = previousPrices[coin.id] || coin.current_price
+    if (coin.current_price > previousPrice) {
+      return <span style={{ color: 'green' }}><ArrowUpOutlined /> {coin.current_price} USD</span>
+    } else if (coin.current_price < previousPrice) {
+      return <span style={{ color: 'red' }}><ArrowDownOutlined /> {coin.current_price} USD</span>
+    }
+    return <span>{coin.current_price} USD</span>
   }
-
-  const getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type="primary"
-          onClick={() => handleSearch(selectedKeys, confirm)}
-          icon={<SearchOutlined />}
-          size="small"
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Search
-        </Button>
-        <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-          Reset
-        </Button>
-      </div>
-    ),
-    filterIcon: filtered => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-    onFilter: (value, record) =>
-      record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
-    render: text => (
-      <Tag color="purple">{text}</Tag>
-    )
-  })
 
   if (!coins.length) return <Spin size="large" style={{ display: 'block', margin: '50px auto' }} />
 
@@ -75,21 +49,33 @@ const ReactCoinsList = () => {
     {
       title: 'Id',
       dataIndex: 'id',
-      key: 'id',
-      ...getColumnSearchProps('id')
+      key: 'id'
     },
     {
       title: 'Symbol',
       dataIndex: 'symbol',
-      key: 'symbol',
-      ...getColumnSearchProps('symbol')
+      key: 'symbol'
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      ...getColumnSearchProps('name'),
-      render: item => <Tag color="purple">{item}</Tag>
+      render: name => <Tag color="purple">{name}</Tag>
+    },
+    {
+      title: 'Price',
+      key: 'price',
+      render: (_, coin) => getPriceChangeIndicator(coin)
+    },
+    {
+      title: '24h Change',
+      dataIndex: 'price_change_percentage_24h',
+      key: 'price_change_percentage_24h',
+      render: change => (
+        <span style={{ color: change >= 0 ? 'green' : 'red' }}>
+          {change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {change.toFixed(2)}%
+        </span>
+      )
     },
     {
       title: 'View Details',
@@ -101,15 +87,14 @@ const ReactCoinsList = () => {
 
   return (
     <Layout style={{ padding: '1rem' }}>
-      <Content style={contentStyle}>
+      <Content>
         <Title level={2}>Coins List</Title>
         <Paragraph>
-          This page lists cryptocurrencies available through the CoinGecko API. To view details of a given coin, click &apos;View&apos; button.
+          This page lists cryptocurrencies available through the CoinGecko API.
+          To view details of a given coin, click &apos;View&apos; button.
           You can also filter by Id, Symbol or Name to drill down and find a coin.
         </Paragraph>
-
         <Table
-          style={tableStyle}
           bordered
           dataSource={coins}
           columns={columns}
