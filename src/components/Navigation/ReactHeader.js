@@ -49,6 +49,9 @@ class ReactHeader extends Component {
                 <GithubOutlined style={iconStyle}/>Source
               </a>
             </Menu.Item>
+            <Menu.Item key="watchlist">
+              <Link to="/watchlist">⭐ My Watchlist</Link>
+            </Menu.Item>
           </Menu>
         </Header>
       </React.Fragment>

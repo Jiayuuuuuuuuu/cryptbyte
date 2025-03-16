@@ -10,67 +10,38 @@ import {
   GET_GLOBAL,
   SET_HEADER_MENU_ITEM,
   SET_SIDER_MENU_ITEM,
-  GET_ASSET_PLATFORMS,
   GET_TRENDING_COINS,
   SET_COIN_FETCHED_TIME
 } from '../redux_actions'
-
-const assetPlatformsReducer = (state = [], action) => {
-  const { type, payload } = action
-
-  switch (type) {
-  case GET_ASSET_PLATFORMS:
-    return payload
-  default:
-    return state
-  }
-}
-
-const coinsTrendingReducer = (state = [], action) => {
-  const { type, payload } = action
-
-  switch (type) {
-  case GET_TRENDING_COINS:
-    return payload
-  default:
-    return state
-  }
-}
+import watchlistReducer from './watchlistReducer'
 
 const initialState = {
   data: [],
   lastFetched: null // Store last fetch time
 }
 
-// const coinsReducer = (state = [], action) => {
-//   const { type, payload } = action
-
-//   switch (type) {
-//   case GET_COIN_LIST:
-//     return payload
-//   default:
-//     return state
-//   }
-// }
-
-const coinsReducer = (state = initialState, action) => {
+const coinsTrendingReducer = (state = [], action) => {
   switch (action.type) {
-  case GET_COIN_LIST:{
-    return { ...state, data: action.payload }
-  }
-  case SET_COIN_FETCHED_TIME: {
-    return { ...state, lastFetched: action.payload }
-  }
+  case GET_TRENDING_COINS:
+    return action.payload
   default:
     return state
   }
 }
 
-export default coinsReducer
+const coinsReducer = (state = initialState, action) => {
+  switch (action.type) {
+  case GET_COIN_LIST:
+    return { ...state, data: action.payload }
+  case SET_COIN_FETCHED_TIME:
+    return { ...state, lastFetched: action.payload }
+  default:
+    return state
+  }
+}
 
 const compileMarketData = (marketData) => {
   const data = {}
-
   for (let market_index = 0; market_index < market_processed_table_keys.length; market_index++) {
     const field = market_processed_table_keys[market_index]
     const entries = Object.entries(marketData[field])
@@ -84,33 +55,19 @@ const compileMarketData = (marketData) => {
       }
     }
   }
-
   return Object.values(data)
 }
 
 const coinDetailsReducer = (state = {}, action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case GET_COIN_DETAILS: {
-    const market_data_processed = compileMarketData(payload.market_data)
-    return { ...payload, market_data_processed }
+    const market_data_processed = compileMarketData(action.payload.market_data)
+    return { ...action.payload, market_data_processed }
   }
   default:
     return state
   }
 }
-
-// const coinMarketDetailsReducer = (state = {}, action) => {
-//   const { type, payload } = action
-
-//   switch (type) {
-//   case GET_COIN_CHART:
-//     return payload
-//   default:
-//     return state
-//   }
-// }
 
 const coinMarketDetailsReducer = (state = {}, action) => {
   switch (action.type) {
@@ -122,68 +79,54 @@ const coinMarketDetailsReducer = (state = {}, action) => {
 }
 
 const globalReducer = (state = {}, action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case GET_GLOBAL:
-    return payload.data
+    return action.payload.data
   default:
     return state
   }
 }
 
 const exchangesReducer = (state = [], action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case GET_EXCHANGES_LIST:
-    return payload
+    return action.payload
   default:
     return state
   }
 }
 
 const exchangeRatesReducer = (state = [], action) => {
-  const { type, payload } = action
-
-  switch (type) {
-  case GET_EXCHANGE_RATES: {
-    const rates = Object.values(payload.rates)
-    return rates
-  }
+  switch (action.type) {
+  case GET_EXCHANGE_RATES:
+    return Object.values(action.payload.rates)
   default:
     return state
   }
 }
 
 const eventReducer = (state = [], action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case GET_EVENT_LIST:
-    return payload.data
+    return action.payload.data
   default:
     return state
   }
 }
 
 const headerMenuItemReducer = (state = '', action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case SET_HEADER_MENU_ITEM:
-    return payload.item
+    return action.payload.item
   default:
     return state
   }
 }
 
 const siderMenuItemReducer = (state = 'asset-platforms', action) => {
-  const { type, payload } = action
-
-  switch (type) {
+  switch (action.type) {
   case SET_SIDER_MENU_ITEM:
-    return payload.item
+    return action.payload.item
   default:
     return state
   }
@@ -200,5 +143,5 @@ export const rootReducer = combineReducers({
   trending_coins: coinsTrendingReducer,
   header_selected: headerMenuItemReducer,
   sider_selected: siderMenuItemReducer,
-  asset_platforms: assetPlatformsReducer
+  watchlist: watchlistReducer
 })

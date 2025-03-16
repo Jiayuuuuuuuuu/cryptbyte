@@ -11,6 +11,16 @@ export const SET_SIDER_MENU_ITEM = 'SET_SIDER_MENU_ITEM'
 export const GET_ASSET_PLATFORMS = 'GET_ASSET_PLATFORMS'
 export const GET_TRENDING_COINS = 'GET_TRENDING_COINS'
 export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
+export const ADD_TO_WATCHLIST = 'ADD_TO_WATCHLIST'
+export const REMOVE_FROM_WATCHLIST = 'REMOVE_FROM_WATCHLIST'
+
+export const addToWatchlist = (coin) => (dispatch, getState) => {
+  dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
+}
+
+export const removeFromWatchlist = (coinId) => (dispatch, getState) => {
+  dispatch({ type: REMOVE_FROM_WATCHLIST, payload: coinId })
+}
 
 export const fetchAssetPlatforms = () => async (dispatch, getState) => {
   const response = await coinGecko.get('/asset_platforms')
@@ -27,14 +37,6 @@ export const fetchTrendingCoins = () => async (dispatch, getState) => {
     payload: response.data
   })
 }
-
-// export const fetchCoins = () => async (dispatch, getState) => {
-//   const response = await coinGecko.get('/coins/list')
-//   dispatch({
-//     type: GET_COIN_LIST,
-//     payload: response.data
-//   })
-// }
 
 export const fetchCoins = () => async (dispatch, getState) => {
   const { lastFetched } = getState().coins
@@ -70,14 +72,6 @@ export const fetchCoinDetails = (coinId) => async (dispatch, getState) => {
     payload: response.data
   })
 }
-
-// export const fetchCoinMarketDetails = (coinId) => async (dispatch, getState) => {
-//   const response = await coinGecko.get(`coins/${coinId}/market_chart?vs_currency=usd&days=7`)
-//   dispatch({
-//     type: GET_COIN_CHART,
-//     payload: response.data
-//   })
-// }
 
 export const fetchCoinMarketDetails = (coinId) => async (dispatch) => {
   try {
