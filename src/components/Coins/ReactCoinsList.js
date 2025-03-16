@@ -273,7 +273,11 @@ const ReactCoinsList = () => {
           dataSource={sortedCoins}
           columns={columns}
           rowKey="id"
-          pagination={{ pageSize: 10 }}
+          pagination={{
+            pageSizeOptions: ['10', '20', '50', '100'],
+            showSizeChanger: true,
+            defaultPageSize: 10
+          }}
           onChange={(pagination, filters, sorter) => {
             if (sorter && sorter.columnKey) {
               setSortKey(sorter.columnKey === 'price' ? 'current_price' : sorter.columnKey)
