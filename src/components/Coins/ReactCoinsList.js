@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
-import { Layout, Table, Typography, Button, Tag, Spin, message } from 'antd'
-import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined } from '@ant-design/icons'
+import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select } from 'antd'
+import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 const { Content } = Layout
 const { Title, Paragraph } = Typography
+const { Option } = Select
 
 const ReactCoinsList = () => {
   const dispatch = useDispatch()
@@ -22,6 +23,9 @@ const ReactCoinsList = () => {
     : []
 
   const [previousPrices, setPreviousPrices] = useState({})
+  const [searchTerm, setSearchTerm] = useState('')
+  const [sortKey, setSortKey] = useState('current_price')
+  const [sortOrder, setSortOrder] = useState('descend')
 
   useEffect(() => {
     fetchCoinData()
@@ -114,23 +118,61 @@ const ReactCoinsList = () => {
     )
   }
 
+  // Filter coins based on search term
+  const filteredCoins = coins.filter(coin =>
+    coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  // Sort coins based on selected sort key and order
+  const sortedCoins = [...filteredCoins].sort((a, b) => {
+    const valueA = a[sortKey]
+    const valueB = b[sortKey]
+
+    if (valueA === null || valueA === undefined) return sortOrder === 'ascend' ? -1 : 1
+    if (valueB === null || valueB === undefined) return sortOrder === 'ascend' ? 1 : -1
+
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
+      return sortOrder === 'ascend'
+        ? valueA.localeCompare(valueB)
+        : valueB.localeCompare(valueA)
+    }
+
+    return sortOrder === 'ascend' ? valueA - valueB : valueB - valueA
+  })
+
+  const handleSort = (value) => {
+    setSortKey(value)
+  }
+
+  const handleSortOrderChange = (value) => {
+    setSortOrder(value)
+  }
+
   const columns = [
     {
       title: 'Symbol',
       dataIndex: 'symbol',
       key: 'symbol',
-      render: symbol => symbol.toUpperCase()
+      render: symbol => symbol.toUpperCase(),
+      sorter: (a, b) => a.symbol.localeCompare(b.symbol),
+      sortDirections: ['ascend', 'descend']
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: name => <Tag color="purple">{name}</Tag>
+      render: name => <Tag color="purple">{name}</Tag>,
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend']
     },
     {
       title: 'Price',
       key: 'price',
-      render: (_, coin) => getPriceChangeIndicator(coin)
+      render: (_, coin) => getPriceChangeIndicator(coin),
+      sorter: (a, b) => a.current_price - b.current_price,
+      sortDirections: ['ascend', 'descend'],
+      defaultSortOrder: 'descend'
     },
     {
       title: '24h Change',
@@ -145,7 +187,13 @@ const ReactCoinsList = () => {
             {change >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />} {change.toFixed(2)}%
           </span>
         )
-      }
+      },
+      sorter: (a, b) => {
+        const changeA = a.price_change_percentage_24h || 0
+        const changeB = b.price_change_percentage_24h || 0
+        return changeA - changeB
+      },
+      sortDirections: ['ascend', 'descend']
     },
     {
       title: 'Favorite',
@@ -178,17 +226,60 @@ const ReactCoinsList = () => {
     <Layout style={{ padding: '1rem' }}>
       <Content>
         <Title level={2}>Coins List</Title>
-        <Paragraph>
-          This page lists cryptocurrencies available through the CoinGecko API.
-          To view details of a given coin, click the &apos;View&apos; button.
-          You can also filter by Symbol or Name to find a coin.
-        </Paragraph>
+
+        <div style={{ display: 'flex', marginBottom: '1rem', gap: '16px' }}>
+          <Input
+            placeholder="Search coins..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: '300px' }}
+            prefix={<SearchOutlined />}
+            allowClear
+          />
+
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <div>
+              <span style={{ marginRight: '8px' }}>Sort by:</span>
+              <Select
+                defaultValue="current_price"
+                style={{ width: 150 }}
+                onChange={handleSort}
+                value={sortKey}
+              >
+                <Option value="current_price">Price</Option>
+                <Option value="name">Name</Option>
+                <Option value="symbol">Symbol</Option>
+                <Option value="price_change_percentage_24h">24h Change</Option>
+              </Select>
+            </div>
+
+            <div>
+              <span style={{ marginRight: '8px' }}>Order:</span>
+              <Select
+                defaultValue="descend"
+                style={{ width: 120 }}
+                onChange={handleSortOrderChange}
+                value={sortOrder}
+              >
+                <Option value="ascend">Ascending</Option>
+                <Option value="descend">Descending</Option>
+              </Select>
+            </div>
+          </div>
+        </div>
+
         <Table
           bordered
-          dataSource={coins}
+          dataSource={sortedCoins}
           columns={columns}
           rowKey="id"
           pagination={{ pageSize: 10 }}
+          onChange={(pagination, filters, sorter) => {
+            if (sorter && sorter.columnKey) {
+              setSortKey(sorter.columnKey === 'price' ? 'current_price' : sorter.columnKey)
+              setSortOrder(sorter.order || 'descend')
+            }
+          }}
         />
       </Content>
     </Layout>
