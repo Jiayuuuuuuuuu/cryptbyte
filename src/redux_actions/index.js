@@ -78,8 +78,7 @@ export const fetchCoinMarketDetails = (coinId) => async (dispatch) => {
     const response = await coinGecko.get(`/coins/${coinId}/market_chart`, {
       params: {
         vs_currency: 'usd',
-        days: 7,
-        interval: 'daily'
+        days: 7
       }
     })
 

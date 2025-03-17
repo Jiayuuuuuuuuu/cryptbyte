@@ -150,7 +150,7 @@ class ReactCoinsDetail extends Component {
 const mapStateToProps = (state) => {
   return {
     data: state.coin_details,
-    chart_data: state.coin_market_details
+    chart_data: state.coin_market_details[state.coin_details.id] || {}
   }
 }
 
