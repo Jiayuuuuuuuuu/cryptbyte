@@ -11,9 +11,19 @@ import {
   SET_HEADER_MENU_ITEM,
   SET_SIDER_MENU_ITEM,
   GET_TRENDING_COINS,
-  SET_COIN_FETCHED_TIME
+  SET_COIN_FETCHED_TIME,
+  GET_ASSET_PLATFORMS
 } from '../redux_actions'
 import watchlistReducer from './watchlistReducer'
+
+const assetPlatformsReducer = (state = [], action) => {
+  switch (action.type) {
+  case GET_ASSET_PLATFORMS:
+    return action.payload
+  default:
+    return state
+  }
+}
 
 const initialState = {
   data: [],
@@ -143,5 +153,6 @@ export const rootReducer = combineReducers({
   trending_coins: coinsTrendingReducer,
   header_selected: headerMenuItemReducer,
   sider_selected: siderMenuItemReducer,
-  watchlist: watchlistReducer
+  watchlist: watchlistReducer,
+  asset_platforms: assetPlatformsReducer
 })

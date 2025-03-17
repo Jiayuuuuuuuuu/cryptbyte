@@ -57,28 +57,8 @@ class ReactAssetPlatforms extends Component {
               style={tableStyle}
               bordered={true}
               dataSource={this.props.data}
-              columns={[
-                {
-                  title: 'Id',
-                  dataIndex: 'id',
-                  key: 'id'
-                },
-                {
-                  title: 'Chain identifier',
-                  dataIndex: 'chain_identifier',
-                  key: 'chain_identifier'
-                },
-                {
-                  title: 'Name',
-                  dataIndex: 'name',
-                  key: 'name'
-                },
-                {
-                  title: 'Short name',
-                  dataIndex: 'short_name',
-                  key: 'short_name'
-                }
-              ]}/>
+              columns={ReactAssetPlatforms.columns}
+            />
           </Content>
         </Layout>
       </React.Fragment>
