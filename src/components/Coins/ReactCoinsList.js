@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import ReactSider from '../Navigation/ReactSider'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { contentStyle, tableStyle } from '../../styles'
 
 const { Content } = Layout
 const { Title, Paragraph } = Typography
@@ -95,26 +97,32 @@ const ReactCoinsList = () => {
 
   if (error) {
     return (
-      <Layout style={{ padding: '1rem' }}>
-        <Content>
-          <div style={{ textAlign: 'center', margin: '50px 0' }}>
-            <Title level={3} style={{ color: 'red' }}>Error loading coin data</Title>
-            <Paragraph>There was a problem fetching cryptocurrency data.</Paragraph>
-            <Button type="primary" onClick={fetchCoinData}>Try Again</Button>
-          </div>
-        </Content>
-      </Layout>
+      <React.Fragment>
+        <ReactSider />
+        <Layout style={{ padding: '1rem' }}>
+          <Content style={contentStyle}>
+            <div style={{ textAlign: 'center', margin: '50px 0' }}>
+              <Title level={3} style={{ color: 'red' }}>Error loading coin data</Title>
+              <Paragraph>There was a problem fetching cryptocurrency data.</Paragraph>
+              <Button type="primary" onClick={fetchCoinData}>Try Again</Button>
+            </div>
+          </Content>
+        </Layout>
+      </React.Fragment>
     )
   }
 
   if (loading || !Array.isArray(coins) || !coins.length) {
     return (
-      <Layout style={{ padding: '1rem' }}>
-        <Content>
-          <Spin size="large" style={{ display: 'block', margin: '50px auto' }} />
-          <Paragraph style={{ textAlign: 'center', marginTop: '20px' }}>Loading cryptocurrency data...</Paragraph>
-        </Content>
-      </Layout>
+      <React.Fragment>
+        <ReactSider />
+        <Layout style={{ padding: '1rem' }}>
+          <Content style={contentStyle}>
+            <Spin size="large" style={{ display: 'block', margin: '50px auto' }} />
+            <Paragraph style={{ textAlign: 'center', marginTop: '20px' }}>Loading cryptocurrency data...</Paragraph>
+          </Content>
+        </Layout>
+      </React.Fragment>
     )
   }
 
@@ -223,70 +231,74 @@ const ReactCoinsList = () => {
   ]
 
   return (
-    <Layout style={{ padding: '1rem' }}>
-      <Content>
-        <Title level={2}>Coins List</Title>
+    <React.Fragment>
+      <ReactSider />
+      <Layout style={{ padding: '1rem' }}>
+        <Content style={contentStyle}>
+          <Title level={2}>Coins List</Title>
 
-        <div style={{ display: 'flex', marginBottom: '1rem', gap: '16px' }}>
-          <Input
-            placeholder="Search coins..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ width: '300px' }}
-            prefix={<SearchOutlined />}
-            allowClear
-          />
+          <div style={{ display: 'flex', marginBottom: '1rem', gap: '16px' }}>
+            <Input
+              placeholder="Search coins..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ width: '300px' }}
+              prefix={<SearchOutlined />}
+              allowClear
+            />
 
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <div>
-              <span style={{ marginRight: '8px' }}>Sort by:</span>
-              <Select
-                defaultValue="current_price"
-                style={{ width: 150 }}
-                onChange={handleSort}
-                value={sortKey}
-              >
-                <Option value="current_price">Price</Option>
-                <Option value="name">Name</Option>
-                <Option value="symbol">Symbol</Option>
-                <Option value="price_change_percentage_24h">24h Change</Option>
-              </Select>
-            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <div>
+                <span style={{ marginRight: '8px' }}>Sort by:</span>
+                <Select
+                  defaultValue="current_price"
+                  style={{ width: 150 }}
+                  onChange={handleSort}
+                  value={sortKey}
+                >
+                  <Option value="current_price">Price</Option>
+                  <Option value="name">Name</Option>
+                  <Option value="symbol">Symbol</Option>
+                  <Option value="price_change_percentage_24h">24h Change</Option>
+                </Select>
+              </div>
 
-            <div>
-              <span style={{ marginRight: '8px' }}>Order:</span>
-              <Select
-                defaultValue="descend"
-                style={{ width: 120 }}
-                onChange={handleSortOrderChange}
-                value={sortOrder}
-              >
-                <Option value="ascend">Ascending</Option>
-                <Option value="descend">Descending</Option>
-              </Select>
+              <div>
+                <span style={{ marginRight: '8px' }}>Order:</span>
+                <Select
+                  defaultValue="descend"
+                  style={{ width: 120 }}
+                  onChange={handleSortOrderChange}
+                  value={sortOrder}
+                >
+                  <Option value="ascend">Ascending</Option>
+                  <Option value="descend">Descending</Option>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
 
-        <Table
-          bordered
-          dataSource={sortedCoins}
-          columns={columns}
-          rowKey="id"
-          pagination={{
-            pageSizeOptions: ['10', '20', '50', '100'],
-            showSizeChanger: true,
-            defaultPageSize: 10
-          }}
-          onChange={(pagination, filters, sorter) => {
-            if (sorter && sorter.columnKey) {
-              setSortKey(sorter.columnKey === 'price' ? 'current_price' : sorter.columnKey)
-              setSortOrder(sorter.order || 'descend')
-            }
-          }}
-        />
-      </Content>
-    </Layout>
+          <Table
+            style={tableStyle}
+            bordered
+            dataSource={sortedCoins}
+            columns={columns}
+            rowKey="id"
+            pagination={{
+              pageSizeOptions: ['10', '20', '50', '100'],
+              showSizeChanger: true,
+              defaultPageSize: 10
+            }}
+            onChange={(pagination, filters, sorter) => {
+              if (sorter && sorter.columnKey) {
+                setSortKey(sorter.columnKey === 'price' ? 'current_price' : sorter.columnKey)
+                setSortOrder(sorter.order || 'descend')
+              }
+            }}
+          />
+        </Content>
+      </Layout>
+    </React.Fragment>
   )
 }
 
