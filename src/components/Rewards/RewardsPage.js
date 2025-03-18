@@ -31,7 +31,7 @@ import {
   ThunderboltOutlined
 } from '@ant-design/icons'
 import { setHeaderMenuItem } from '../../redux_actions'
-import { addTokens, processLoginReward } from '../../redux/actions/userActions'
+import { addTokens, processLoginReward } from '../../redux_actions/userActions'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography

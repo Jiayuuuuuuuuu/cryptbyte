@@ -34,6 +34,8 @@ export default class App extends Component {
             <Route path='/empty' exact component={ReactEmpty}/>
             <Route path='/exchange-rates' exact component={ReactExchangeRates}/>
             <Route path='/asset-platforms' exact component={ReactAssetPlatforms}/>
+            <Route path="/profile" component={ProfilePage}/>
+            <Route path="/rewards" component={RewardsPage}/>
             <Route path='/watchlist' exact component={ReactWatchlist}/> {/* ✅ Watchlist page is now visible */}
           </Switch>
         </Layout>

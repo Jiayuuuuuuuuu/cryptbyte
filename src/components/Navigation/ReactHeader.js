@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Badge } from 'antd'
+import { Layout, Menu, Badge, Row, Col } from 'antd'
 import { iconStyle } from '../../styles'
 import {
   HomeOutlined,
@@ -8,7 +8,8 @@ import {
   GithubOutlined,
   AreaChartOutlined,
   UserOutlined,
-  TrophyOutlined
+  TrophyOutlined,
+  StarOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
 import { connect } from 'react-redux'
@@ -19,61 +20,107 @@ const { Header } = Layout
 class ReactHeader extends Component {
   render () {
     const { selected } = this.props
+
+    const leftMenuItems = [
+      {
+        key: 'home',
+        label: (
+          <Link to="/" onClick={() => this.props.setHeaderMenuItem('home')}>
+            <HomeOutlined style={iconStyle} />Home
+          </Link>
+        )
+      },
+      {
+        key: 'dashboard',
+        label: (
+          <Link to="/asset-platforms" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
+            <AreaChartOutlined style={iconStyle} />Dashboard
+          </Link>
+        )
+      },
+      {
+        key: 'about',
+        label: (
+          <Link to="/about" onClick={() => this.props.setHeaderMenuItem('about')}>
+            <InfoCircleOutlined style={iconStyle} />About
+          </Link>
+        )
+      },
+      {
+        key: 'source',
+        label: (
+          <a rel="noopener noreferrer" target="_blank" href="https://github.com/danielc92/react-crypto-app">
+            <GithubOutlined style={iconStyle} />Source
+          </a>
+        )
+      },
+      {
+        key: 'watchlist',
+        label: (
+          <Link to="/watchlist" onClick={() => this.props.setHeaderMenuItem('watchlist')}>
+            <StarOutlined style={iconStyle} />My Watchlist
+          </Link>
+        )
+      },
+      {
+        key: 'rewards',
+        label: (
+          <Link to="/rewards" onClick={() => this.props.setHeaderMenuItem('rewards')}>
+            <TrophyOutlined style={iconStyle} />Rewards
+          </Link>
+        )
+      }
+    ]
+
+    const rightMenuItems = [
+      {
+        key: 'profile',
+        label: (
+          <Link to="/profile" onClick={() => this.props.setHeaderMenuItem('profile')}>
+            <Badge count={this.props.userTokens > 0 ? this.props.userTokens : 0} offset={[10, 0]}>
+              <UserOutlined style={{ ...iconStyle, fontSize: '18px' }} />
+            </Badge>
+          </Link>
+        )
+      }
+    ]
+
     return (
-      <React.Fragment>
-        <Header className="header">
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            selectedKeys={[selected]}
-            style={{ lineHeight: '64px' }}
-          >
-            <Menu.Item key="logo" onClick={() => this.props.setHeaderMenuItem('home')}>
-              <Link to="/">
-                <img alt="daniel corcorans crypto react app logo"
-                  style={{ maxHeight: '60px' }}
-                  src={logoImage}></img>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="home" onClick={() => this.props.setHeaderMenuItem('home')}>
-              <Link to="/">
-                <HomeOutlined style={iconStyle}/>Home
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="dashboard" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
-              <Link to="/asset-platforms">
-                <AreaChartOutlined style={iconStyle}/>Dashboard
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="about" onClick={() => this.props.setHeaderMenuItem('about')}>
-              <Link to="/about">
-                <InfoCircleOutlined style={iconStyle}/>About
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="source">
-              <a rel="noopener noreferrer" target="_blank" href="https://github.com/danielc92/react-crypto-app">
-                <GithubOutlined style={iconStyle}/>Source
-              </a>
-            </Menu.Item>
-            <Menu.Item key="watchlist">
-              <Link to="/watchlist">⭐ My Watchlist</Link>
-            </Menu.Item>
-            <Menu.Item key="profile" onClick={() => this.props.setHeaderMenuItem('profile')}>
-              <Link to="/profile">
-                <UserOutlined style={iconStyle}/>
-                <Badge count={this.props.userTokens > 0 ? this.props.userTokens : 0} offset={[10, 0]}>
-                  Profile
-                </Badge>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="rewards" onClick={() => this.props.setHeaderMenuItem('rewards')}>
-              <Link to="/rewards">
-                <TrophyOutlined style={iconStyle}/>Rewards
-              </Link>
-            </Menu.Item>
-          </Menu>
-        </Header>
-      </React.Fragment>
+      <Header className="header">
+        <Row justify="space-between" align="middle">
+          <Col>
+            <Row align="middle">
+              <Col>
+                <Link to="/" onClick={() => this.props.setHeaderMenuItem('home')}>
+                  <img
+                    alt="daniel corcorans crypto react app logo"
+                    style={{ maxHeight: '50px', marginRight: '24px' }}
+                    src={logoImage}
+                  />
+                </Link>
+              </Col>
+              <Col>
+                <Menu
+                  theme="dark"
+                  mode="horizontal"
+                  selectedKeys={[selected]}
+                  style={{ border: 'none' }}
+                  items={leftMenuItems}
+                />
+              </Col>
+            </Row>
+          </Col>
+          <Col>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              selectedKeys={[selected]}
+              style={{ border: 'none' }}
+              items={rightMenuItems}
+            />
+          </Col>
+        </Row>
+      </Header>
     )
   }
 }
