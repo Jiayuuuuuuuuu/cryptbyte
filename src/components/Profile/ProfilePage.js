@@ -26,7 +26,8 @@ import {
   HistoryOutlined,
   LockOutlined,
   UnlockOutlined,
-  UpCircleOutlined
+  UpCircleOutlined,
+  UserOutlined
 } from '@ant-design/icons'
 import { setHeaderMenuItem } from '../../redux_actions'
 
@@ -63,14 +64,14 @@ const tierData = {
 }
 
 class ProfilePage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       recentActivities: [
         { id: 1, type: 'login', tokens: 5, date: '2025-03-18 09:30:22', description: 'Daily login reward' },
         { id: 2, type: 'trade', tokens: 15, date: '2025-03-18 10:15:47', description: 'Successful BTC/USD trade (+2.3%)' },
-        { id: 3, type: 'lesson', tokens: 20, date: '2025-03-17 16:22:05', description: 'Completed 'Advanced Technical Analysis'' },
-        { id: 4, type: 'streak', tokens: 50, date: '2025-03-16 09:05:33', description: '10-day login streak bonus' },
+        { id: 3, type: 'lesson', tokens: 20, date: '2025-03-17 16:22:05', description: 'Completed Advanced Technical Analysis' },
+        { id: 4, type: 'streak', tokens: 50, date: '2025-03-16 09:05:33', description: '10-day login streak bonus' }
       ],
       tradingStats: {
         winRate: 64,
@@ -90,13 +91,13 @@ class ProfilePage extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Set the current menu item when component mounts
     this.props.setHeaderMenuItem('profile')
   }
 
   // Determine the current tier based on tokens
-  getCurrentTier() {
+  getCurrentTier () {
     const { tokens } = this.props.user
     if (tokens >= tierData.premium.requiredTokens) return 'premium'
     if (tokens >= tierData.gold.requiredTokens) return 'gold'
@@ -105,7 +106,7 @@ class ProfilePage extends Component {
   }
 
   // Calculate progress to the next tier
-  getNextTierProgress() {
+  getNextTierProgress () {
     const { tokens } = this.props.user
     const currentTier = this.getCurrentTier()
 
@@ -121,11 +122,11 @@ class ProfilePage extends Component {
       progress = (tokens / tierData.silver.requiredTokens) * 100
     } else if (currentTier === 'silver') {
       nextTier = 'gold'
-      progress = ((tokens - tierData.silver.requiredTokens) / 
+      progress = ((tokens - tierData.silver.requiredTokens) /
                  (tierData.gold.requiredTokens - tierData.silver.requiredTokens)) * 100
     } else if (currentTier === 'gold') {
       nextTier = 'premium'
-      progress = ((tokens - tierData.gold.requiredTokens) / 
+      progress = ((tokens - tierData.gold.requiredTokens) /
                  (tierData.premium.requiredTokens - tierData.gold.requiredTokens)) * 100
     }
 
@@ -135,22 +136,22 @@ class ProfilePage extends Component {
     }
   }
 
-  render() {
+  render () {
     const { user } = this.props
     const currentTier = this.getCurrentTier()
     const nextTierInfo = this.getNextTierProgress()
-    
+
     // Table columns for trading history
     const columns = [
       {
         title: 'Date & Time',
         dataIndex: 'date',
-        key: 'date',
+        key: 'date'
       },
       {
         title: 'Pair',
         dataIndex: 'pair',
-        key: 'pair',
+        key: 'pair'
       },
       {
         title: 'Type',
@@ -160,12 +161,12 @@ class ProfilePage extends Component {
           <Tag color={type === 'BUY' ? 'green' : 'red'}>
             {type}
           </Tag>
-        ),
+        )
       },
       {
         title: 'Price',
         dataIndex: 'price',
-        key: 'price',
+        key: 'price'
       },
       {
         title: 'Result',
@@ -175,15 +176,15 @@ class ProfilePage extends Component {
           <span style={{ color: parseFloat(result) >= 0 ? 'green' : 'red' }}>
             {parseFloat(result) >= 0 ? <RiseOutlined /> : <FallOutlined />} {result}%
           </span>
-        ),
+        )
       },
       {
         title: 'Tokens',
         dataIndex: 'tokens',
-        key: 'tokens',
+        key: 'tokens'
       }
     ]
-    
+
     const data = [
       {
         key: '1',
@@ -211,7 +212,7 @@ class ProfilePage extends Component {
         price: '$145.62',
         result: '+4.8',
         tokens: 25
-      },
+      }
     ]
 
     return (
@@ -226,10 +227,10 @@ class ProfilePage extends Component {
                       <div style={{ textAlign: 'center' }}>
                         <Badge count={<TrophyOutlined style={{ color: tierData[currentTier].color }} />}>
                           <div style={{
-                            width: 100, 
-                            height: 100, 
+                            width: 100,
+                            height: 100,
                             borderRadius: '50%',
-                            background: '#f0f2f5', 
+                            background: '#f0f2f5',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -240,10 +241,10 @@ class ProfilePage extends Component {
                           </div>
                         </Badge>
                         <Title level={3} style={{ marginTop: 16, marginBottom: 0 }}>{user.name}</Title>
-                        <Tag color={tierData[currentTier].color} style={{ 
-                          fontSize: '16px', 
-                          padding: '5px 10px', 
-                          marginTop: 8 
+                        <Tag color={tierData[currentTier].color} style={{
+                          fontSize: '16px',
+                          padding: '5px 10px',
+                          marginTop: 8
                         }}>
                           {tierData[currentTier].name} Trader
                         </Tag>
@@ -252,30 +253,30 @@ class ProfilePage extends Component {
                     <Col xs={24} md={18}>
                       <Row gutter={[16, 16]}>
                         <Col xs={24} sm={8}>
-                          <Statistic 
-                            title='Total Tokens' 
-                            value={user.tokens} 
-                            prefix={<TrophyOutlined />} 
+                          <Statistic
+                            title='Total Tokens'
+                            value={user.tokens}
+                            prefix={<TrophyOutlined />}
                             valueStyle={{ color: '#1890ff' }}
                           />
                         </Col>
                         <Col xs={24} sm={8}>
-                          <Statistic 
-                            title='Trading Win Rate' 
-                            value={this.state.tradingStats.winRate + '%'} 
-                            prefix={<LineChartOutlined />} 
+                          <Statistic
+                            title='Trading Win Rate'
+                            value={this.state.tradingStats.winRate + '%'}
+                            prefix={<LineChartOutlined />}
                             valueStyle={{ color: '#52c41a' }}
                           />
                         </Col>
                         <Col xs={24} sm={8}>
-                          <Statistic 
-                            title='Total Trades' 
-                            value={this.state.tradingStats.totalTrades} 
+                          <Statistic
+                            title='Total Trades'
+                            value={this.state.tradingStats.totalTrades}
                             prefix={<HistoryOutlined />}
                           />
                         </Col>
                       </Row>
-                      
+
                       {currentTier !== 'premium' && (
                         <div style={{ marginTop: 24 }}>
                           <Paragraph>
@@ -285,8 +286,8 @@ class ProfilePage extends Component {
                             </Tag>
                             <Text> - {tierData[nextTierInfo.nextTier].requiredTokens - user.tokens} more tokens needed</Text>
                           </Paragraph>
-                          <Progress 
-                            percent={nextTierInfo.progress} 
+                          <Progress
+                            percent={nextTierInfo.progress}
                             strokeColor={tierData[nextTierInfo.nextTier].color}
                             size='small'
                           />
@@ -296,13 +297,13 @@ class ProfilePage extends Component {
                   </Row>
                 </Card>
               </Col>
-              
+
               <Col xs={24} md={16}>
                 <Tabs defaultActiveKey='1'>
                   <TabPane tab='Trading History' key='1'>
-                    <Table 
-                      columns={columns} 
-                      dataSource={data} 
+                    <Table
+                      columns={columns}
+                      dataSource={data}
                       pagination={{ pageSize: 5 }}
                     />
                   </TabPane>
@@ -313,14 +314,14 @@ class ProfilePage extends Component {
                       renderItem={item => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={item.completed ? 
-                              <UnlockOutlined style={{ fontSize: 24, color: '#52c41a' }} /> : 
-                              <LockOutlined style={{ fontSize: 24, color: '#bfbfbf' }} />
+                            avatar={item.completed
+                              ? <UnlockOutlined style={{ fontSize: 24, color: '#52c41a' }} />
+                              : <LockOutlined style={{ fontSize: 24, color: '#bfbfbf' }} />
                             }
                             title={<span>{item.name} <Tag color='blue'>{item.reward} tokens</Tag></span>}
-                            description={item.completed ? 
-                              'Achievement completed' : 
-                              'Achievement locked - keep trading to unlock'
+                            description={item.completed
+                              ? 'Achievement completed'
+                              : 'Achievement locked - keep trading to unlock'
                             }
                           />
                         </List.Item>
@@ -340,7 +341,7 @@ class ProfilePage extends Component {
                         </List.Item>
                       )}
                     />
-                    
+
                     {currentTier !== 'premium' && (
                       <>
                         <Divider orientation='left'>Locked Features</Divider>
@@ -368,7 +369,7 @@ class ProfilePage extends Component {
                   </TabPane>
                 </Tabs>
               </Col>
-              
+
               <Col xs={24} md={8}>
                 <Card title='Recent Activity' bordered={false}>
                   <List
@@ -393,42 +394,42 @@ class ProfilePage extends Component {
                     )}
                   />
                 </Card>
-                
+
                 <Card title='Trading Stats' bordered={false} style={{ marginTop: 24 }}>
                   <Row gutter={[16, 16]}>
                     <Col span={12}>
-                      <Statistic 
-                        title='Average Profit' 
-                        value={this.state.tradingStats.averageProfit + '%'} 
+                      <Statistic
+                        title='Average Profit'
+                        value={this.state.tradingStats.averageProfit + '%'}
                         valueStyle={{ color: '#52c41a' }}
                         prefix={<RiseOutlined />}
                       />
                     </Col>
                     <Col span={12}>
-                      <Statistic 
-                        title='Biggest Win' 
-                        value={this.state.tradingStats.biggestWin + '%'} 
+                      <Statistic
+                        title='Biggest Win'
+                        value={this.state.tradingStats.biggestWin + '%'}
                         valueStyle={{ color: '#52c41a' }}
                         prefix={<UpCircleOutlined />}
                       />
                     </Col>
                     <Col span={12}>
-                      <Statistic 
-                        title='Avg Hold Time' 
-                        value={this.state.tradingStats.averageHoldTime} 
+                      <Statistic
+                        title='Avg Hold Time'
+                        value={this.state.tradingStats.averageHoldTime}
                         prefix={<ClockCircleOutlined />}
                       />
                     </Col>
                     <Col span={12}>
-                      <Statistic 
-                        title='Trading Balance' 
-                        value='$12,845.56' 
+                      <Statistic
+                        title='Trading Balance'
+                        value='$12,845.56'
                         prefix={<DollarOutlined />}
                       />
                     </Col>
                   </Row>
                 </Card>
-                
+
                 <Card style={{ marginTop: 24 }}>
                   <Button type='primary' block>
                     Trade Now

@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { 
-  Layout, 
-  Row, 
-  Col, 
-  Card, 
-  Button, 
-  Typography, 
-  Timeline, 
-  Statistic, 
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import {
+  Layout,
+  Row,
+  Col,
+  Card,
+  Button,
+  Typography,
+  Timeline,
+  Statistic,
   Divider,
   Badge,
   List,
   Tag,
   Alert,
   Tooltip,
-  Progress
-} from 'antd';
+  Progress,
+  Table
+} from 'antd'
 import {
   TrophyOutlined,
   GiftOutlined,
@@ -28,12 +29,12 @@ import {
   StarOutlined,
   FireOutlined,
   ThunderboltOutlined
-} from '@ant-design/icons';
-import { setHeaderMenuItem } from '../../redux_actions';
-import { addTokens, processLoginReward } from '../../redux/actions/userActions';
+} from '@ant-design/icons'
+import { setHeaderMenuItem } from '../../redux_actions'
+import { addTokens, processLoginReward } from '../../redux/actions/userActions'
 
-const { Content } = Layout;
-const { Title, Paragraph, Text } = Typography;
+const { Content } = Layout
+const { Title, Paragraph, Text } = Typography
 
 // Mock rewards data
 const dailyChallenges = [
@@ -41,13 +42,13 @@ const dailyChallenges = [
   { id: 2, name: 'First Trade', completed: false, tokens: 15, description: 'Complete your first trade of the day' },
   { id: 3, name: 'Market Analysis', completed: false, tokens: 20, description: 'Use AI analysis tools for 10+ minutes' },
   { id: 4, name: 'Profitable Trade', completed: false, tokens: 25, description: 'Make a trade with >2% profit' }
-];
+]
 
 const weeklyTasks = [
   { id: 1, name: 'Trading Volume', progress: 60, target: 100, tokens: 100, description: 'Complete 100 trades this week' },
   { id: 2, name: 'Learning Progress', progress: 40, target: 100, tokens: 150, description: 'Complete 3 learning modules' },
   { id: 3, name: 'Winning Strategy', progress: 30, target: 100, tokens: 200, description: 'Maintain >60% win rate this week' }
-];
+]
 
 const tierBenefits = {
   bronze: [
@@ -79,93 +80,95 @@ const tierBenefits = {
     'Advanced AI strategy builder',
     'Personalized coaching'
   ]
-};
+}
 
 class RewardsPage extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       dailyRewardClaimed: false,
       streakDays: 10
-    };
+    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // Set the current menu item when component mounts
-    this.props.setHeaderMenuItem('rewards');
+    this.props.setHeaderMenuItem('rewards')
   }
 
   claimDailyReward = () => {
     // Process login reward via Redux action
-    const tokenReward = this.props.processLoginReward();
-    
+    const tokenReward = this.props.processLoginReward()
+
     this.setState({
       dailyRewardClaimed: true
-    });
+    })
   }
 
   completeChallenge = (challenge) => {
     // In a real app, this would verify the challenge was actually completed
-    this.props.addTokens(challenge.tokens);
-    
+    this.props.addTokens(challenge.tokens)
+
     // Update the UI to show completion
     // This is just a mock - in a real app, you'd update the state in your Redux store
-    const updatedChallenges = dailyChallenges.map(c => 
+    const updatedChallenges = dailyChallenges.map(c =>
       c.id === challenge.id ? { ...c, completed: true } : c
-    );
-    
+    )
+
     // For demo purposes only - this won't persist between renders
     dailyChallenges.forEach((c, index) => {
       if (c.id === challenge.id) {
-        dailyChallenges[index].completed = true;
+        dailyChallenges[index].completed = true
       }
-    });
-    
-    this.forceUpdate();
+    })
+
+    this.forceUpdate()
   }
 
   // Get current tier based on tokens
-  getCurrentTier() {
-    const { tokens } = this.props.user;
-    if (tokens >= 5000) return 'premium';
-    if (tokens >= 1500) return 'gold';
-    if (tokens >= 500) return 'silver';
-    return 'bronze';
+  getCurrentTier () {
+    const { tokens } = this.props.user
+    if (tokens >= 5000) return 'premium'
+    if (tokens >= 1500) return 'gold'
+    if (tokens >= 500) return 'silver'
+    return 'bronze'
   }
 
   // Get tier color
-  getTierColor(tier) {
+  getTierColor (tier) {
     const colors = {
       bronze: '#CD7F32',
       silver: '#C0C0C0',
       gold: '#FFD700',
       premium: '#7B68EE'
-    };
-    return colors[tier] || colors.bronze;
+    }
+    return colors[tier] || colors.bronze
   }
 
-  render() {
-    const { user } = this.props;
-    const currentTier = this.getCurrentTier();
-    const currentTierColor = this.getTierColor(currentTier);
-    
+  render () {
+    const { user } = this.props
+    const currentTier = this.getCurrentTier()
+    const currentTierColor = this.getTierColor(currentTier)
+
     // Calculate streak bonus
-    const streakBonus = user.streak >= 10 ? 50 : 
-                        user.streak >= 5 ? 25 : 
-                        user.streak >= 3 ? 15 : 5;
-    
+    const streakBonus = user.streak >= 10
+      ? 50
+      : user.streak >= 5
+        ? 25
+        : user.streak >= 3 ? 15 : 5
+
     // Next tier info
     const nextTierInfo = {
       bronze: { next: 'silver', tokens: 500 },
       silver: { next: 'gold', tokens: 1500 },
       gold: { next: 'premium', tokens: 5000 },
       premium: { next: null, tokens: null }
-    };
-    
-    const nextTier = nextTierInfo[currentTier].next;
-    const tokensForNextTier = nextTierInfo[currentTier].tokens;
-    const tokensNeeded = nextTier ? tokensForNextTier - user.tokens : 0;
-    const progressToNextTier = nextTier ? (user.tokens / tokensForNextTier) * 100 : 100;
+    }
+
+    const nextTier = nextTierInfo[currentTier].next
+    const tokensForNextTier = nextTierInfo[currentTier].tokens
+    const tokensNeeded = nextTier ? tokensForNextTier - user.tokens : 0
+    const progressToNextTier = nextTier ? (user.tokens / tokensForNextTier) * 100 : 100
 
     return (
       <Layout className="layout">
@@ -183,8 +186,8 @@ class RewardsPage extends Component {
                         prefix={<TrophyOutlined />}
                         valueStyle={{ color: '#1890ff' }}
                       />
-                      <Button 
-                        type="primary" 
+                      <Button
+                        type="primary"
                         icon={<GiftOutlined />}
                         style={{ marginTop: 16 }}
                         onClick={this.claimDailyReward}
@@ -200,8 +203,8 @@ class RewardsPage extends Component {
                           <span style={{ fontSize: 24 }}>{user.streak} days</span>
                         </div>
                         <Text type="secondary">Current streak bonus: +{streakBonus} tokens</Text>
-                        <Progress 
-                          percent={user.streak % 5 * 20} 
+                        <Progress
+                          percent={user.streak % 5 * 20}
                           format={() => `${5 - (user.streak % 5)} days to next bonus`}
                           strokeColor="#ff4d4f"
                         />
@@ -217,9 +220,9 @@ class RewardsPage extends Component {
                   </Row>
                 </Card>
               </Col>
-              
+
               <Col xs={24} md={8}>
-                <Card 
+                <Card
                   title={
                     <span>
                       <Tag color={currentTierColor} style={{ fontSize: '16px', padding: '4px 8px' }}>
@@ -229,36 +232,38 @@ class RewardsPage extends Component {
                   }
                   bordered={false}
                 >
-                  {nextTier ? (
-                    <>
-                      <Paragraph>
-                        <Text strong>Next Tier: </Text>
-                        <Tag color={this.getTierColor(nextTier)}>
-                          {nextTier.charAt(0).toUpperCase() + nextTier.slice(1)}
-                        </Tag>
-                        <Text> - {tokensNeeded} more tokens needed</Text>
-                      </Paragraph>
-                      <Progress 
-                        percent={progressToNextTier} 
-                        strokeColor={this.getTierColor(nextTier)}
+                  {nextTier
+                    ? (
+                      <>
+                        <Paragraph>
+                          <Text strong>Next Tier: </Text>
+                          <Tag color={this.getTierColor(nextTier)}>
+                            {nextTier.charAt(0).toUpperCase() + nextTier.slice(1)}
+                          </Tag>
+                          <Text> - {tokensNeeded} more tokens needed</Text>
+                        </Paragraph>
+                        <Progress
+                          percent={progressToNextTier}
+                          strokeColor={this.getTierColor(nextTier)}
+                        />
+                      </>
+                    )
+                    : (
+                      <Alert
+                        message="Maximum Tier Reached"
+                        description="You've reached the Premium tier! Enjoy all exclusive benefits."
+                        type="success"
+                        showIcon
                       />
-                    </>
-                  ) : (
-                    <Alert
-                      message="Maximum Tier Reached"
-                      description="You've reached the Premium tier! Enjoy all exclusive benefits."
-                      type="success"
-                      showIcon
-                    />
-                  )}
+                    )}
                 </Card>
               </Col>
             </Row>
-            
+
             {/* Daily Challenges Section */}
             <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
               <Col xs={24} md={12}>
-                <Card 
+                <Card
                   title={
                     <span>
                       <ThunderboltOutlined /> Daily Challenges
@@ -272,23 +277,25 @@ class RewardsPage extends Component {
                     renderItem={item => (
                       <List.Item
                         actions={[
-                          item.completed ? (
-                            <Tag color="green">Completed</Tag>
-                          ) : (
-                            <Button 
-                              type="primary" 
-                              size="small"
-                              onClick={() => this.completeChallenge(item)}
-                            >
+                          item.completed
+                            ? (
+                              <Tag color="green">Completed</Tag>
+                            )
+                            : (
+                              <Button
+                                type="primary"
+                                size="small"
+                                onClick={() => this.completeChallenge(item)}
+                              >
                               Complete
-                            </Button>
-                          )
+                              </Button>
+                            )
                         ]}
                       >
                         <List.Item.Meta
-                          avatar={item.completed ? 
-                            <CheckCircleOutlined style={{ color: '#52c41a', fontSize: 20 }} /> : 
-                            <ClockCircleOutlined style={{ color: '#faad14', fontSize: 20 }} />
+                          avatar={item.completed
+                            ? <CheckCircleOutlined style={{ color: '#52c41a', fontSize: 20 }} />
+                            : <ClockCircleOutlined style={{ color: '#faad14', fontSize: 20 }} />
                           }
                           title={<span>{item.name} <Tag color="blue">+{item.tokens} tokens</Tag></span>}
                           description={item.description}
@@ -298,9 +305,9 @@ class RewardsPage extends Component {
                   />
                 </Card>
               </Col>
-              
+
               <Col xs={24} md={12}>
-                <Card 
+                <Card
                   title={
                     <span>
                       <RocketOutlined /> Weekly Tasks
@@ -318,8 +325,8 @@ class RewardsPage extends Component {
                           description={
                             <>
                               <Text>{item.description}</Text>
-                              <Progress 
-                                percent={item.progress} 
+                              <Progress
+                                percent={item.progress}
                                 format={() => `${item.progress}%`}
                               />
                             </>
@@ -331,11 +338,11 @@ class RewardsPage extends Component {
                 </Card>
               </Col>
             </Row>
-            
+
             {/* Tier Benefits Section */}
             <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
               <Col span={24}>
-                <Card 
+                <Card
                   title={
                     <span>
                       <StarOutlined /> Tier Benefits
@@ -345,73 +352,77 @@ class RewardsPage extends Component {
                 >
                   <Row gutter={16}>
                     {Object.keys(tierBenefits).map(tier => {
-                      const isUnlocked = (tier === 'bronze') || 
+                      const isUnlocked = (tier === 'bronze') ||
                                          (tier === 'silver' && user.tokens >= 500) ||
                                          (tier === 'gold' && user.tokens >= 1500) ||
-                                         (tier === 'premium' && user.tokens >= 5000);
-                      
+                                         (tier === 'premium' && user.tokens >= 5000)
+
                       return (
                         <Col xs={24} sm={12} md={6} key={tier}>
-                          <Card 
+                          <Card
                             title={
                               <Tag color={this.getTierColor(tier)} style={{ fontSize: '14px', padding: '2px 6px' }}>
                                 {tier.charAt(0).toUpperCase() + tier.slice(1)}
                               </Tag>
                             }
-                            bordered={false} 
-                            style={{ 
+                            bordered={false}
+                            style={{
                               background: isUnlocked ? '#f6ffed' : '#f5f5f5',
                               opacity: isUnlocked ? 1 : 0.7
                             }}
                           >
-                            {isUnlocked ? (
-                              <Badge.Ribbon text="Unlocked" color="green">
-                                <List
-                                  size="small"
-                                  dataSource={tierBenefits[tier]}
-                                  renderItem={item => (
-                                    <List.Item>
-                                      <Text>{item}</Text>
-                                    </List.Item>
-                                  )}
-                                />
-                              </Badge.Ribbon>
-                            ) : (
-                              <>
-                                <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                                  <LockOutlined style={{ fontSize: 24 }} />
-                                  <div>
-                                    <Text type="secondary">
-                                      {tier === 'silver' ? '500 tokens required' : 
-                                       tier === 'gold' ? '1,500 tokens required' : 
-                                       '5,000 tokens required'}
-                                    </Text>
+                            {isUnlocked
+                              ? (
+                                <Badge.Ribbon text="Unlocked" color="green">
+                                  <List
+                                    size="small"
+                                    dataSource={tierBenefits[tier]}
+                                    renderItem={item => (
+                                      <List.Item>
+                                        <Text>{item}</Text>
+                                      </List.Item>
+                                    )}
+                                  />
+                                </Badge.Ribbon>
+                              )
+                              : (
+                                <>
+                                  <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                                    <LockOutlined style={{ fontSize: 24 }} />
+                                    <div>
+                                      <Text type="secondary">
+                                        {tier === 'silver'
+                                          ? '500 tokens required'
+                                          : tier === 'gold'
+                                            ? '1,500 tokens required'
+                                            : '5,000 tokens required'}
+                                      </Text>
+                                    </div>
                                   </div>
-                                </div>
-                                <List
-                                  size="small"
-                                  dataSource={tierBenefits[tier]}
-                                  renderItem={item => (
-                                    <List.Item>
-                                      <Text type="secondary">{item}</Text>
-                                    </List.Item>
-                                  )}
-                                />
-                              </>
-                            )}
+                                  <List
+                                    size="small"
+                                    dataSource={tierBenefits[tier]}
+                                    renderItem={item => (
+                                      <List.Item>
+                                        <Text type="secondary">{item}</Text>
+                                      </List.Item>
+                                    )}
+                                  />
+                                </>
+                              )}
                           </Card>
                         </Col>
-                      );
+                      )
                     })}
                   </Row>
                 </Card>
               </Col>
             </Row>
-            
+
             {/* Leaderboard Preview */}
             <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
               <Col span={24}>
-                <Card 
+                <Card
                   title={
                     <span>
                       <TrophyOutlined /> Weekly Leaderboard Preview
@@ -434,12 +445,14 @@ class RewardsPage extends Component {
                         dataIndex: 'rank',
                         key: 'rank',
                         render: rank => {
-                          const color = rank === 1 ? 'gold' : 
-                                       rank === 2 ? 'silver' : 
-                                       rank === 3 ? '#cd7f32' : '';
+                          const color = rank === 1
+                            ? 'gold'
+                            : rank === 2
+                              ? 'silver'
+                              : rank === 3 ? '#cd7f32' : ''
                           return (
-                            <span style={{ color: color, fontWeight: 'bold' }}>{rank}</span>
-                          );
+                            <span style={{ color, fontWeight: 'bold' }}>{rank}</span>
+                          )
                         }
                       },
                       {
@@ -468,12 +481,14 @@ class RewardsPage extends Component {
                         dataIndex: 'badge',
                         key: 'badge',
                         render: badge => {
-                          const color = badge === 'Gold' ? '#FFD700' : 
-                                       badge === 'Silver' ? '#C0C0C0' :
-                                       badge === 'Bronze' ? '#CD7F32' : '#7B68EE';
+                          const color = badge === 'Gold'
+                            ? '#FFD700'
+                            : badge === 'Silver'
+                              ? '#C0C0C0'
+                              : badge === 'Bronze' ? '#CD7F32' : '#7B68EE'
                           return (
                             <Tag color={color}>{badge}</Tag>
-                          );
+                          )
                         }
                       }
                     ]}
@@ -485,7 +500,7 @@ class RewardsPage extends Component {
           </div>
         </Content>
       </Layout>
-    );
+    )
   }
 }
 
@@ -493,9 +508,9 @@ const mapStateToProps = (state) => {
   return {
     // Mock user data - in a real app, this would come from your Redux store
     user: {
-      name: "Trader123",
+      name: 'Trader123',
       tokens: 780,
-      joinDate: "2024-11-15",
+      joinDate: '2024-11-15',
       streak: 10
     }
   }
@@ -507,4 +522,4 @@ const mapActionsToProps = {
   processLoginReward
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(RewardsPage);
+export default connect(mapStateToProps, mapActionsToProps)(RewardsPage)
