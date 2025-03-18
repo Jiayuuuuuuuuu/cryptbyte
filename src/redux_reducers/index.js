@@ -15,6 +15,7 @@ import {
   GET_ASSET_PLATFORMS
 } from '../redux_actions'
 import watchlistReducer from './watchlistReducer'
+import userReducer from './userReducer'
 
 const assetPlatformsReducer = (state = [], action) => {
   switch (action.type) {
@@ -154,5 +155,6 @@ export const rootReducer = combineReducers({
   header_selected: headerMenuItemReducer,
   sider_selected: siderMenuItemReducer,
   watchlist: watchlistReducer,
-  asset_platforms: assetPlatformsReducer
+  asset_platforms: assetPlatformsReducer,
+  user: userReducer
 })

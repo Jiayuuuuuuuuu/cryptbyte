@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Badge } from 'antd'
 import { iconStyle } from '../../styles'
-import { HomeOutlined, InfoCircleOutlined, GithubOutlined, AreaChartOutlined } from '@ant-design/icons'
+import {
+  HomeOutlined,
+  InfoCircleOutlined,
+  GithubOutlined,
+  AreaChartOutlined,
+  UserOutlined,
+  TrophyOutlined
+} from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
 import { connect } from 'react-redux'
 import { setHeaderMenuItem } from '../../redux_actions'
@@ -30,7 +37,6 @@ class ReactHeader extends Component {
             </Menu.Item>
             <Menu.Item key="home" onClick={() => this.props.setHeaderMenuItem('home')}>
               <Link to="/">
-
                 <HomeOutlined style={iconStyle}/>Home
               </Link>
             </Menu.Item>
@@ -52,6 +58,19 @@ class ReactHeader extends Component {
             <Menu.Item key="watchlist">
               <Link to="/watchlist">⭐ My Watchlist</Link>
             </Menu.Item>
+            <Menu.Item key="profile" onClick={() => this.props.setHeaderMenuItem('profile')}>
+              <Link to="/profile">
+                <UserOutlined style={iconStyle}/>
+                <Badge count={this.props.userTokens > 0 ? this.props.userTokens : 0} offset={[10, 0]}>
+                  Profile
+                </Badge>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="rewards" onClick={() => this.props.setHeaderMenuItem('rewards')}>
+              <Link to="/rewards">
+                <TrophyOutlined style={iconStyle}/>Rewards
+              </Link>
+            </Menu.Item>
           </Menu>
         </Header>
       </React.Fragment>
@@ -61,7 +80,8 @@ class ReactHeader extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    selected: state.header_selected
+    selected: state.header_selected,
+    userTokens: state.user ? state.user.tokens : 0
   }
 }
 

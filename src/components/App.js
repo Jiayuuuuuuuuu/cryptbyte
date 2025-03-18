@@ -14,6 +14,8 @@ import ReactExchangeRates from './ExchangeRates/ReactExchangeRates'
 import ReactTrendingCoins from './Coins/ReactTrendingCoins'
 import ReactAssetPlatforms from './AssetPlatforms/ReactAssetPlatforms'
 import ReactWatchlist from './Watchlist/ReactWatchlist'
+import ProfilePage from './Profile/ProfilePage'
+import RewardsPage from './Rewards/RewardsPage'
 
 export default class App extends Component {
   render () {
