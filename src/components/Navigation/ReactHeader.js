@@ -33,7 +33,7 @@ class ReactHeader extends Component {
       {
         key: 'dashboard',
         label: (
-          <Link to="/asset-platforms" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
+          <Link to="/coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
             <AreaChartOutlined style={iconStyle} />Dashboard
           </Link>
         )
