@@ -39,22 +39,6 @@ class ReactHeader extends Component {
         )
       },
       {
-        key: 'about',
-        label: (
-          <Link to="/about" onClick={() => this.props.setHeaderMenuItem('about')}>
-            <InfoCircleOutlined style={iconStyle} />About
-          </Link>
-        )
-      },
-      {
-        key: 'source',
-        label: (
-          <a rel="noopener noreferrer" target="_blank" href="https://github.com/danielc92/react-crypto-app">
-            <GithubOutlined style={iconStyle} />Source
-          </a>
-        )
-      },
-      {
         key: 'watchlist',
         label: (
           <Link to="/watchlist" onClick={() => this.props.setHeaderMenuItem('watchlist')}>

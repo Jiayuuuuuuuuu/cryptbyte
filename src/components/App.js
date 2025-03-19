@@ -6,8 +6,6 @@ import ReactFooter from './Navigation/ReactFooter'
 import ReactCoinsList from './Coins/ReactCoinsList'
 import ReactCoinsDetail from './Coins/ReactCoinsDetail'
 import ReactHome from './General/ReactHome'
-import ReactAbout from './General/ReactAbout'
-import ReactEmpty from './Empty/ReactEmpty'
 import ReactGlobal from './Global/ReactGlobal'
 import ReactExchangesList from './Exchanges/ReactExchangesList'
 import ReactExchangeRates from './ExchangeRates/ReactExchangeRates'
@@ -25,13 +23,11 @@ export default class App extends Component {
         <Layout>
           <Switch> {/* ✅ Wrap Routes in Switch */}
             <Route path='/' exact component={ReactHome}/>
-            <Route path='/about' exact component={ReactAbout}/>
             <Route path='/trending-coins' exact component={ReactTrendingCoins}/>
             <Route path='/coins' exact component={ReactCoinsList}/>
             <Route path='/coins/:coinId/' exact component={ReactCoinsDetail}/>
             <Route path='/exchanges/list' exact component={ReactExchangesList}/>
             <Route path='/global' exact component={ReactGlobal}/>
-            <Route path='/empty' exact component={ReactEmpty}/>
             <Route path='/exchange-rates' exact component={ReactExchangeRates}/>
             <Route path='/asset-platforms' exact component={ReactAssetPlatforms}/>
             <Route path="/profile" component={ProfilePage}/>
