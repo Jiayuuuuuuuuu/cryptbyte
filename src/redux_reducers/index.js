@@ -6,6 +6,7 @@ import {
   GET_COIN_CHART,
   GET_EVENT_LIST,
   SET_HEADER_MENU_ITEM,
+  SET_SIDER_MENU_ITEM,
   GET_TRENDING_COINS,
   SET_COIN_FETCHED_TIME
 } from '../redux_actions'
@@ -93,6 +94,15 @@ const headerMenuItemReducer = (state = '', action) => {
   }
 }
 
+const siderMenuItemReducer = (state = 'asset-platforms', action) => {
+  switch (action.type) {
+  case SET_SIDER_MENU_ITEM:
+    return action.payload.item
+  default:
+    return state
+  }
+}
+
 export const rootReducer = combineReducers({
   events: eventReducer,
   coins: coinsReducer,
@@ -100,6 +110,7 @@ export const rootReducer = combineReducers({
   coin_market_details: coinMarketDetailsReducer,
   trending_coins: coinsTrendingReducer,
   header_selected: headerMenuItemReducer,
+  sider_selected: siderMenuItemReducer,
   watchlist: watchlistReducer,
   user: userReducer
 })

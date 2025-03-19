@@ -4,6 +4,7 @@ export const GET_COIN_DETAILS = 'GET_COIN_DETAILS'
 export const GET_COIN_CHART = 'GET_COIN_CHART'
 export const GET_EVENT_LIST = 'GET_EVENT_LIST'
 export const SET_HEADER_MENU_ITEM = 'SET_HEADER_MENU_ITEM'
+export const SET_SIDER_MENU_ITEM = 'SET_SIDER_MENU_ITEM'
 export const GET_TRENDING_COINS = 'GET_TRENDING_COINS'
 export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
 export const ADD_TO_WATCHLIST = 'ADD_TO_WATCHLIST'
@@ -90,6 +91,13 @@ export const fetchEvents = () => async (dispatch, getState) => {
 export const setHeaderMenuItem = (item) => {
   return {
     type: SET_HEADER_MENU_ITEM,
+    payload: { item }
+  }
+}
+
+export const setSiderMenuItem = (item) => {
+  return {
+    type: SET_SIDER_MENU_ITEM,
     payload: { item }
   }
 }
