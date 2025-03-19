@@ -14,6 +14,7 @@ import ReactAssetPlatforms from './AssetPlatforms/ReactAssetPlatforms'
 import ReactWatchlist from './Watchlist/ReactWatchlist'
 import ProfilePage from './Profile/ProfilePage'
 import RewardsPage from './Rewards/RewardsPage'
+import GamePage from './Gamification/GamePage'
 
 export default class App extends Component {
   render () {
@@ -33,6 +34,7 @@ export default class App extends Component {
             <Route path="/profile" component={ProfilePage}/>
             <Route path="/rewards" component={RewardsPage}/>
             <Route path='/watchlist' exact component={ReactWatchlist}/> {/* ✅ Watchlist page is now visible */}
+            <Route path='/game' exact component={GamePage}/>
           </Switch>
         </Layout>
         <ReactFooter/>
