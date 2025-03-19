@@ -53,6 +53,14 @@ class ReactHeader extends Component {
             <TrophyOutlined style={iconStyle} />Rewards
           </Link>
         )
+      },
+      {
+        key: 'gamification',
+        label: (
+          <Link to="/gamification" onClick={() => this.props.setHeaderMenuItem('gamification')}>
+            <StarOutlined style={iconStyle} />Gamification
+          </Link>
+        )
       }
     ]
 

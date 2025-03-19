@@ -37,6 +37,7 @@ import {
 } from '@ant-design/icons'
 import { setHeaderMenuItem } from '../../redux_actions'
 import { addTokens } from '../../redux_actions/userActions'
+import userReducer from '../../redux_reducers/userReducer'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
@@ -749,12 +750,7 @@ class GamePage extends Component {
 const mapStateToProps = (state) => {
   return {
     // Mock user data - in a real app, this would come from your Redux store
-    user: {
-      name: 'Trader123',
-      tokens: 780,
-      joinDate: '2024-11-15',
-      streak: 10
-    }
+    user: state.user
   }
 }
 

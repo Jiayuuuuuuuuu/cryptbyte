@@ -13,6 +13,7 @@ export const GET_TRENDING_COINS = 'GET_TRENDING_COINS'
 export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
 export const ADD_TO_WATCHLIST = 'ADD_TO_WATCHLIST'
 export const REMOVE_FROM_WATCHLIST = 'REMOVE_FROM_WATCHLIST'
+export * from './userActions'
 
 export const addToWatchlist = (coin) => (dispatch, getState) => {
   dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
