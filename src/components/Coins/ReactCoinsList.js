@@ -47,7 +47,6 @@ const ReactCoinsList = () => {
 
   useEffect(() => {
     fetchCoinData()
-    dispatch(setSiderMenuItem('coin-list'))
 
     const interval = setInterval(() => {
       fetchCoinData()

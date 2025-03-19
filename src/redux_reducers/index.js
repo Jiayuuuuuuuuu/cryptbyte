@@ -5,26 +5,12 @@ import {
   GET_COIN_DETAILS,
   GET_COIN_CHART,
   GET_EVENT_LIST,
-  GET_EXCHANGES_LIST,
-  GET_EXCHANGE_RATES,
-  GET_GLOBAL,
   SET_HEADER_MENU_ITEM,
-  SET_SIDER_MENU_ITEM,
   GET_TRENDING_COINS,
-  SET_COIN_FETCHED_TIME,
-  GET_ASSET_PLATFORMS
+  SET_COIN_FETCHED_TIME
 } from '../redux_actions'
 import watchlistReducer from './watchlistReducer'
 import userReducer from './userReducer'
-
-const assetPlatformsReducer = (state = [], action) => {
-  switch (action.type) {
-  case GET_ASSET_PLATFORMS:
-    return action.payload
-  default:
-    return state
-  }
-}
 
 const initialState = {
   data: [],
@@ -89,33 +75,6 @@ const coinMarketDetailsReducer = (state = {}, action) => {
   }
 }
 
-const globalReducer = (state = {}, action) => {
-  switch (action.type) {
-  case GET_GLOBAL:
-    return action.payload.data
-  default:
-    return state
-  }
-}
-
-const exchangesReducer = (state = [], action) => {
-  switch (action.type) {
-  case GET_EXCHANGES_LIST:
-    return action.payload
-  default:
-    return state
-  }
-}
-
-const exchangeRatesReducer = (state = [], action) => {
-  switch (action.type) {
-  case GET_EXCHANGE_RATES:
-    return Object.values(action.payload.rates)
-  default:
-    return state
-  }
-}
-
 const eventReducer = (state = [], action) => {
   switch (action.type) {
   case GET_EVENT_LIST:
@@ -134,27 +93,13 @@ const headerMenuItemReducer = (state = '', action) => {
   }
 }
 
-const siderMenuItemReducer = (state = 'asset-platforms', action) => {
-  switch (action.type) {
-  case SET_SIDER_MENU_ITEM:
-    return action.payload.item
-  default:
-    return state
-  }
-}
-
 export const rootReducer = combineReducers({
   events: eventReducer,
-  global: globalReducer,
-  exchanges: exchangesReducer,
-  exchange_rates: exchangeRatesReducer,
   coins: coinsReducer,
   coin_details: coinDetailsReducer,
   coin_market_details: coinMarketDetailsReducer,
   trending_coins: coinsTrendingReducer,
   header_selected: headerMenuItemReducer,
-  sider_selected: siderMenuItemReducer,
   watchlist: watchlistReducer,
-  asset_platforms: assetPlatformsReducer,
   user: userReducer
 })

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { fetchCoinDetails, setSiderMenuItem, fetchCoinMarketDetails } from '../../redux_actions'
+import { fetchCoinDetails, fetchCoinMarketDetails } from '../../redux_actions'
 import { Layout, Tag, Skeleton, Typography, Card, Alert, Tabs, Row, Col, Tooltip, Statistic, Space, Divider, Button } from 'antd'
 import { contentStyle, titleStyle } from '../../styles'
 import ReactCoinScores from './ReactCoinScores'
@@ -813,8 +813,7 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = {
   fetchCoinDetails,
-  fetchCoinMarketDetails,
-  setSiderMenuItem
+  fetchCoinMarketDetails
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(ReactCoinsDetail)
