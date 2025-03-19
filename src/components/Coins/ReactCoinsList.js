@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import ReactSider from '../Navigation/ReactSider'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined } from '@ant-design/icons'
@@ -98,7 +97,6 @@ const ReactCoinsList = () => {
   if (error) {
     return (
       <React.Fragment>
-        <ReactSider />
         <Layout style={{ padding: '1rem' }}>
           <Content style={contentStyle}>
             <div style={{ textAlign: 'center', margin: '50px 0' }}>
@@ -115,7 +113,6 @@ const ReactCoinsList = () => {
   if (loading || !Array.isArray(coins) || !coins.length) {
     return (
       <React.Fragment>
-        <ReactSider />
         <Layout style={{ padding: '1rem' }}>
           <Content style={contentStyle}>
             <Spin size="large" style={{ display: 'block', margin: '50px auto' }} />
@@ -232,7 +229,6 @@ const ReactCoinsList = () => {
 
   return (
     <React.Fragment>
-      <ReactSider />
       <Layout style={{ padding: '1rem' }}>
         <Content style={contentStyle}>
           <Title level={2}>Coins List</Title>

@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Badge, Row, Col } from 'antd'
+import { Layout, Menu, Badge, Row, Col, Dropdown } from 'antd'
 import { iconStyle } from '../../styles'
 import {
   HomeOutlined,
-  InfoCircleOutlined,
-  GithubOutlined,
   AreaChartOutlined,
   UserOutlined,
   TrophyOutlined,
-  StarOutlined
+  StarOutlined,
+  DollarOutlined,
+  RiseOutlined,
+  DownOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
 import { connect } from 'react-redux'
@@ -20,6 +21,21 @@ const { Header } = Layout
 class ReactHeader extends Component {
   render () {
     const { selected } = this.props
+
+    const dashboardMenu = (
+      <Menu>
+        <Menu.Item key="coin-list" icon={<DollarOutlined style={iconStyle} />}>
+          <Link to="/coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
+            Coin Listing
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="trending-coins" icon={<RiseOutlined style={iconStyle} />}>
+          <Link to="/trending-coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
+            Trending Coins
+          </Link>
+        </Menu.Item>
+      </Menu>
+    )
 
     const leftMenuItems = [
       {
@@ -33,9 +49,11 @@ class ReactHeader extends Component {
       {
         key: 'dashboard',
         label: (
-          <Link to="/coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
-            <AreaChartOutlined style={iconStyle} />Dashboard
-          </Link>
+          <Dropdown overlay={dashboardMenu} placement="bottomCenter">
+            <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+              <AreaChartOutlined style={iconStyle} />Dashboard <DownOutlined />
+            </span>
+          </Dropdown>
         )
       },
       {

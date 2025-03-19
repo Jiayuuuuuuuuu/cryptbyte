@@ -7,7 +7,6 @@ import ReactCoinsList from './Coins/ReactCoinsList'
 import ReactCoinsDetail from './Coins/ReactCoinsDetail'
 import ReactHome from './General/ReactHome'
 import ReactTrendingCoins from './Coins/ReactTrendingCoins'
-import ReactAssetPlatforms from './AssetPlatforms/ReactAssetPlatforms'
 import ReactWatchlist from './Watchlist/ReactWatchlist'
 import ProfilePage from './Profile/ProfilePage'
 import RewardsPage from './Rewards/RewardsPage'
@@ -24,7 +23,6 @@ export default class App extends Component {
             <Route path='/trending-coins' exact component={ReactTrendingCoins}/>
             <Route path='/coins' exact component={ReactCoinsList}/>
             <Route path='/coins/:coinId/' exact component={ReactCoinsDetail}/>
-            <Route path='/asset-platforms' exact component={ReactAssetPlatforms}/>
             <Route path="/profile" component={ProfilePage}/>
             <Route path="/rewards" component={RewardsPage}/>
             <Route path='/watchlist' exact component={ReactWatchlist}/>

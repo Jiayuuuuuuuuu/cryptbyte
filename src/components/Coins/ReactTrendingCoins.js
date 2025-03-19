@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactSider from '../Navigation/ReactSider'
 import { fetchTrendingCoins, setSiderMenuItem } from '../../redux_actions'
 import { connect } from 'react-redux'
 import { Layout, Typography, Avatar, Card, Badge, Col, Row } from 'antd'
@@ -18,7 +17,6 @@ class ReactTrendingCoins extends Component {
   render () {
     return (
       <React.Fragment>
-        <ReactSider/>
         <Layout style={{ padding: '1rem' }}>
           <Content style={contentStyle}>
             <Title level={2}>Trending Coins</Title>

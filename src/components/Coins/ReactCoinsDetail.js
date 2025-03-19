@@ -7,7 +7,6 @@ import ReactCoinScores from './ReactCoinScores'
 import { Line } from 'react-chartjs-2'
 import { market_processed_table_keys, market_stat_keys } from '../../constants'
 import chartOptions from '../../ChartConfig'
-import ReactSider from '../Navigation/ReactSider'
 import ReactCoinCommunityStats from './ReactCoinCommunityStats'
 import ReactCoinDeveloperStats from './ReactCoinDeveloperStats'
 import ReactCoinMarketStats from './ReactCoinMarketStats'
@@ -172,7 +171,6 @@ class ReactCoinsDetail extends Component {
 
     return (
       <React.Fragment>
-        <ReactSider/>
         <Layout style={{ padding: '1rem' }}>
           <Content style={contentStyle}>
             {
