@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Badge, Row, Col, Dropdown } from 'antd'
-import { iconStyle } from '../../styles'
+import { Layout, Menu, Badge, Row, Col, Dropdown, Button, Drawer } from 'antd'
+import { connect } from 'react-redux'
+import { setHeaderMenuItem } from '../../redux_actions'
 import {
   HomeOutlined,
   AreaChartOutlined,
@@ -10,105 +11,173 @@ import {
   StarOutlined,
   DollarOutlined,
   RiseOutlined,
-  DownOutlined
+  DownOutlined,
+  MenuOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
-import { connect } from 'react-redux'
-import { setHeaderMenuItem } from '../../redux_actions'
 
 const { Header } = Layout
 
-class ReactHeader extends Component {
-  render () {
-    const { selected } = this.props
+const ReactHeader = (props) => {
+  const { selected, userTokens } = props
+  const [visible, setVisible] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024)
 
-    const dashboardMenu = (
-      <Menu>
-        <Menu.Item key="coin-list" icon={<DollarOutlined style={iconStyle} />}>
-          <Link to="/coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
-            Coin Listing
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="trending-coins" icon={<RiseOutlined style={iconStyle} />}>
-          <Link to="/trending-coins" onClick={() => this.props.setHeaderMenuItem('dashboard')}>
-            Trending Coins
-          </Link>
-        </Menu.Item>
-      </Menu>
+  // Monitor window size for responsive changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1024)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const showDrawer = () => {
+    setVisible(true)
+  }
+
+  const onClose = () => {
+    setVisible(false)
+  }
+
+  const handleMenuClick = (key) => {
+    props.setHeaderMenuItem(key)
+    if (isMobile) {
+      setVisible(false)
+    }
+  }
+
+  const iconStyle = {
+    marginRight: 8,
+    fontSize: '16px'
+  }
+
+  const dashboardMenu = (
+    <Menu>
+      <Menu.Item key="coin-list" icon={<DollarOutlined style={iconStyle} />}>
+        <Link to="/coins" onClick={() => handleMenuClick('dashboard')}>
+          Coin Listing
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="trending-coins" icon={<RiseOutlined style={iconStyle} />}>
+        <Link to="/trending-coins" onClick={() => handleMenuClick('dashboard')}>
+          Trending Coins
+        </Link>
+      </Menu.Item>
+    </Menu>
+  )
+
+  const leftMenuItems = [
+    {
+      key: 'home',
+      icon: <HomeOutlined style={iconStyle} />,
+      label: (
+        <Link to="/" onClick={() => handleMenuClick('home')}>
+          Home
+        </Link>
+      )
+    },
+    {
+      key: 'dashboard',
+      icon: <AreaChartOutlined style={iconStyle} />,
+      label: (
+        <Dropdown overlay={dashboardMenu} placement="bottomCenter">
+          <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            Dashboard <DownOutlined />
+          </span>
+        </Dropdown>
+      )
+    },
+    {
+      key: 'watchlist',
+      icon: <StarOutlined style={iconStyle} />,
+      label: (
+        <Link to="/watchlist" onClick={() => handleMenuClick('watchlist')}>
+          My Watchlist
+        </Link>
+      )
+    },
+    {
+      key: 'rewards',
+      icon: <TrophyOutlined style={iconStyle} />,
+      label: (
+        <Link to="/rewards" onClick={() => handleMenuClick('rewards')}>
+          Rewards
+        </Link>
+      )
+    },
+    {
+      key: 'gamification',
+      icon: <StarOutlined style={iconStyle} />,
+      label: (
+        <Link to="/gamification" onClick={() => handleMenuClick('gamification')}>
+          Gamification
+        </Link>
+      )
+    }
+  ]
+
+  const profileItem = {
+    key: 'profile',
+    label: (
+      <Link to="/profile" onClick={() => handleMenuClick('profile')}>
+        <Badge count={userTokens > 0 ? userTokens : 0} offset={[10, 0]}>
+          <UserOutlined style={{ fontSize: '18px' }} />
+        </Badge>
+      </Link>
     )
+  }
 
-    const leftMenuItems = [
-      {
-        key: 'home',
-        label: (
-          <Link to="/" onClick={() => this.props.setHeaderMenuItem('home')}>
-            <HomeOutlined style={iconStyle} />Home
-          </Link>
-        )
-      },
-      {
-        key: 'dashboard',
-        label: (
-          <Dropdown overlay={dashboardMenu} placement="bottomCenter">
-            <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-              <AreaChartOutlined style={iconStyle} />Dashboard <DownOutlined />
-            </span>
-          </Dropdown>
-        )
-      },
-      {
-        key: 'watchlist',
-        label: (
-          <Link to="/watchlist" onClick={() => this.props.setHeaderMenuItem('watchlist')}>
-            <StarOutlined style={iconStyle} />My Watchlist
-          </Link>
-        )
-      },
-      {
-        key: 'rewards',
-        label: (
-          <Link to="/rewards" onClick={() => this.props.setHeaderMenuItem('rewards')}>
-            <TrophyOutlined style={iconStyle} />Rewards
-          </Link>
-        )
-      },
-      {
-        key: 'gamification',
-        label: (
-          <Link to="/gamification" onClick={() => this.props.setHeaderMenuItem('gamification')}>
-            <StarOutlined style={iconStyle} />Gamification
-          </Link>
-        )
-      }
-    ]
+  // All menu items for mobile drawer including profile
+  const mobileMenuItems = [
+    ...leftMenuItems,
+    { type: 'divider' },
+    {
+      key: 'coin-list',
+      icon: <DollarOutlined style={iconStyle} />,
+      label: (
+        <Link to="/coins" onClick={() => handleMenuClick('dashboard')}>
+          Coin Listing
+        </Link>
+      )
+    },
+    {
+      key: 'trending-coins',
+      icon: <RiseOutlined style={iconStyle} />,
+      label: (
+        <Link to="/trending-coins" onClick={() => handleMenuClick('dashboard')}>
+          Trending Coins
+        </Link>
+      )
+    },
+    { type: 'divider' },
+    {
+      key: 'profile',
+      icon: <UserOutlined style={iconStyle} />,
+      label: (
+        <Link to="/profile" onClick={() => handleMenuClick('profile')}>
+          Profile {userTokens > 0 ? `(${userTokens} tokens)` : ''}
+        </Link>
+      )
+    }
+  ]
 
-    const rightMenuItems = [
-      {
-        key: 'profile',
-        label: (
-          <Link to="/profile" onClick={() => this.props.setHeaderMenuItem('profile')}>
-            <Badge count={this.props.userTokens > 0 ? this.props.userTokens : 0} offset={[10, 0]}>
-              <UserOutlined style={{ ...iconStyle, fontSize: '18px' }} />
-            </Badge>
-          </Link>
-        )
-      }
-    ]
-
-    return (
-      <Header className="header">
-        <Row justify="space-between" align="middle">
-          <Col>
-            <Row align="middle">
-              <Col>
-                <Link to="/" onClick={() => this.props.setHeaderMenuItem('home')}>
-                  <img
-                    alt="daniel corcorans crypto react app logo"
-                    style={{ maxHeight: '50px', marginRight: '24px' }}
-                    src={logoImage}
-                  />
-                </Link>
-              </Col>
+  return (
+    <Header className="header" style={{ padding: '0 20px' }}>
+      <Row justify="space-between" align="middle" style={{ width: '100%' }}>
+        <Col>
+          <Row align="middle">
+            <Col>
+              <Link to="/" onClick={() => handleMenuClick('home')}>
+                <img
+                  alt="Trading Strategy App Logo"
+                  style={{ maxHeight: '40px', marginRight: '16px' }}
+                  src={logoImage}
+                />
+              </Link>
+            </Col>
+            {!isMobile && (
               <Col>
                 <Menu
                   theme="dark"
@@ -118,21 +187,57 @@ class ReactHeader extends Component {
                   items={leftMenuItems}
                 />
               </Col>
-            </Row>
-          </Col>
-          <Col>
+            )}
+            {isMobile && (
+              <Col>
+                <Link to="/" onClick={() => handleMenuClick('home')}>
+                  <Button type="text" style={{ color: '#fff', fontSize: '16px', padding: '0 10px' }}>
+                    <HomeOutlined style={iconStyle} />Home
+                  </Button>
+                </Link>
+              </Col>
+            )}
+          </Row>
+        </Col>
+        <Col>
+          {!isMobile
+            ? (
+              <Link to="/profile" onClick={() => handleMenuClick('profile')} className="profile-link">
+                <Badge count={userTokens > 0 ? userTokens : 0} offset={[10, 0]}>
+                  <UserOutlined style={{ fontSize: '20px', color: '#fff', marginRight: '20px' }} />
+                </Badge>
+              </Link>
+            )
+            : (
+              <Button
+                type="text"
+                onClick={showDrawer}
+                style={{ border: 'none', padding: '0 15px' }}
+              >
+                <MenuOutlined style={{ fontSize: '20px', color: '#fff' }} />
+              </Button>
+            )}
+          <Drawer
+            title="Menu"
+            placement="right"
+            closable={true}
+            onClose={onClose}
+            open={visible}
+            width={280}
+            bodyStyle={{ padding: 0 }}
+          >
             <Menu
-              theme="dark"
-              mode="horizontal"
+              theme="light"
+              mode="vertical"
               selectedKeys={[selected]}
-              style={{ border: 'none' }}
-              items={rightMenuItems}
+              style={{ height: '100%', borderRight: 0 }}
+              items={mobileMenuItems}
             />
-          </Col>
-        </Row>
-      </Header>
-    )
-  }
+          </Drawer>
+        </Col>
+      </Row>
+    </Header>
+  )
 }
 
 const mapStateToProps = (state) => {
