@@ -122,9 +122,8 @@ const ReactHeader = (props) => {
     key: 'profile',
     label: (
       <Link to="/profile" onClick={() => handleMenuClick('profile')}>
-        <Badge count={userTokens > 0 ? userTokens : 0} offset={[10, 0]}>
-          <UserOutlined style={{ fontSize: '18px' }} />
-        </Badge>
+        {/* Badge removed from here */}
+        <UserOutlined style={{ fontSize: '18px' }} />
       </Link>
     )
   }
@@ -157,7 +156,7 @@ const ReactHeader = (props) => {
       icon: <UserOutlined style={iconStyle} />,
       label: (
         <Link to="/profile" onClick={() => handleMenuClick('profile')}>
-          Profile {userTokens > 0 ? `(${userTokens} tokens)` : ''}
+          Profile {/* Token count removed from here */}
         </Link>
       )
     }
@@ -203,9 +202,8 @@ const ReactHeader = (props) => {
           {!isMobile
             ? (
               <Link to="/profile" onClick={() => handleMenuClick('profile')} className="profile-link">
-                <Badge count={userTokens > 0 ? userTokens : 0} offset={[10, 0]}>
-                  <UserOutlined style={{ fontSize: '20px', color: '#fff', marginRight: '20px' }} />
-                </Badge>
+                {/* Badge removed from here */}
+                <UserOutlined style={{ fontSize: '20px', color: '#fff', marginRight: '20px' }} />
               </Link>
             )
             : (
@@ -243,7 +241,7 @@ const ReactHeader = (props) => {
 const mapStateToProps = (state) => {
   return {
     selected: state.header_selected,
-    userTokens: state.user ? state.user.tokens : 0
+    userTokens: state.user ? state.user.tokens : 0 // You can keep this for other uses if needed
   }
 }
 
