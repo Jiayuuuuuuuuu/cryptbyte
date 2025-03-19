@@ -1,3 +1,5 @@
+import { ADD_TOKENS } from '../redux_actions'
+
 export const addTokens = (amount) => ({
   type: 'ADD_TOKENS',
   payload: amount
