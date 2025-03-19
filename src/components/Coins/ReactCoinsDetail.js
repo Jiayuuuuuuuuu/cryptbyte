@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchCoinDetails, setSiderMenuItem, fetchCoinMarketDetails } from '../../redux_actions'
+import { fetchCoinDetails, fetchCoinMarketDetails } from '../../redux_actions'
 import { Layout, Tag, Skeleton, Typography, Card, Alert, Tabs, Row, Col } from 'antd'
 import { contentStyle, titleStyle } from '../../styles'
 import ReactCoinScores from './ReactCoinScores'
@@ -23,7 +23,6 @@ class ReactCoinsDetail extends Component {
     const { coinId } = this.props.match.params
     this.props.fetchCoinDetails(coinId)
     this.props.fetchCoinMarketDetails(coinId)
-    this.props.setSiderMenuItem('coin-detail')
   }
 
   // helper function to generate chart data from props
@@ -312,8 +311,7 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = {
   fetchCoinDetails,
-  fetchCoinMarketDetails,
-  setSiderMenuItem
+  fetchCoinMarketDetails
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(ReactCoinsDetail)

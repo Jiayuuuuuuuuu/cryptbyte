@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
+import { fetchCoins, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -30,7 +30,6 @@ const ReactCoinsList = () => {
 
   useEffect(() => {
     fetchCoinData()
-    dispatch(setSiderMenuItem('coin-list'))
 
     const interval = setInterval(() => {
       fetchCoinData()

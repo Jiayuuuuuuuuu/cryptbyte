@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { fetchTrendingCoins, setSiderMenuItem } from '../../redux_actions'
+import { fetchTrendingCoins } from '../../redux_actions'
 import { connect } from 'react-redux'
 import { Layout, Typography, Avatar, Card, Badge, Col, Row } from 'antd'
-
 import { contentStyle } from '../../styles'
 const { Meta } = Card
 const { Content } = Layout
@@ -70,6 +69,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapActionsToProps = { fetchTrendingCoins, setSiderMenuItem }
+const mapActionsToProps = { fetchTrendingCoins }
 
 export default connect(mapStateToProps, mapActionsToProps)(ReactTrendingCoins)
