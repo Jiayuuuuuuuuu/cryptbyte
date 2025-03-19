@@ -35,9 +35,7 @@ import {
   UnlockOutlined,
   GiftOutlined
 } from '@ant-design/icons'
-import { setHeaderMenuItem } from '../../redux_actions'
-import { addTokens } from '../../redux_actions/userActions'
-import userReducer from '../../redux_reducers/userReducer'
+import { setHeaderMenuItem, addTokens } from '../../redux_actions'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
@@ -227,8 +225,12 @@ class GamePage extends Component {
     // Set the current menu item when component mounts
     this.props.setHeaderMenuItem('game')
 
-    // Set the first scenario for the selected coin
-    this.selectScenario(historicalData[this.state.currentCoin][0])
+    // Safely set the first scenario for the selected coin
+    if (historicalData &&
+        historicalData[this.state.currentCoin] &&
+        historicalData[this.state.currentCoin].length > 0) {
+      this.selectScenario(historicalData[this.state.currentCoin][0])
+    }
   }
 
   selectCoin = (coin) => {
@@ -283,7 +285,12 @@ class GamePage extends Component {
           : prevState.currentStreak >= 3 ? 10 : 0
 
         const tokensAwarded = baseTokens + streakBonus
-        this.props.addTokens(tokensAwarded)
+        // Use a try-catch to handle potential errors with addTokens
+        try {
+          this.props.addTokens(tokensAwarded)
+        } catch (error) {
+          console.error('Error adding tokens:', error)
+        }
       } else {
         updatedStats.currentStreak = 0
       }
@@ -327,7 +334,8 @@ class GamePage extends Component {
       selectedCourse
     } = this.state
 
-    const { user } = this.props
+    // Make sure user is available from props, with a fallback
+    const userTokens = this.props.user?.tokens || 0
     const winRate = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : 0
 
     const availableCoins = Object.keys(historicalData)
@@ -389,7 +397,7 @@ class GamePage extends Component {
 
                   <Paragraph>
                     <Text strong>Tokens earned from predictions: </Text>
-                    <Text>{user.tokens}</Text>
+                    <Text>{userTokens}</Text>
                   </Paragraph>
 
                   <Alert
@@ -684,7 +692,7 @@ class GamePage extends Component {
 
         <Modal
           title={selectedCourse ? selectedCourse.title : ''}
-          visible={learningModalVisible}
+          open={learningModalVisible} // Updated from 'visible' to 'open'
           onCancel={this.closeModal}
           footer={[
             <Button key="back" onClick={this.closeModal}>
@@ -749,14 +757,13 @@ class GamePage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // Mock user data - in a real app, this would come from your Redux store
-    user: state.user
+    user: state.user || { tokens: 0 } // Provide a fallback object if user is undefined
   }
 }
 
-const mapActionsToProps = {
+const mapDispatchToProps = {
   setHeaderMenuItem,
   addTokens
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(GamePage)
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage)
