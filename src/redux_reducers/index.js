@@ -12,6 +12,7 @@ import {
 } from '../redux_actions'
 import watchlistReducer from './watchlistReducer'
 import userReducer from './userReducer'
+import coursesReducer from './courseReducer'
 
 const initialState = {
   data: [],
@@ -112,5 +113,6 @@ export const rootReducer = combineReducers({
   header_selected: headerMenuItemReducer,
   sider_selected: siderMenuItemReducer,
   watchlist: watchlistReducer,
-  user: userReducer
+  user: userReducer,
+  courses: coursesReducer
 })

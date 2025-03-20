@@ -10,6 +10,9 @@ export const SET_COIN_FETCHED_TIME = 'SET_COIN_FETCHED_TIME'
 export const ADD_TO_WATCHLIST = 'ADD_TO_WATCHLIST'
 export const REMOVE_FROM_WATCHLIST = 'REMOVE_FROM_WATCHLIST'
 export * from './userActions'
+export const GET_COURSES = 'GET_COURSES'
+export const GET_COURSE_DETAILS = 'GET_COURSE_DETAILS'
+export const UPDATE_COURSE_PROGRESS = 'UPDATE_COURSE_PROGRESS'
 
 export const addToWatchlist = (coin) => (dispatch, getState) => {
   dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
@@ -101,3 +104,59 @@ export const setSiderMenuItem = (item) => {
     payload: { item }
   }
 }
+
+// Add these action creators
+export const fetchCourses = () => async (dispatch) => {
+  try {
+    // Replace with your actual API endpoint when available
+    // For now, using mock data
+    const mockCourses = [
+      {
+        id: 1,
+        title: 'Introduction to Cryptocurrency Trading',
+        level: 'Beginner',
+        modules: 8,
+        duration: '4 hours',
+        unlocked: true,
+        description: 'Learn the fundamentals of cryptocurrency markets, basic terminology, and how to execute your first trade.'
+      }
+      // More course objects...
+    ]
+
+    dispatch({
+      type: GET_COURSES,
+      payload: mockCourses
+    })
+  } catch (error) {
+    console.error('Error fetching courses:', error)
+  }
+}
+
+export const getCourseDetails = (courseId) => async (dispatch) => {
+  try {
+    // Replace with your actual API endpoint when available
+    // For now, using mock data
+    const mockCourseDetails = {
+      id: courseId,
+      title: 'Introduction to Cryptocurrency Trading',
+      // More course details...
+      modules: [
+        { id: 1, title: 'Introduction and Key Concepts', completed: false },
+        { id: 2, title: 'Market Structure Overview', completed: false }
+        // More modules...
+      ]
+    }
+
+    dispatch({
+      type: GET_COURSE_DETAILS,
+      payload: mockCourseDetails
+    })
+  } catch (error) {
+    console.error('Error fetching course details:', error)
+  }
+}
+
+export const updateCourseProgress = (courseId, moduleId, completed) => ({
+  type: UPDATE_COURSE_PROGRESS,
+  payload: { courseId, moduleId, completed }
+})
