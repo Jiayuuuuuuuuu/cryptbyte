@@ -119,6 +119,24 @@ export const fetchCourses = () => async (dispatch) => {
         duration: '4 hours',
         unlocked: true,
         description: 'Learn the fundamentals of cryptocurrency markets, basic terminology, and how to execute your first trade.'
+      },
+      {
+        id: 2,
+        title: 'Technical Analysis Fundamentals',
+        level: 'Intermediate',
+        modules: 6,
+        duration: '3 hours',
+        unlocked: false,
+        description: 'Master chart patterns, indicators, and technical strategies to improve your trading decisions.'
+      },
+      {
+        id: 3,
+        title: 'Risk Management for Crypto Traders',
+        level: 'Beginner',
+        modules: 5,
+        duration: '2.5 hours',
+        unlocked: true,
+        description: 'Learn essential risk management techniques to protect your portfolio in volatile markets.'
       }
       // More course objects...
     ]
@@ -138,13 +156,20 @@ export const getCourseDetails = (courseId) => async (dispatch) => {
     // For now, using mock data
     const mockCourseDetails = {
       id: courseId,
-      title: 'Introduction to Cryptocurrency Trading',
-      // More course details...
+      title: courseId === 1
+        ? 'Introduction to Cryptocurrency Trading'
+        : courseId === 2 ? 'Technical Analysis Fundamentals' : 'Risk Management for Crypto Traders',
+      description: 'Detailed course description goes here...',
       modules: [
-        { id: 1, title: 'Introduction and Key Concepts', completed: false },
-        { id: 2, title: 'Market Structure Overview', completed: false }
-        // More modules...
-      ]
+        { id: 1, title: 'Introduction and Key Concepts', completed: courseId === 1 },
+        { id: 2, title: 'Market Structure Overview', completed: courseId === 1 },
+        { id: 3, title: 'Basic Trade Setup', completed: courseId === 1 },
+        { id: 4, title: 'Risk Management Basics', completed: false },
+        { id: 5, title: 'Technical Indicators Overview', completed: false },
+        { id: 6, title: 'Developing a Trading Plan', completed: false },
+        { id: 7, title: 'Demo Trading Exercise', completed: false },
+        { id: 8, title: 'Advanced Concepts', completed: false }
+      ].slice(0, courseId === 1 ? 8 : courseId === 2 ? 6 : 5)
     }
 
     dispatch({

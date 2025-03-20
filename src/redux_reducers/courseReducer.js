@@ -7,7 +7,10 @@ import {
 const initialState = {
   courseList: [],
   courseDetails: {},
-  userProgress: {} // Structure: { courseId: { completed: 3, totalModules: 8 } }
+  userProgress: {
+    1: { completed: 3, totalModules: 8 },
+    3: { completed: 1, totalModules: 5 }
+  }
 }
 
 const coursesReducer = (state = initialState, action) => {

@@ -25,6 +25,32 @@ const LearningCourses = ({ courseList, userProgress, fetchCourses, getCourseDeta
     // Fetch course details when a course is clicked
     getCourseDetails(course.id)
   }
+}
+
+const CourseCard = ({ course, userProgress, handleCourseClick }) => {
+  const calculateProgress = (courseId) => {
+    if (!userProgress[courseId]) return 0;
+    const { completed, totalModules } = userProgress[courseId];
+    return Math.round((completed / totalModules) * 100);
+  };
+
+  const getBgColor = (level) => {
+    switch(level.toLowerCase()) {
+      case 'beginner': return 'bg-gradient-to-r from-blue-500 to-blue-600';
+      case 'intermediate': return 'bg-gradient-to-r from-green-500 to-green-600';
+      case 'advanced': return 'bg-gradient-to-r from-purple-500 to-purple-600';
+      default: return 'bg-gradient-to-r from-blue-500 to-blue-600';
+    }
+  };
+  
+  const getCourseIcon = (title) => {
+    if (title.includes('Technical Analysis')) return '📊';
+    if (title.includes('Risk Management')) return '🛡️';
+    if (title.includes('Trading')) return '📈';
+    return '📚';
+  };
+
+  const progress = calculateProgress(course.id)
 
   return (
     <div className="learning-courses-container p-6 bg-white rounded-lg shadow-lg">
