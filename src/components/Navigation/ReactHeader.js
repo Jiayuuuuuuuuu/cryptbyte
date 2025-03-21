@@ -134,41 +134,20 @@ const ReactHeader = (props) => {
     key: 'profile',
     label: (
       <Link to="/profile" onClick={() => handleMenuClick('profile')}>
-        {/* Badge removed from here */}
         <UserOutlined style={{ fontSize: '18px' }} />
       </Link>
     )
   }
 
-  // All menu items for mobile drawer including profile
   const mobileMenuItems = [
     ...leftMenuItems,
-    { type: 'divider' },
-    {
-      key: 'coin-list',
-      icon: <DollarOutlined style={iconStyle} />,
-      label: (
-        <Link to="/coins" onClick={() => handleMenuClick('dashboard')}>
-          Coin Listing
-        </Link>
-      )
-    },
-    {
-      key: 'trending-coins',
-      icon: <RiseOutlined style={iconStyle} />,
-      label: (
-        <Link to="/trending-coins" onClick={() => handleMenuClick('dashboard')}>
-          Trending Coins
-        </Link>
-      )
-    },
     { type: 'divider' },
     {
       key: 'profile',
       icon: <UserOutlined style={iconStyle} />,
       label: (
         <Link to="/profile" onClick={() => handleMenuClick('profile')}>
-          Profile {/* Token count removed from here */}
+          Profile
         </Link>
       )
     }
@@ -214,7 +193,6 @@ const ReactHeader = (props) => {
           {!isMobile
             ? (
               <Link to="/profile" onClick={() => handleMenuClick('profile')} className="profile-link">
-                {/* Badge removed from here */}
                 <UserOutlined style={{ fontSize: '20px', color: '#fff', marginRight: '20px' }} />
               </Link>
             )
@@ -233,8 +211,10 @@ const ReactHeader = (props) => {
             closable={true}
             onClose={onClose}
             open={visible}
+            visible={visible}
             width={280}
             bodyStyle={{ padding: 0 }}
+            destroyOnClose={true}
           >
             <Menu
               theme="light"
@@ -253,7 +233,7 @@ const ReactHeader = (props) => {
 const mapStateToProps = (state) => {
   return {
     selected: state.header_selected,
-    userTokens: state.user ? state.user.tokens : 0 // You can keep this for other uses if needed
+    userTokens: state.user ? state.user.tokens : 0
   }
 }
 
