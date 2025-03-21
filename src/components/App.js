@@ -10,7 +10,6 @@ import ReactTrendingCoins from './Coins/ReactTrendingCoins'
 import ReactWatchlist from './Watchlist/ReactWatchlist'
 import ProfilePage from './Profile/ProfilePage'
 import RewardsPage from './Rewards/RewardsPage'
-import GamePage from './Gamification/GamePage'
 import CoursesPage from './Courses/LearningCourses'
 
 export default class App extends Component {
@@ -27,7 +26,6 @@ export default class App extends Component {
             <Route path="/profile" component={ProfilePage}/>
             <Route path="/rewards" component={RewardsPage}/>
             <Route path='/watchlist' exact component={ReactWatchlist}/>
-            <Route path='/game' exact component={GamePage}/>
             <Route path='/course' exact component={CoursesPage}/>
           </Switch>
         </Layout>
