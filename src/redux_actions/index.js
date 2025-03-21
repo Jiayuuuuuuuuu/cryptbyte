@@ -105,83 +105,84 @@ export const setSiderMenuItem = (item) => {
   }
 }
 
-// Add these action creators
-export const fetchCourses = () => async (dispatch) => {
-  try {
-    // Replace with your actual API endpoint when available
-    // For now, using mock data
-    const mockCourses = [
+// Add this to your redux_actions.js file or wherever your action creators are defined
+export const fetchCourses = () => {
+  // For now, we'll return a fake list of courses
+  const mockCourses = [
+    {
+      id: 1,
+      title: 'Cryptocurrency Basics',
+      description: 'Learn the fundamentals of blockchain and cryptocurrency trading',
+      level: 'Beginner',
+      duration: '2 hours',
+      modules: 5,
+      unlocked: true
+    },
+    {
+      id: 2,
+      title: 'Technical Analysis',
+      description: 'Master chart reading and technical indicators for crypto markets',
+      level: 'Intermediate',
+      duration: '4 hours',
+      modules: 8,
+      unlocked: true
+    },
+    {
+      id: 3,
+      title: 'Advanced Trading Strategies',
+      description: 'Learn complex trading strategies for cryptocurrency markets',
+      level: 'Advanced',
+      duration: '6 hours',
+      modules: 10,
+      unlocked: false
+    }
+  ]
+
+  return {
+    type: 'GET_COURSES',
+    payload: mockCourses
+  }
+}
+
+export const getCourseDetails = (courseId) => {
+  // Mock course details
+  const mockCourseDetails = {
+    id: courseId,
+    title: courseId === 1 ? 'Cryptocurrency Basics' : courseId === 2 ? 'Technical Analysis' : 'Advanced Trading Strategies',
+    description: 'Comprehensive course on cryptocurrency trading fundamentals.',
+    level: courseId === 1 ? 'Beginner' : courseId === 2 ? 'Intermediate' : 'Advanced',
+    duration: courseId === 1 ? '2 hours' : courseId === 2 ? '4 hours' : '6 hours',
+    modules: [
       {
         id: 1,
-        title: 'Introduction to Cryptocurrency Trading',
-        level: 'Beginner',
-        modules: 8,
-        duration: '4 hours',
-        unlocked: true,
-        description: 'Learn the fundamentals of cryptocurrency markets, basic terminology, and how to execute your first trade.'
+        title: 'Introduction to Blockchain',
+        description: 'Understand the fundamentals of blockchain technology',
+        completed: true
       },
       {
         id: 2,
-        title: 'Technical Analysis Fundamentals',
-        level: 'Intermediate',
-        modules: 6,
-        duration: '3 hours',
-        unlocked: false,
-        description: 'Master chart patterns, indicators, and technical strategies to improve your trading decisions.'
+        title: 'Cryptocurrency Wallets',
+        description: 'Learn how to securely store your digital assets',
+        completed: false
       },
       {
         id: 3,
-        title: 'Risk Management for Crypto Traders',
-        level: 'Beginner',
-        modules: 5,
-        duration: '2.5 hours',
-        unlocked: true,
-        description: 'Learn essential risk management techniques to protect your portfolio in volatile markets.'
+        title: 'Exchanges and Trading Basics',
+        description: 'Navigate cryptocurrency exchanges and understand order types',
+        completed: false
       }
-      // More course objects...
     ]
+  }
 
-    dispatch({
-      type: GET_COURSES,
-      payload: mockCourses
-    })
-  } catch (error) {
-    console.error('Error fetching courses:', error)
+  return {
+    type: 'GET_COURSE_DETAILS',
+    payload: mockCourseDetails
   }
 }
 
-export const getCourseDetails = (courseId) => async (dispatch) => {
-  try {
-    // Replace with your actual API endpoint when available
-    // For now, using mock data
-    const mockCourseDetails = {
-      id: courseId,
-      title: courseId === 1
-        ? 'Introduction to Cryptocurrency Trading'
-        : courseId === 2 ? 'Technical Analysis Fundamentals' : 'Risk Management for Crypto Traders',
-      description: 'Detailed course description goes here...',
-      modules: [
-        { id: 1, title: 'Introduction and Key Concepts', completed: courseId === 1 },
-        { id: 2, title: 'Market Structure Overview', completed: courseId === 1 },
-        { id: 3, title: 'Basic Trade Setup', completed: courseId === 1 },
-        { id: 4, title: 'Risk Management Basics', completed: false },
-        { id: 5, title: 'Technical Indicators Overview', completed: false },
-        { id: 6, title: 'Developing a Trading Plan', completed: false },
-        { id: 7, title: 'Demo Trading Exercise', completed: false },
-        { id: 8, title: 'Advanced Concepts', completed: false }
-      ].slice(0, courseId === 1 ? 8 : courseId === 2 ? 6 : 5)
-    }
-
-    dispatch({
-      type: GET_COURSE_DETAILS,
-      payload: mockCourseDetails
-    })
-  } catch (error) {
-    console.error('Error fetching course details:', error)
+export const updateCourseProgress = (courseId, moduleId, completed) => {
+  return {
+    type: 'UPDATE_COURSE_PROGRESS',
+    payload: { courseId, moduleId, completed }
   }
 }
-
-export const updateCourseProgress = (courseId, moduleId, completed) => ({
-  type: UPDATE_COURSE_PROGRESS,
-  payload: { courseId, moduleId, completed }
-})

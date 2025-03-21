@@ -1,271 +1,293 @@
 import React, { useEffect, useState } from 'react'
-import { FiBook, FiChevronRight, FiAward, FiTrendingUp, FiLock, FiPlay, FiClock, FiUsers } from 'react-icons/fi'
 import { connect } from 'react-redux'
-import { fetchCourses, getCourseDetails } from '../../redux_actions'
+import { Link } from 'react-router-dom'
+import { Layout, Typography, Row, Col, Card, Tag, Progress, Button, Divider, Tabs, Modal, List, Collapse } from 'antd'
+import { BookOutlined, LockOutlined, CheckCircleOutlined, RightOutlined, TrophyOutlined, FieldTimeOutlined, TeamOutlined } from '@ant-design/icons'
+import { fetchCourses, getCourseDetails, updateCourseProgress } from '../../redux_actions'
 
-// CourseCard Component
-const CourseCard = ({ course, userProgress, handleCourseClick }) => {
-  const calculateProgress = (courseId) => {
-    if (!userProgress[courseId]) return 0
-    const { completed, totalModules } = userProgress[courseId]
-    return Math.round((completed / totalModules) * 100)
-  }
+const { Content } = Layout
+const { Title, Text, Paragraph } = Typography
+const { TabPane } = Tabs
+const { Panel } = Collapse
 
-  const getBgColor = (level) => {
-    switch (level.toLowerCase()) {
-    case 'beginner': return 'bg-gradient-to-r from-blue-500 to-blue-600'
-    case 'intermediate': return 'bg-gradient-to-r from-green-500 to-green-600'
-    case 'advanced': return 'bg-gradient-to-r from-purple-500 to-purple-600'
-    default: return 'bg-gradient-to-r from-blue-500 to-blue-600'
-    }
-  }
-
-  const getCourseIcon = (title) => {
-    if (title.includes('Technical Analysis')) return '📊'
-    if (title.includes('Risk Management')) return '🛡️'
-    if (title.includes('Trading')) return '📈'
-    return '📚'
-  }
-
-  const progress = calculateProgress(course.id)
-
-  return (
-    <div
-      onClick={() => handleCourseClick(course)}
-      className={`course-card rounded-xl overflow-hidden border border-gray-200 transition-all duration-300 hover:shadow-xl ${
-        !course.unlocked ? 'opacity-80' : 'cursor-pointer hover:transform hover:scale-102'
-      }`}
-    >
-      <div className={`relative h-40 ${getBgColor(course.level)}`}>
-        {!course.unlocked && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 z-10">
-            <div className="text-center">
-              <FiLock className="text-white text-4xl mx-auto mb-2" />
-              <span className="text-white text-sm font-medium">Complete previous courses to unlock</span>
-            </div>
-          </div>
-        )}
-        <div className="absolute top-4 left-4 text-3xl">
-          {getCourseIcon(course.title)}
-        </div>
-        <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-xs font-bold text-blue-600">
-          {course.level}
-        </div>
-        <div className="absolute top-4 right-4 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-medium text-gray-700 flex items-center">
-          <FiClock className="mr-1" /> {course.duration}
-        </div>
-      </div>
-      <div className="p-5">
-        <div className="flex justify-between mb-2">
-          <span className="text-xs text-gray-500 flex items-center">
-            <FiBook className="mr-1" /> {course.modules} Modules
-          </span>
-          <span className="text-xs text-gray-500 flex items-center">
-            <FiUsers className="mr-1" /> {Math.floor(Math.random() * 1000) + 500} Enrolled
-          </span>
-        </div>
-        <h3 className="font-bold text-gray-800 text-lg mb-2">{course.title}</h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
-
-        <div className="mt-3">
-          <div className="flex justify-between text-xs mb-1">
-            <span className="font-medium">Progress</span>
-            <span className="font-medium">{progress}%</span>
-          </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className={`h-full ${progress > 0 ? 'bg-blue-500' : 'bg-gray-300'}`}
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-        </div>
-
-        {course.unlocked && (
-          <button className="mt-4 w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
-            {progress > 0
-              ? (
-                <>
-                  <FiPlay className="mr-2" /> Continue Learning
-                </>
-              )
-              : (
-                <>
-                  <FiPlay className="mr-2" /> Start Course
-                </>
-              )}
-          </button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// Main LearningCourses Component
-const LearningCourses = ({ courseList, userProgress, fetchCourses, getCourseDetails }) => {
-  const [activeCourse, setActiveCourse] = useState(null)
-  const [loading, setLoading] = useState(true)
+const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetails, updateCourseProgress, userTier }) => {
+  const [selectedCourse, setSelectedCourse] = useState(null)
+  const [courseModalVisible, setCourseModalVisible] = useState(false)
+  const [activeTab, setActiveTab] = useState('1')
+  const [moduleModalVisible, setModuleModalVisible] = useState(false)
+  const [activeModule, setActiveModule] = useState(null)
 
   useEffect(() => {
     fetchCourses()
-    setLoading(false)
   }, [fetchCourses])
 
-  const calculateProgress = (courseId) => {
-    if (!userProgress[courseId]) return 0
-    const { completed, totalModules } = userProgress[courseId]
-    return Math.round((completed / totalModules) * 100)
+  const handleCourseClick = (courseId) => {
+    getCourseDetails(courseId)
+    setSelectedCourse(courseId)
+    setCourseModalVisible(true)
   }
 
-  const handleCourseClick = (course) => {
-    if (!course.unlocked) return
-    setActiveCourse(course)
-    // Fetch course details when a course is clicked
-    getCourseDetails(course.id)
+  const handleModuleClick = (module) => {
+    setActiveModule(module)
+    setModuleModalVisible(true)
+  }
+
+  const handleCompleteModule = () => {
+    if (activeModule && selectedCourse) {
+      updateCourseProgress(selectedCourse, activeModule.id, true)
+      setModuleModalVisible(false)
+    }
+  }
+
+  const getLevelColor = (level) => {
+    switch (level.toLowerCase()) {
+    case 'beginner':
+      return 'green'
+    case 'intermediate':
+      return 'blue'
+    case 'advanced':
+      return 'red'
+    default:
+      return 'default'
+    }
+  }
+
+  const calculateProgress = (course) => {
+    if (!courseDetails || courseDetails.id !== course.id) return 0
+    const completedModules = courseDetails.modules.filter(module => module.completed).length
+    return Math.round((completedModules / courseDetails.modules.length) * 100)
+  }
+
+  // Filter courses based on user tier
+  const getFilteredCourses = () => {
+    if (activeTab === '1') return courses
+    if (activeTab === '2') return courses.filter(course => course.level.toLowerCase() === 'beginner')
+    if (activeTab === '3') return courses.filter(course => course.level.toLowerCase() === 'intermediate')
+    if (activeTab === '4') return courses.filter(course => course.level.toLowerCase() === 'advanced')
+    return courses
+  }
+
+  const isCourseLocked = (course) => {
+    // Tier-based access logic
+    if (course.level.toLowerCase() === 'advanced' && userTier !== 'gold' && userTier !== 'premium') {
+      return true
+    }
+    if (course.level.toLowerCase() === 'intermediate' && userTier === 'bronze') {
+      return true
+    }
+    return !course.unlocked
   }
 
   return (
-    <div className="learning-courses-container p-6 bg-white rounded-lg shadow-lg">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-800">Trading Courses</h2>
-        <div className="flex items-center text-blue-600">
-          <span className="mr-2">View All Courses</span>
-          <FiChevronRight />
-        </div>
-      </div>
+    <Content style={{ padding: '0 24px', marginTop: 16 }}>
+      <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+        <Row gutter={[16, 16]} align="middle" justify="space-between">
+          <Col>
+            <Title level={2}><BookOutlined /> Crypto Trading Academy</Title>
+            <Paragraph>
+              Master cryptocurrency trading with our comprehensive courses designed for all skill levels.
+              Track your progress, earn certificates, and boost your trading confidence.
+            </Paragraph>
+          </Col>
+          <Col>
+            <Card style={{ width: 200 }}>
+              <Title level={4}>Your Progress</Title>
+              <div>
+                <Text>Completed Courses: </Text>
+                <Tag color="green">2/8</Tag>
+              </div>
+              <div>
+                <Text>Current Tier: </Text>
+                <Tag color="blue">{userTier.charAt(0).toUpperCase() + userTier.slice(1)}</Tag>
+              </div>
+            </Card>
+          </Col>
+        </Row>
 
-      {loading
-        ? (
-          <div className="text-center py-10">Loading courses...</div>
-        )
-        : (
-          <>
-            {!activeCourse
-              ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {courseList.map((course) => (
-                    <CourseCard
-                      key={course.id}
-                      course={course}
-                      userProgress={userProgress}
-                      handleCourseClick={handleCourseClick}
+        <Divider />
+
+        <Tabs defaultActiveKey="1" onChange={setActiveTab}>
+          <TabPane tab="All Courses" key="1" />
+          <TabPane tab="Beginner" key="2" />
+          <TabPane tab="Intermediate" key="3" />
+          <TabPane tab="Advanced" key="4" />
+        </Tabs>
+
+        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+          {getFilteredCourses().map((course) => (
+            <Col xs={24} sm={12} lg={8} key={course.id}>
+              <Card
+                hoverable
+                onClick={() => !isCourseLocked(course) && handleCourseClick(course.id)}
+                style={{ height: '100%' }}
+                cover={
+                  <div style={{
+                    height: 160,
+                    background: '#001529',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: 'relative'
+                  }}>
+                    <BookOutlined style={{ fontSize: 48, color: '#fff' }} />
+                    {isCourseLocked(course) && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column'
+                      }}>
+                        <LockOutlined style={{ fontSize: 48, color: '#fff' }} />
+                        <Text style={{ color: '#fff', marginTop: 8 }}>
+                          {course.level.toLowerCase() === 'advanced' ? 'Gold tier required' : 'Silver tier required'}
+                        </Text>
+                      </div>
+                    )}
+                  </div>
+                }
+              >
+                <Tag color={getLevelColor(course.level)}>{course.level}</Tag>
+                <Title level={4}>{course.title}</Title>
+                <Paragraph ellipsis={{ rows: 2 }}>{course.description}</Paragraph>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+                  <FieldTimeOutlined style={{ marginRight: 8 }} />
+                  <Text>{course.duration}</Text>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <BookOutlined style={{ marginRight: 8 }} />
+                  <Text>{course.modules} modules</Text>
+                </div>
+                <Divider style={{ margin: '12px 0' }} />
+                <Progress percent={calculateProgress(course)} status="active" />
+              </Card>
+            </Col>
+          ))}
+        </Row>
+
+        {/* Course Details Modal */}
+        <Modal
+          title={courseDetails?.title || 'Course Details'}
+          visible={courseModalVisible}
+          onCancel={() => setCourseModalVisible(false)}
+          footer={null}
+          width={700}
+        >
+          {courseDetails && (
+            <>
+              <Paragraph>{courseDetails.description}</Paragraph>
+
+              <div style={{ marginBottom: 16 }}>
+                <Title level={4}>Course Progress</Title>
+                <Progress
+                  percent={calculateProgress(courseDetails)}
+                  format={percent => `${percent}% Complete`}
+                />
+              </div>
+
+              <Title level={4}>Modules</Title>
+              <List
+                itemLayout="horizontal"
+                dataSource={courseDetails.modules}
+                renderItem={module => (
+                  <List.Item
+                    actions={[
+                      module.completed
+                        ? <Tag icon={<CheckCircleOutlined />} color="success">Completed</Tag>
+                        : <Button
+                          type="primary"
+                          size="small"
+                          onClick={() => handleModuleClick(module)}
+                        >
+                          Start
+                        </Button>
+                    ]}
+                  >
+                    <List.Item.Meta
+                      avatar={<div style={{ width: 24, textAlign: 'center' }}>{module.id}</div>}
+                      title={module.title}
+                      description={module.completed ? "You've completed this module" : 'Click to start learning'}
                     />
-                  ))}
-                </div>
-              )
-              : (
-                <div className="course-detail">
-                  <div className="flex items-center mb-6">
-                    <button
-                      onClick={() => setActiveCourse(null)}
-                      className="mr-4 text-blue-600 hover:text-blue-800"
-                    >
-                  ← Back to Courses
-                    </button>
-                    <h3 className="text-xl font-bold">{activeCourse.title}</h3>
-                  </div>
+                  </List.Item>
+                )}
+              />
+            </>
+          )}
+        </Modal>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 bg-gray-50 p-6 rounded-lg">
-                      <h4 className="font-bold mb-4">Course Modules</h4>
-                      <div className="space-y-4">
-                        {Array.from({ length: activeCourse.modules }).map((_, index) => (
-                          <div
-                            key={index}
-                            className={`p-4 rounded-lg border flex items-center 
-                          ${userProgress[activeCourse.id] && index < userProgress[activeCourse.id].completed
-                            ? 'bg-blue-50 border-blue-200'
-                            : 'bg-white border-gray-200'}`}
-                          >
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-4
-                          ${userProgress[activeCourse.id] && index < userProgress[activeCourse.id].completed
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-200 text-gray-700'}`}
-                            >
-                              {index + 1}
-                            </div>
-                            <div className="flex-1">
-                              <div className="font-medium">Module {index + 1}</div>
-                              <div className="text-sm text-gray-500">
-                                {index === 0
-                                  ? 'Introduction and Key Concepts'
-                                  : index === 1
-                                    ? 'Market Structure Overview'
-                                    : index === 2
-                                      ? 'Basic Trade Setup'
-                                      : `Advanced Topic ${index - 2}`}
-                              </div>
-                            </div>
-                            <div className="ml-4">
-                              {userProgress[activeCourse.id] && index < userProgress[activeCourse.id].completed
-                                ? <FiAward className="text-blue-500" />
-                                : <FiChevronRight className="text-gray-400" />}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+        {/* Module Content Modal */}
+        <Modal
+          title={activeModule?.title || 'Module Content'}
+          visible={moduleModalVisible}
+          onCancel={() => setModuleModalVisible(false)}
+          footer={[
+            <Button key="back" onClick={() => setModuleModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleCompleteModule}>
+              Mark as Completed
+            </Button>
+          ]}
+          width={800}
+        >
+          {activeModule && (
+            <div className="module-content">
+              <Paragraph>
+                This is the content for module {activeModule.id}: {activeModule.title}.
+                In a complete implementation, this would contain videos, text lessons, and interactive exercises.
+              </Paragraph>
 
-                    <div className="space-y-6">
-                      <div className="bg-gray-50 p-6 rounded-lg">
-                        <h4 className="font-bold mb-4">Course Progress</h4>
-                        <div className="mb-4">
-                          <div className="flex justify-between text-sm mb-1">
-                            <span>Completion</span>
-                            <span>{calculateProgress(activeCourse.id)}%</span>
-                          </div>
-                          <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-blue-500"
-                              style={{ width: `${calculateProgress(activeCourse.id)}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          <div className="flex justify-between mb-2">
-                            <span>Modules Completed:</span>
-                            <span>{userProgress[activeCourse.id]?.completed || 0} / {activeCourse.modules}</span>
-                          </div>
-                          <div className="flex justify-between mb-2">
-                            <span>Estimated Time Left:</span>
-                            <span>{Math.round(activeCourse.duration.split(' ')[0] * (1 - calculateProgress(activeCourse.id) / 100))} hours</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
-                        <h4 className="font-bold mb-4 text-blue-800">Course Benefits</h4>
-                        <ul className="space-y-2 text-sm text-blue-800">
-                          <li className="flex items-start">
-                            <FiTrendingUp className="mr-2 mt-1 flex-shrink-0" />
-                            <span>Gain practical trading skills applicable to real markets</span>
-                          </li>
-                          <li className="flex items-start">
-                            <FiTrendingUp className="mr-2 mt-1 flex-shrink-0" />
-                            <span>Earn platform tokens upon module completion</span>
-                          </li>
-                          <li className="flex items-start">
-                            <FiTrendingUp className="mr-2 mt-1 flex-shrink-0" />
-                            <span>Access exclusive tools after course completion</span>
-                          </li>
-                          <li className="flex items-start">
-                            <FiTrendingUp className="mr-2 mt-1 flex-shrink-0" />
-                            <span>Receive a certification displayed on your profile</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-          </>
-        )}
-    </div>
+              <Collapse defaultActiveKey={['1']}>
+                <Panel header="Introduction" key="1">
+                  <Paragraph>
+                    Welcome to this module! Here you&apos;ll learn the key concepts and practical applications of the topics covered.
+                  </Paragraph>
+                </Panel>
+                <Panel header="Key Concepts" key="2">
+                  <ul>
+                    <li>Understanding market patterns and trends</li>
+                    <li>Risk assessment methods for crypto assets</li>
+                    <li>Timing your entry and exit strategies</li>
+                    <li>Portfolio diversification techniques</li>
+                  </ul>
+                </Panel>
+                <Panel header="Practical Exercise" key="3">
+                  <Paragraph>
+                    Apply what you&apos; ve learned through our virtual trading simulator. Try to implement the strategies discussed
+                    and analyze your results.
+                  </Paragraph>
+                  <Button type="primary">Launch Simulator</Button>
+                </Panel>
+                <Panel header="Quiz" key="4">
+                  <Paragraph>
+                    Test your knowledge with a short quiz to reinforce your learning.
+                  </Paragraph>
+                  <Button>Start Quiz</Button>
+                </Panel>
+              </Collapse>
+            </div>
+          )}
+        </Modal>
+      </div>
+    </Content>
   )
 }
 
 const mapStateToProps = (state) => ({
-  courseList: state.courses.courseList || [],
-  userProgress: state.courses.userProgress || {}
+  courses: state.courses.list || [],
+  courseDetails: state.courses.currentCourse,
+  userTier: state.user.tier
 })
 
-export default connect(mapStateToProps, { fetchCourses, getCourseDetails })(LearningCourses)
+const mapDispatchToProps = {
+  fetchCourses,
+  getCourseDetails,
+  updateCourseProgress
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LearningCourses)

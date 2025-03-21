@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://danielc92.github.io/react-crypto-app",
   "dependencies": {
+    "@ant-design/icons": "^6.0.0",
     "antd": "^4.21.7",
     "axios": "^0.21.2",
     "chart.js": "^2.8.0",
