@@ -84,7 +84,7 @@ const GamePage = (props) => {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         prices: [3200, 3150, 3050, 2950, 2900, 2875]
       },
-      correctAnswer: 'break',
+      correctAnswer: 'down',
       analysis: 'ETH was exhibiting bearish signals: increased selling volume, failure to form higher lows, and crossing below key moving averages. The price had already tested the support level three times, weakening it with each test. The broader market sentiment was also bearish.'
     },
     {
