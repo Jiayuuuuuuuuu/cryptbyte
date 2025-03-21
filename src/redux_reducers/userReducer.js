@@ -1,4 +1,5 @@
-// src/redux/reducers/userReducer.js
+import { PROCESS_LOGIN_REWARD, UPDATE_USER_TIER } from '../redux_actions/userActions'
+
 const initialState = {
   name: 'Trader123',
   tokens: 780,
@@ -49,6 +50,18 @@ export default function userReducer (state = initialState, action) {
     return {
       ...state,
       tradingStats: newStats
+    }
+  case PROCESS_LOGIN_REWARD:
+  // In a real app, you'd check if the user already claimed a reward today
+    return {
+      ...state,
+      tokens: state.tokens + action.payload,
+      lastLoginReward: new Date().toISOString()
+    }
+  case UPDATE_USER_TIER:
+    return {
+      ...state,
+      tier: action.payload
     }
   default:
     return state

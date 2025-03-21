@@ -1,4 +1,13 @@
 import { ADD_TOKENS } from '../redux_actions'
+export const PROCESS_LOGIN_REWARD = 'PROCESS_LOGIN_REWARD'
+export const UPDATE_USER_TIER = 'UPDATE_USER_TIER'
+
+export const updateUserTier = (tier) => {
+  return {
+    type: UPDATE_USER_TIER,
+    payload: tier
+  }
+}
 
 export const addTokens = (amount) => ({
   type: 'ADD_TOKENS',

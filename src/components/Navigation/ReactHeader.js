@@ -120,7 +120,7 @@ const ReactHeader = (props) => {
       key: 'gamification',
       icon: <StarOutlined style={iconStyle} />,
       label: (
-        <Link to="/gamification" onClick={() => handleMenuClick('gamification')}>
+        <Link to="/game" onClick={() => handleMenuClick('gamification')}>
           Gamification
         </Link>
       )
