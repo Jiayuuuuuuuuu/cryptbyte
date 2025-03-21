@@ -2,20 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select, Tooltip, Card, Statistic, Row, Col, Badge } from 'antd'
-import {
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-  StarOutlined,
-  StarFilled,
-  MinusOutlined,
-  SearchOutlined,
-  RiseOutlined,
-  FallOutlined,
-  DashboardOutlined,
-  ReloadOutlined,
-  DollarOutlined,
-  InfoCircleOutlined
-} from '@ant-design/icons'
+import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined, RiseOutlined, FallOutlined, DashboardOutlined, ReloadOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { contentStyle, tableStyle } from '../../styles'
 
@@ -41,7 +28,6 @@ const ReactCoinsList = () => {
   const [sortKey, setSortKey] = useState('current_price')
   const [sortOrder, setSortOrder] = useState('descend')
   const [refreshLoading, setRefreshLoading] = useState(false)
-  const [hoveredRow, setHoveredRow] = useState(null)
   const [timeRange, setTimeRange] = useState('24h')
   const [viewMode, setViewMode] = useState('table')
 
@@ -377,19 +363,10 @@ const ReactCoinsList = () => {
       title: 'Action',
       dataIndex: 'id',
       key: 'id',
-      render: (id, coin) => (
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Button type="primary">
-            <Link to={`/coins/${id}`}>View</Link>
-          </Button>
-          {hoveredRow === id && (
-            <Tooltip title="Create trade based on signal">
-              <Button type="default" style={{ backgroundColor: getTradingSignal(coin).color, borderColor: getTradingSignal(coin).color }}>
-                <Link to={`/trade/${id}`}>Trade</Link>
-              </Button>
-            </Tooltip>
-          )}
-        </div>
+      render: (id) => (
+        <Button type="primary">
+          <Link to={`/coins/${id}`}>View</Link>
+        </Button>
       )
     }
   ]
@@ -417,9 +394,6 @@ const ReactCoinsList = () => {
                     </Tooltip>,
                     <Link to={`/coins/${coin.id}`} key="details">
                       <Button type="text" icon={<InfoCircleOutlined />} />
-                    </Link>,
-                    <Link to={`/trade/${coin.id}`} key="trade">
-                      <Button type="text" icon={<DollarOutlined />} />
                     </Link>
                   ]}
                 >
@@ -595,10 +569,6 @@ const ReactCoinsList = () => {
                     setSortOrder(sorter.order || 'descend')
                   }
                 }}
-                onRow={(record) => ({
-                  onMouseEnter: () => setHoveredRow(record.id),
-                  onMouseLeave: () => setHoveredRow(null)
-                })}
               />
             )
             : (
