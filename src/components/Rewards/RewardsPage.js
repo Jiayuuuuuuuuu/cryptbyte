@@ -205,7 +205,7 @@ class RewardsPage extends Component {
                         <Text type="secondary">Current streak bonus: +{streakBonus} tokens</Text>
                         <Progress
                           percent={user.streak % 5 * 20}
-                          format={() => `${5 - (user.streak % 5)} days to next bonus`}
+                          format={() => `${5 - (user.streak % 5)} %`}
                           strokeColor="#ff4d4f"
                         />
                         <Alert
