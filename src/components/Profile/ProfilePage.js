@@ -119,15 +119,15 @@ class ProfilePage extends Component {
 
     if (currentTier === 'bronze') {
       nextTier = 'silver'
-      progress = (tokens / tierData.silver.requiredTokens) * 100
+      progress = ((tokens / tierData.silver.requiredTokens) * 100).toFixed(2)
     } else if (currentTier === 'silver') {
       nextTier = 'gold'
-      progress = ((tokens - tierData.silver.requiredTokens) /
-                 (tierData.gold.requiredTokens - tierData.silver.requiredTokens)) * 100
+      progress = (((tokens - tierData.silver.requiredTokens) /
+                 (tierData.gold.requiredTokens - tierData.silver.requiredTokens)) * 100).toFixed(2)
     } else if (currentTier === 'gold') {
       nextTier = 'premium'
-      progress = ((tokens - tierData.gold.requiredTokens) /
-                 (tierData.premium.requiredTokens - tierData.gold.requiredTokens)) * 100
+      progress = (((tokens - tierData.gold.requiredTokens) /
+                 (tierData.premium.requiredTokens - tierData.gold.requiredTokens)) * 100).toFixed(2)
     }
 
     return {
