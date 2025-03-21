@@ -12,7 +12,10 @@ import {
   DollarOutlined,
   RiseOutlined,
   DownOutlined,
-  MenuOutlined
+  MenuOutlined,
+  BookOutlined,
+  CloseOutlined,
+  PlayCircleOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
 
@@ -94,7 +97,7 @@ const ReactHeader = (props) => {
       icon: <StarOutlined style={iconStyle} />,
       label: (
         <Link to="/watchlist" onClick={() => handleMenuClick('watchlist')}>
-          My Watchlist
+          Watchlist
         </Link>
       )
     },
@@ -109,7 +112,7 @@ const ReactHeader = (props) => {
     },
     {
       key: 'course',
-      icon: <StarOutlined style={iconStyle} />,
+      icon: <BookOutlined style={iconStyle} />,
       label: (
         <Link to="/course" onClick={() => handleMenuClick('course')}>
           Course
@@ -118,7 +121,7 @@ const ReactHeader = (props) => {
     },
     {
       key: 'gamification',
-      icon: <StarOutlined style={iconStyle} />,
+      icon: <PlayCircleOutlined style={iconStyle} />,
       label: (
         <Link to="/game" onClick={() => handleMenuClick('gamification')}>
           Gamification

@@ -59,7 +59,7 @@ const ReactWatchlist = () => {
       <Content>
         <Title level={2}>
           <StarOutlined style={{ marginRight: '12px', color: '#faad14' }} />
-          My Watchlist
+          Favorite Watchlist
         </Title>
         {watchlist.length === 0
           ? <EmptyWatchlistContent />
