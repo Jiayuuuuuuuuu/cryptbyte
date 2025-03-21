@@ -60,7 +60,7 @@ const features = [
   {
     icon: <GlobalOutlined style={{ fontSize: 32, color: '#52c41a' }} />,
     title: 'Global Market Coverage',
-    description: 'Analysis and signals for crypto, forex, and other markets around the clock.'
+    description: 'Analysis and signals for cryptocurrency around the clock.'
   }
 ]
 
