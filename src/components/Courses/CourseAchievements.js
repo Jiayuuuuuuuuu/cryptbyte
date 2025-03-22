@@ -1,17 +1,17 @@
-import React from 'react';
-import { Card, Typography, Row, Col, Progress, Tag, Divider, List, Avatar } from 'antd';
-import { TrophyOutlined, BookOutlined, RiseOutlined, SafetyOutlined } from '@ant-design/icons';
+import React from 'react'
+import { Card, Typography, Row, Col, Progress, Tag, Divider, List, Avatar } from 'antd'
+import { TrophyOutlined, BookOutlined, RiseOutlined, SafetyOutlined } from '@ant-design/icons'
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text, Paragraph } = Typography
 
 const CourseAchievements = ({ courses, userTier }) => {
   // Calculate overall progress
-  const totalModules = courses.reduce((total, course) => total + course.modules, 0);
+  const totalModules = courses.reduce((total, course) => total + course.modules, 0)
   const completedCourses = courses.filter(course => {
     // This is a simplified calculation - ideally would be based on module completion data
-    return course.id === 1 || course.id === 3; // Assuming these are completed based on mock data
-  }).length;
-  
+    return course.id === 1// Assuming these are completed based on mock data
+  }).length
+
   const achievements = [
     {
       id: 1,
@@ -45,7 +45,7 @@ const CourseAchievements = ({ courses, userTier }) => {
       completed: false,
       reward: '+150 tokens'
     }
-  ];
+  ]
 
   return (
     <Card title={<Title level={4}><TrophyOutlined /> Learning Achievements</Title>}>
@@ -64,9 +64,9 @@ const CourseAchievements = ({ courses, userTier }) => {
             </Paragraph>
           </div>
         </Col>
-        
+
         <Divider />
-        
+
         <Col span={24}>
           <Title level={4}>Achievements</Title>
           <List
@@ -76,14 +76,14 @@ const CourseAchievements = ({ courses, userTier }) => {
               <List.Item>
                 <List.Item.Meta
                   avatar={
-                    <Avatar 
-                      style={{ 
+                    <Avatar
+                      style={{
                         backgroundColor: item.completed ? '#52c41a' : '#d9d9d9',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center'
                       }}
-                      icon={item.icon} 
+                      icon={item.icon}
                     />
                   }
                   title={<span>{item.title} {item.completed && <Tag color="success">Completed</Tag>}</span>}
@@ -94,16 +94,18 @@ const CourseAchievements = ({ courses, userTier }) => {
             )}
           />
         </Col>
-        
+
         <Divider />
-        
+
         <Col span={24}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Title level={4}>Current Tier:</Title>
             <Tag color={
-              userTier === 'bronze' ? 'orange' : 
-              userTier === 'silver' ? 'geekblue' : 
-              userTier === 'gold' ? 'gold' : 'purple'
+              userTier === 'bronze'
+                ? 'orange'
+                : userTier === 'silver'
+                  ? 'geekblue'
+                  : userTier === 'gold' ? 'gold' : 'purple'
             } style={{ fontSize: 16, padding: '4px 12px' }}>
               {userTier.charAt(0).toUpperCase() + userTier.slice(1)}
             </Tag>
@@ -114,7 +116,7 @@ const CourseAchievements = ({ courses, userTier }) => {
         </Col>
       </Row>
     </Card>
-  );
-};
+  )
+}
 
-export default CourseAchievements;
+export default CourseAchievements

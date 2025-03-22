@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Layout, Typography, Row, Col, Card, Tag, Progress, Button, Divider, Tabs, Modal, List, Collapse } from 'antd'
-import { BookOutlined, LockOutlined, CheckCircleOutlined, RightOutlined, TrophyOutlined, FieldTimeOutlined, TeamOutlined } from '@ant-design/icons'
+import { Layout, Typography, Row, Col, Card, Tag, Progress, Button, Divider, Tabs, Modal, List } from 'antd'
+import { BookOutlined, LockOutlined, CheckCircleOutlined, RightOutlined, TrophyOutlined, FieldTimeOutlined } from '@ant-design/icons'
 import { fetchCourses, getCourseDetails, updateCourseProgress } from '../../redux_actions'
+import CourseDetail from './CourseDetails'
 import ModuleContent from './ModuleContent'
+import CourseAchievements from './CourseAchievements'
 
 const { Content } = Layout
 const { Title, Text, Paragraph } = Typography
 const { TabPane } = Tabs
-const { Panel } = Collapse
 
-const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetails, updateCourseProgress, userTier }) => {
+const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetails, updateCourseProgress, userTier, user }) => {
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [courseModalVisible, setCourseModalVisible] = useState(false)
   const [activeTab, setActiveTab] = useState('1')
@@ -107,6 +108,15 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
 
         <Divider />
 
+        {/* Add CourseAchievements component here */}
+        <Row gutter={[16, 24]}>
+          <Col span={24}>
+            <CourseAchievements courses={courses} userTier={userTier} />
+          </Col>
+        </Row>
+
+        <Divider />
+
         <Tabs defaultActiveKey="1" onChange={setActiveTab}>
           <TabPane tab="All Courses" key="1" />
           <TabPane tab="Beginner" key="2" />
@@ -171,7 +181,7 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
           ))}
         </Row>
 
-        {/* Course Details Modal */}
+        {/* Course Details Modal - Now using CourseDetail component */}
         <Modal
           title={courseDetails?.title || 'Course Details'}
           visible={courseModalVisible}
@@ -180,44 +190,11 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
           width={700}
         >
           {courseDetails && (
-            <>
-              <Paragraph>{courseDetails.description}</Paragraph>
-
-              <div style={{ marginBottom: 16 }}>
-                <Title level={4}>Course Progress</Title>
-                <Progress
-                  percent={calculateProgress(courseDetails)}
-                  format={percent => `${percent}% Complete`}
-                />
-              </div>
-
-              <Title level={4}>Modules</Title>
-              <List
-                itemLayout="horizontal"
-                dataSource={courseDetails.modules}
-                renderItem={module => (
-                  <List.Item
-                    actions={[
-                      module.completed
-                        ? <Tag icon={<CheckCircleOutlined />} color="success">Completed</Tag>
-                        : <Button
-                          type="primary"
-                          size="small"
-                          onClick={() => handleModuleClick(module)}
-                        >
-                          Start
-                        </Button>
-                    ]}
-                  >
-                    <List.Item.Meta
-                      avatar={<div style={{ width: 24, textAlign: 'center' }}>{module.id}</div>}
-                      title={module.title}
-                      description={module.completed ? "You've completed this module" : 'Click to start learning'}
-                    />
-                  </List.Item>
-                )}
-              />
-            </>
+            <CourseDetail
+              course={courseDetails}
+              onModuleSelect={handleModuleClick}
+              user={user}
+            />
           )}
         </Modal>
 
@@ -226,7 +203,7 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
           title={activeModule?.title || 'Module Content'}
           visible={moduleModalVisible}
           onCancel={() => setModuleModalVisible(false)}
-          footer={null} // Remove the footer buttons since ModuleContent has its own
+          footer={null}
           width={800}
         >
           {activeModule && (
@@ -244,7 +221,8 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
 const mapStateToProps = (state) => ({
   courses: state.courses.list || [],
   courseDetails: state.courses.currentCourse,
-  userTier: state.user.tier
+  userTier: state.user.tier,
+  user: state.user
 })
 
 const mapDispatchToProps = {
