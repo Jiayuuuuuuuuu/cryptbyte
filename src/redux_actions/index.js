@@ -145,14 +145,11 @@ export const fetchCourses = () => {
 }
 
 export const getCourseDetails = (courseId) => {
-  // Mock course details
-  const mockCourseDetails = {
-    id: courseId,
-    title: courseId === 1 ? 'Cryptocurrency Basics' : courseId === 2 ? 'Technical Analysis' : 'Advanced Trading Strategies',
-    description: 'Comprehensive course on cryptocurrency trading fundamentals.',
-    level: courseId === 1 ? 'Beginner' : courseId === 2 ? 'Intermediate' : 'Advanced',
-    duration: courseId === 1 ? '2 hours' : courseId === 2 ? '4 hours' : '6 hours',
-    modules: [
+  // Create different modules based on the courseId
+  let modules = []
+
+  if (courseId === 1) { // Cryptocurrency Basics
+    modules = [
       {
         id: 1,
         title: 'Introduction to Blockchain',
@@ -172,6 +169,58 @@ export const getCourseDetails = (courseId) => {
         completed: false
       }
     ]
+  } else if (courseId === 2) { // Technical Analysis
+    modules = [
+      {
+        id: 1,
+        title: 'Chart Patterns',
+        description: 'Identify and interpret common chart patterns',
+        completed: true
+      },
+      {
+        id: 2,
+        title: 'Technical Indicators',
+        description: 'Learn to use RSI, MACD, and other key indicators',
+        completed: false
+      },
+      {
+        id: 3,
+        title: 'Trend Analysis',
+        description: 'Understand market trends and how to trade with them',
+        completed: false
+      }
+    ]
+  } else if (courseId === 3) { // Advanced Trading Strategies
+    modules = [
+      {
+        id: 1,
+        title: 'Risk Management',
+        description: 'Advanced techniques for managing trading risk',
+        completed: false
+      },
+      {
+        id: 2,
+        title: 'Algorithmic Trading',
+        description: 'Introduction to automated trading strategies',
+        completed: false
+      },
+      {
+        id: 3,
+        title: 'Portfolio Optimization',
+        description: 'Balance your crypto portfolio for maximum returns',
+        completed: false
+      }
+    ]
+  }
+
+  // Mock course details with unique modules
+  const mockCourseDetails = {
+    id: courseId,
+    title: courseId === 1 ? 'Cryptocurrency Basics' : courseId === 2 ? 'Technical Analysis' : 'Advanced Trading Strategies',
+    description: 'Comprehensive course on cryptocurrency trading fundamentals.',
+    level: courseId === 1 ? 'Beginner' : courseId === 2 ? 'Intermediate' : 'Advanced',
+    duration: courseId === 1 ? '2 hours' : courseId === 2 ? '4 hours' : '6 hours',
+    modules
   }
 
   return {
