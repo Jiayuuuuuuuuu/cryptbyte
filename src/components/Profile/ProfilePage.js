@@ -70,7 +70,7 @@ class ProfilePage extends Component {
     this.state = {
       recentActivities: [
         { id: 1, type: 'login', tokens: 5, date: '2025-03-18 09:30:22', description: 'Daily login reward' },
-        { id: 2, type: 'trade', tokens: 15, date: '2025-03-18 10:15:47', description: 'Successful BTC/USD trade (+2.3%)' },
+        { id: 2, type: 'trade', tokens: 15, date: '2025-03-18 10:15:47', description: 'Successful Complete the first chapter' },
         { id: 3, type: 'lesson', tokens: 20, date: '2025-03-17 16:22:05', description: 'Completed Advanced Technical Analysis' },
         { id: 4, type: 'streak', tokens: 50, date: '2025-03-16 09:05:33', description: '10-day login streak bonus' }
       ],
@@ -301,7 +301,7 @@ class ProfilePage extends Component {
 
               <Col xs={24} md={16}>
                 <Tabs defaultActiveKey='1'>
-                  <TabPane tab='Trading History' key='1'>
+                  <TabPane tab='Learning History' key='1'>
                     <Table
                       columns={columns}
                       dataSource={data}
