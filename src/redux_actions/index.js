@@ -13,13 +13,44 @@ export * from './userActions'
 export const GET_COURSES = 'GET_COURSES'
 export const GET_COURSE_DETAILS = 'GET_COURSE_DETAILS'
 export const UPDATE_COURSE_PROGRESS = 'UPDATE_COURSE_PROGRESS'
+export const UPDATE_WATCHLIST_DATA = 'UPDATE_WATCHLIST_DATA'
 
-export const addToWatchlist = (coin) => (dispatch, getState) => {
-  dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
+export const addToWatchlist = (coin) => async (dispatch, getState) => {
+  if (!coin.price || !coin.priceChange24h) {
+    try {
+      const response = await coinGecko.get(`/coins/${coin.id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
+
+      const coinWithData = {
+        id: coin.id,
+        name: coin.name || response.data.name,
+        symbol: coin.symbol || response.data.symbol,
+        image: coin.image || response.data.image.small,
+        price: coin.price || response.data.market_data.current_price.usd,
+        priceChange24h: coin.priceChange24h || response.data.market_data.price_change_percentage_24h,
+        priceChange7d: coin.priceChange7d || response.data.market_data.price_change_percentage_7d,
+        volume: coin.volume || response.data.market_data.total_volume.usd,
+        marketCap: coin.marketCap || response.data.market_data.market_cap.usd
+      }
+
+      dispatch({ type: ADD_TO_WATCHLIST, payload: coinWithData })
+    } catch (error) {
+      console.error('Error fetching coin data for watchlist:', error)
+      dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
+    }
+  } else {
+    dispatch({ type: ADD_TO_WATCHLIST, payload: coin })
+  }
 }
 
 export const removeFromWatchlist = (coinId) => (dispatch, getState) => {
   dispatch({ type: REMOVE_FROM_WATCHLIST, payload: coinId })
+}
+
+export const updateWatchlistData = (updatedData) => {
+  return {
+    type: UPDATE_WATCHLIST_DATA,
+    payload: updatedData
+  }
 }
 
 export const fetchTrendingCoins = () => async (dispatch, getState) => {

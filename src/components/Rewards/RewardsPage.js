@@ -36,7 +36,6 @@ import { addTokens, processLoginReward } from '../../redux_actions/userActions'
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 
-// Mock rewards data
 const dailyChallenges = [
   { id: 1, name: 'Daily Login', completed: true, tokens: 5, description: 'Log in to the platform' },
   { id: 2, name: 'First Trade', completed: false, tokens: 15, description: 'Complete your first trade of the day' },
