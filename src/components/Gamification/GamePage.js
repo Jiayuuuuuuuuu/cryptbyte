@@ -256,8 +256,9 @@ const GamePage = (props) => {
                     <div style={{ height: 80 }}>
                       <Paragraph ellipsis={{ rows: 2 }}>{challenge.description}</Paragraph>
                       <Text type="secondary">Time Frame: {challenge.timeFrame}</Text>
-                      <div style={{ marginTop: 10 }}>
-                        <TrophyOutlined style={{ color: '#1890ff' }} /> <Text strong>{challenge.tokens} tokens</Text>
+                      <div style={{ marginTop: 5, display: 'flex', alignItems: 'center' }}>
+                        <TrophyOutlined style={{ color: '#1890ff', marginRight: 5 }} />
+                        <Text strong>{challenge.tokens} tokens</Text>
                       </div>
                     </div>
                     {isCompleted && (
@@ -347,7 +348,6 @@ const GamePage = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    // Use the actual user state from Redux when available
     user: state.user || {
       name: 'Trader123',
       tokens: 780,

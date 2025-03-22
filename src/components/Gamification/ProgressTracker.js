@@ -20,7 +20,6 @@ import {
 const { Title, Paragraph, Text } = Typography
 
 const ProgressTracker = ({ stats, user }) => {
-  // Calculate level based on tokens
   const determineLevel = (tokens) => {
     if (tokens < 500) return { level: 1, nextLevel: 500, progress: (tokens / 500) * 100 }
     if (tokens < 1000) return { level: 2, nextLevel: 1000, progress: ((tokens - 500) / 500) * 100 }
@@ -32,7 +31,6 @@ const ProgressTracker = ({ stats, user }) => {
 
   const userLevel = determineLevel(user.tokens)
 
-  // Badge colors based on tier
   const tierColors = {
     bronze: '#cd7f32',
     silver: '#c0c0c0',
@@ -40,7 +38,6 @@ const ProgressTracker = ({ stats, user }) => {
     premium: '#9370db'
   }
 
-  // Tier benefits
   const tierBenefits = {
     bronze: ['Basic challenges', 'Daily rewards', 'Limited trading tools'],
     silver: ['All bronze benefits', 'Advanced challenges', 'Market analysis tools'],
@@ -66,7 +63,7 @@ const ProgressTracker = ({ stats, user }) => {
                 )}
             </Paragraph>
             <Progress
-              percent={userLevel.progress}
+              percent={userLevel.progress.toFixed(2)}
               status={userLevel.nextLevel ? 'active' : 'success'}
               strokeColor={{
                 '0%': '#108ee9',
