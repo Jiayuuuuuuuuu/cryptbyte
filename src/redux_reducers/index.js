@@ -13,7 +13,7 @@ import {
 import watchlistReducer from './watchlistReducer'
 import userReducer from './userReducer'
 import coursesReducer from './courseReducer'
-import tradingSignalsReducer from './tradingSignalsReducer'
+import tradingSignalsReducer from './tradingSignalsReducer' // Import the trading signals reducer
 
 const initialState = {
   data: [],
@@ -62,68 +62,59 @@ const coinDetailsReducer = (state = {}, action) => {
   switch (action.type) {
   case GET_COIN_DETAILS: {
     const market_data_processed = compileMarketData(action.payload.market_data)
-    return {
-      ...state,
-      [action.payload.id]: {
-        ...action.payload,
-        market_data_processed
-      }
-    }
+    return { ...action.payload, market_data_processed }
   }
   default:
     return state
   }
 }
 
-const coinChartReducer = (state = {}, action) => {
+const coinMarketDetailsReducer = (state = {}, action) => {
   switch (action.type) {
   case GET_COIN_CHART:
-    return {
-      ...state,
-      [action.payload.id]: action.payload.data
-    }
+    return { ...state, [action.payload.coinId]: action.payload.data }
   default:
     return state
   }
 }
 
-const eventsReducer = (state = [], action) => {
+const eventReducer = (state = [], action) => {
   switch (action.type) {
   case GET_EVENT_LIST:
-    return action.payload
+    return action.payload.data
   default:
     return state
   }
 }
 
-const headerSelectedReducer = (state = 'home', action) => {
+const headerMenuItemReducer = (state = '', action) => {
   switch (action.type) {
   case SET_HEADER_MENU_ITEM:
-    return action.payload
+    return action.payload.item
   default:
     return state
   }
 }
 
-const siderSelectedReducer = (state = 'market', action) => {
+const siderMenuItemReducer = (state = 'asset-platforms', action) => {
   switch (action.type) {
   case SET_SIDER_MENU_ITEM:
-    return action.payload
+    return action.payload.item
   default:
     return state
   }
 }
 
 export const rootReducer = combineReducers({
+  events: eventReducer,
   coins: coinsReducer,
   coin_details: coinDetailsReducer,
-  coin_chart: coinChartReducer,
-  events: eventsReducer,
-  header_selected: headerSelectedReducer,
-  sider_selected: siderSelectedReducer,
+  coin_market_details: coinMarketDetailsReducer,
   trending_coins: coinsTrendingReducer,
+  header_selected: headerMenuItemReducer,
+  sider_selected: siderMenuItemReducer,
   watchlist: watchlistReducer,
   user: userReducer,
   courses: coursesReducer,
-  tradingSignals: tradingSignalsReducer // Added the tradingSignals reducer
+  tradingSignals: tradingSignalsReducer // Add the trading signals reducer to the root reducer
 })
