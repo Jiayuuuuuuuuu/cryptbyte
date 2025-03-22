@@ -17,7 +17,9 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined
 } from '@ant-design/icons'
-import { Line } from 'recharts'
+import bitcoinImage from '../../images/charts/bitcoin.png'
+import ethereumImage from '../../images/charts/ethereum.jpg'
+import altcoinImage from '../../images/charts/altcoin.jpg'
 
 const { Title, Paragraph, Text } = Typography
 
@@ -30,13 +32,11 @@ const TradingChallenge = ({
   completed,
   onClose
 }) => {
-  // Format chart data for recharts
   const chartData = challenge.chartData.labels.map((label, index) => ({
     name: label,
     price: challenge.chartData.prices[index]
   }))
 
-  // Helper to render the feedback section
   const renderFeedback = () => {
     if (!showFeedback) return null
 
@@ -81,11 +81,18 @@ const TradingChallenge = ({
         <Row gutter={24}>
           <Col xs={24} md={16}>
             <div style={{ height: 250, background: '#f0f2f5', padding: 10, marginBottom: 20 }}>
-              {/* This would be a real chart in a production app */}
-              {/* Using a placeholder to simulate chart */}
-              <div style={{ textAlign: 'center', paddingTop: 100 }}>
-                [Chart visualization for {challenge.title}]
-                <div>Price range: ${Math.min(...challenge.chartData.prices)} - ${Math.max(...challenge.chartData.prices)}</div>
+              <img
+                src={challenge.image}
+                alt={`${challenge.title} chart`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  borderRadius: '4px'
+                }}
+              />
+              <div style={{ textAlign: 'center', marginTop: 5 }}>
+                Price range: ${Math.min(...challenge.chartData.prices)} - ${Math.max(...challenge.chartData.prices)}
               </div>
             </div>
           </Col>
