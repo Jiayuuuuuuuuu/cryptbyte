@@ -374,7 +374,7 @@ class ReactHome extends Component {
                   Unlock premium features and climb the ranks from Bronze to Premium tier.
                 </Paragraph>
                 <Button type="primary" style={{ background: '#fa8c16', borderColor: '#fa8c16' }}>
-                  Explore Rewards System
+                  Explore Now
                 </Button>
               </Col>
               <Col xs={24} md={8} style={{ textAlign: 'center' }}>

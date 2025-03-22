@@ -38,15 +38,15 @@ const { Title, Paragraph, Text } = Typography
 
 const dailyChallenges = [
   { id: 1, name: 'Daily Login', completed: true, tokens: 5, description: 'Log in to the platform' },
-  { id: 2, name: 'First Trade', completed: false, tokens: 15, description: 'Complete your first trade of the day' },
+  { id: 2, name: 'First Course Module', completed: false, tokens: 15, description: 'Complete your first module of the day' },
   { id: 3, name: 'Market Analysis', completed: false, tokens: 20, description: 'Use AI analysis tools for 10+ minutes' },
-  { id: 4, name: 'Profitable Trade', completed: false, tokens: 25, description: 'Make a trade with >2% profit' }
+  { id: 4, name: 'Gamified Challenge', completed: false, tokens: 25, description: 'Make a correct prediction' }
 ]
 
 const weeklyTasks = [
-  { id: 1, name: 'Trading Volume', progress: 60, target: 100, tokens: 100, description: 'Complete 100 trades this week' },
+  { id: 1, name: 'Weekly Gamified Challenges', progress: 60, target: 100, tokens: 100, description: 'Complete 21 challenges in one week' },
   { id: 2, name: 'Learning Progress', progress: 40, target: 100, tokens: 150, description: 'Complete 3 learning modules' },
-  { id: 3, name: 'Winning Strategy', progress: 30, target: 100, tokens: 200, description: 'Maintain >60% win rate this week' }
+  { id: 3, name: 'Weekly Login Streak', progress: 85, target: 100, tokens: 200, description: 'Complete login 7 days in a row' }
 ]
 
 const tierBenefits = {
