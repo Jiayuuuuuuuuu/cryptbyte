@@ -96,7 +96,13 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
               <Title level={4}>Your Progress</Title>
               <div>
                 <Text>Completed Courses: </Text>
-                <Tag color="green">2/8</Tag>
+                <Tag color="green">
+                  {courses.filter(course => {
+                    if (!courseDetails || courseDetails.id !== course.id) return false
+                    const completedModules = courseDetails.modules.filter(module => module.completed).length
+                    return completedModules === courseDetails.modules.length
+                  }).length}/{courses.length}
+                </Tag>
               </div>
               <div>
                 <Text>Current Tier: </Text>

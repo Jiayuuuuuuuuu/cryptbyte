@@ -4,12 +4,22 @@ import { TrophyOutlined, BookOutlined, RiseOutlined, SafetyOutlined } from '@ant
 
 const { Title, Text, Paragraph } = Typography
 
-const CourseAchievements = ({ courses, userTier }) => {
+const CourseAchievements = ({ courses, userTier, courseDetails }) => {
   // Calculate overall progress
   const totalModules = courses.reduce((total, course) => total + course.modules, 0)
   const completedCourses = courses.filter(course => {
-    // This is a simplified calculation - ideally would be based on module completion data
-    return course.id === 1// Assuming these are completed based on mock data
+    // Get the course details for this course
+    const details = courseDetails && courseDetails.id === course.id ? courseDetails : null
+
+    // If we have details and all modules are completed, count it as completed
+    if (details && details.modules && details.modules.length > 0) {
+      const totalModules = details.modules.length
+      const completedModules = details.modules.filter(module => module.completed).length
+      return completedModules === totalModules
+    }
+
+    // Otherwise, use your existing logic for previously completed courses
+    return course.id === 1 // Keep this as a fallback for courses we know are completed
   }).length
 
   const achievements = [
