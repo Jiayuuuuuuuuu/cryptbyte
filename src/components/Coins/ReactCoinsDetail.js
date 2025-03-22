@@ -75,7 +75,7 @@ const ReactCoinsDetail = (props) => {
     chart_data
   } = props
 
-  const [timeFrame, setTimeFrame] = useState('7d')
+  const [timeFrame, setTimeFrame] = useState('1H')
   const [selectedChartType, setSelectedChartType] = useState('price')
 
   useEffect(() => {
@@ -106,6 +106,15 @@ const ReactCoinsDetail = (props) => {
     const filterDate = new Date()
 
     switch (timeFrame) {
+    case '10min':
+      filterDate.setMinutes(now.getMinutes() - 10)
+      break
+    case '1H':
+      filterDate.setHours(now.getHours() - 1)
+      break
+    case '4H':
+      filterDate.setHours(now.getHours() - 4)
+      break
     case '24h':
       filterDate.setDate(now.getDate() - 1)
       break
@@ -115,22 +124,25 @@ const ReactCoinsDetail = (props) => {
     case '30d':
       filterDate.setDate(now.getDate() - 30)
       break
-    case '90d':
-      filterDate.setDate(now.getDate() - 90)
-      break
-    case '1y':
-      filterDate.setFullYear(now.getFullYear() - 1)
-      break
     default:
-      filterDate.setDate(now.getDate() - 7)
+      filterDate.setHours(now.getHours() - 1)
     }
 
-    const filteredData = data[key].filter(item => new Date(item[0]) >= filterDate)
+    // If we have only one or zero points, expand the timeframe
+    let filteredData = data[key].filter(item => new Date(item[0]) >= filterDate)
+    if (filteredData.length <= 1 && data[key].length > 1) {
+      // Use at least 2 most recent points if available
+      filteredData = data[key].slice(-2)
+    }
 
     return {
       labels: filteredData.map(item => {
         const date = new Date(item[0])
-        if (timeFrame === '24h') {
+        if (timeFrame === '10min') {
+          return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+        } else if (timeFrame === '1H' || timeFrame === '4H') {
+          return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        } else if (timeFrame === '24h') {
           return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         } else if (timeFrame === '7d') {
           return date.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })
@@ -144,7 +156,7 @@ const ReactCoinsDetail = (props) => {
         backgroundColor: colour,
         borderColor: colour,
         borderWidth: 2,
-        pointRadius: timeFrame === '24h' ? 2 : 0,
+        pointRadius: 0,
         pointHoverRadius: 5,
         fill: false,
         tension: 0.1
@@ -472,11 +484,11 @@ const ReactCoinsDetail = (props) => {
   }
 
   const timeFrameOptions = [
+    { label: '10min', value: '10min' },
+    { label: '1H', value: '1H' },
+    { label: '4H', value: '4H' },
     { label: '24h', value: '24h' },
-    { label: '7d', value: '7d' },
-    { label: '30d', value: '30d' },
-    { label: '90d', value: '90d' },
-    { label: '1y', value: '1y' }
+    { label: '7d', value: '7d' }
   ]
 
   const chartTypeOptions = [
@@ -577,7 +589,6 @@ const ReactCoinsDetail = (props) => {
                 </div>
               </Card>
 
-              {/* Enhanced Price Analysis Card */}
               {priceAnalysis && (
                 <Card style={{ marginBottom: '24px' }}>
                   <Title level={3} style={titleStyle}>
@@ -741,14 +752,6 @@ const ReactCoinsDetail = (props) => {
                     data={market_data_processed}
                     columns={finalColumns}
                   />
-                  <Title level={4} style={titleStyle}>Market Cap History</Title>
-                  <div style={{ height: '250px' }}>
-                    <Line data={chartMarketCapsData} options={chartOptions} />
-                  </div>
-                  <Title level={4} style={titleStyle}>Volume History</Title>
-                  <div style={{ height: '250px' }}>
-                    <Line data={chartTotalVolumesData} options={chartOptions} />
-                  </div>
                 </TabPane>
               </Tabs>
             </React.Fragment>
