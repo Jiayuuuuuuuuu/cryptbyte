@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Layout, Typography, Row, Col, Card, Tag, Progress, Button, Divider, Tabs, Modal, List, Collapse } from 'antd'
 import { BookOutlined, LockOutlined, CheckCircleOutlined, RightOutlined, TrophyOutlined, FieldTimeOutlined, TeamOutlined } from '@ant-design/icons'
 import { fetchCourses, getCourseDetails, updateCourseProgress } from '../../redux_actions'
+import ModuleContent from './ModuleContent'
 
 const { Content } = Layout
 const { Title, Text, Paragraph } = Typography
@@ -225,52 +226,14 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
           title={activeModule?.title || 'Module Content'}
           visible={moduleModalVisible}
           onCancel={() => setModuleModalVisible(false)}
-          footer={[
-            <Button key="back" onClick={() => setModuleModalVisible(false)}>
-              Cancel
-            </Button>,
-            <Button key="submit" type="primary" onClick={handleCompleteModule}>
-              Mark as Completed
-            </Button>
-          ]}
+          footer={null} // Remove the footer buttons since ModuleContent has its own
           width={800}
         >
           {activeModule && (
-            <div className="module-content">
-              <Paragraph>
-                This is the content for module {activeModule.id}: {activeModule.title}.
-                In a complete implementation, this would contain videos, text lessons, and interactive exercises.
-              </Paragraph>
-
-              <Collapse defaultActiveKey={['1']}>
-                <Panel header="Introduction" key="1">
-                  <Paragraph>
-                    Welcome to this module! Here you&apos;ll learn the key concepts and practical applications of the topics covered.
-                  </Paragraph>
-                </Panel>
-                <Panel header="Key Concepts" key="2">
-                  <ul>
-                    <li>Understanding market patterns and trends</li>
-                    <li>Risk assessment methods for crypto assets</li>
-                    <li>Timing your entry and exit strategies</li>
-                    <li>Portfolio diversification techniques</li>
-                  </ul>
-                </Panel>
-                <Panel header="Practical Exercise" key="3">
-                  <Paragraph>
-                    Apply what you&apos; ve learned through our virtual trading simulator. Try to implement the strategies discussed
-                    and analyze your results.
-                  </Paragraph>
-                  <Button type="primary">Launch Simulator</Button>
-                </Panel>
-                <Panel header="Quiz" key="4">
-                  <Paragraph>
-                    Test your knowledge with a short quiz to reinforce your learning.
-                  </Paragraph>
-                  <Button>Start Quiz</Button>
-                </Panel>
-              </Collapse>
-            </div>
+            <ModuleContent
+              module={activeModule}
+              onComplete={handleCompleteModule}
+            />
           )}
         </Modal>
       </div>

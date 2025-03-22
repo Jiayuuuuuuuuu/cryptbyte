@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Typography, Steps, Button, Card, Tabs, Collapse, Divider } from 'antd';
-import { 
-  PlayCircleOutlined, 
-  FileTextOutlined, 
-  QuestionCircleOutlined, 
+import React, { useState } from 'react'
+import { Typography, Steps, Button, Card, Tabs, Collapse, Divider } from 'antd'
+import {
+  PlayCircleOutlined,
+  FileTextOutlined,
+  QuestionCircleOutlined,
   ExperimentOutlined,
   TrophyOutlined
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 
-const { Title, Paragraph, Text } = Typography;
-const { Step } = Steps;
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
+const { Title, Paragraph, Text } = Typography
+const { Step } = Steps
+const { TabPane } = Tabs
+const { Panel } = Collapse
 
 const ModuleContent = ({ module, onComplete }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  
+  const [currentStep, setCurrentStep] = useState(0)
+
   const steps = [
     {
       title: 'Video Lesson',
@@ -47,7 +47,7 @@ const ModuleContent = ({ module, onComplete }) => {
             Trading in cryptocurrency markets requires understanding several key concepts. This reading material
             expands on the video lesson and provides deeper insights into market dynamics.
           </Paragraph>
-          
+
           <Collapse defaultActiveKey={['1']}>
             <Panel header="Market Structure" key="1">
               <Paragraph>
@@ -79,14 +79,14 @@ const ModuleContent = ({ module, onComplete }) => {
         <Card>
           <Title level={4}>Trading Simulation</Title>
           <Paragraph>
-            Apply what you've learned through our virtual trading simulator. This risk-free environment
+            Apply what you&pos;ve learned through our virtual trading simulator. This risk-free environment
             allows you to practice implementing strategies without using real capital.
           </Paragraph>
-          
+
           <div style={{ background: '#f0f2f5', height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
             <Text>Trading simulator interface would appear here</Text>
           </div>
-          
+
           <Button type="primary" size="large" block>Launch Simulator</Button>
         </Card>
       )
@@ -101,7 +101,7 @@ const ModuleContent = ({ module, onComplete }) => {
             Test your understanding of the key concepts covered in this module. You need to score at least
             70% to successfully complete this module.
           </Paragraph>
-          
+
           <div style={{ marginTop: 24 }}>
             <Title level={5}>Sample Question 1:</Title>
             <Paragraph>Which of the following is NOT a common candlestick pattern?</Paragraph>
@@ -110,36 +110,36 @@ const ModuleContent = ({ module, onComplete }) => {
             <Button style={{ display: 'block', marginBottom: 8 }}>C) Triangle Reversal</Button>
             <Button style={{ display: 'block', marginBottom: 8 }}>D) Engulfing Pattern</Button>
           </div>
-          
+
           <Divider />
           <Button type="primary" size="large" block>Start Full Quiz</Button>
         </Card>
       )
     }
-  ];
-  
+  ]
+
   const next = () => {
-    setCurrentStep(currentStep + 1);
-  };
-  
+    setCurrentStep(currentStep + 1)
+  }
+
   const prev = () => {
-    setCurrentStep(currentStep - 1);
-  };
+    setCurrentStep(currentStep - 1)
+  }
 
   return (
     <div className="module-content">
       <Title level={3}>{module.title}</Title>
-      
+
       <Steps current={currentStep} style={{ marginBottom: 24 }}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} icon={item.icon} />
         ))}
       </Steps>
-      
+
       <div className="steps-content" style={{ marginBottom: 24 }}>
         {steps[currentStep].content}
       </div>
-      
+
       <div className="steps-action" style={{ display: 'flex', justifyContent: 'space-between' }}>
         {currentStep > 0 && (
           <Button onClick={prev}>Previous</Button>
@@ -148,8 +148,8 @@ const ModuleContent = ({ module, onComplete }) => {
           <Button type="primary" onClick={next}>Next</Button>
         )}
         {currentStep === steps.length - 1 && (
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             onClick={onComplete}
             icon={<TrophyOutlined />}
           >
@@ -158,7 +158,7 @@ const ModuleContent = ({ module, onComplete }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ModuleContent;
+export default ModuleContent
