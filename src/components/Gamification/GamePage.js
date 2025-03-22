@@ -240,7 +240,7 @@ const GamePage = (props) => {
                         </Tag>
                       </div>
                     }
-                    cover={<img alt={challenge.title} src={challenge.image} style={{ height: 120, objectFit: 'cover' }} />}
+                    cover={<img alt={challenge.title} src={challenge.image} style={{ height: 120, objectFit: 'contain' }} />}
                     actions={[
                       <Button
                         key="challenge-button"
