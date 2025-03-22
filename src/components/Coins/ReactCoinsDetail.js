@@ -3,24 +3,18 @@ import { connect } from 'react-redux'
 import { fetchCoinDetails, setSiderMenuItem, fetchCoinMarketDetails } from '../../redux_actions'
 import { Layout, Tag, Skeleton, Typography, Card, Alert, Tabs, Row, Col, Tooltip, Statistic, Space, Divider, Button } from 'antd'
 import { contentStyle, titleStyle } from '../../styles'
-import ReactCoinScores from './ReactCoinScores'
 import { Line } from 'react-chartjs-2'
 import { market_processed_table_keys, market_stat_keys } from '../../constants'
-import ReactCoinCommunityStats from './ReactCoinCommunityStats'
-import ReactCoinDeveloperStats from './ReactCoinDeveloperStats'
 import ReactCoinMarketStats from './ReactCoinMarketStats'
 import ReactCoinMarketDetailedStats from './ReactCoinMarketDetailedStats'
 import ReactCoinDetailSummary from './ReactCoinDetailSummary'
 import {
   RiseOutlined,
   InfoCircleOutlined,
-  TeamOutlined,
-  CodeOutlined,
   DollarOutlined,
   FileTextOutlined,
   BarChartOutlined,
   LineChartOutlined,
-  FireOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
   EyeOutlined
@@ -30,7 +24,6 @@ const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 const { TabPane } = Tabs
 
-// Create chart components
 const PriceChart = ({ data, loading, chartOptions, timeFrame }) => {
   if (loading) return <Skeleton active />
 
@@ -109,7 +102,6 @@ const ReactCoinsDetail = (props) => {
       }
     }
 
-    // Filter data based on timeFrame
     const now = new Date()
     const filterDate = new Date()
 
@@ -138,7 +130,6 @@ const ReactCoinsDetail = (props) => {
     return {
       labels: filteredData.map(item => {
         const date = new Date(item[0])
-        // Format based on timeframe
         if (timeFrame === '24h') {
           return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         } else if (timeFrame === '7d') {
@@ -156,12 +147,11 @@ const ReactCoinsDetail = (props) => {
         pointRadius: timeFrame === '24h' ? 2 : 0,
         pointHoverRadius: 5,
         fill: false,
-        tension: 0.1 // Slightly smooth the line
+        tension: 0.1
       }]
     }
   }
 
-  // Enhanced price trend analysis
   const analyzePriceTrend = (priceData) => {
     if (!priceData || !priceData.length) return null
 
@@ -171,11 +161,9 @@ const ReactCoinsDetail = (props) => {
     const change = ((lastPrice - firstPrice) / firstPrice) * 100
     const volatility = calculateVolatility(prices)
 
-    // Calculate moving averages for technical indicators
     const ma7 = calculateMovingAverage(prices, 7)
     const ma20 = calculateMovingAverage(prices, 20)
 
-    // Enhanced trend identification using moving averages
     let trend, recommendation, color, strength
 
     if (change > 10) {
@@ -277,7 +265,6 @@ const ReactCoinsDetail = (props) => {
     return sum / period
   }
 
-  // Create enhanced chart options
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -410,7 +397,7 @@ const ReactCoinsDetail = (props) => {
 
   const tradingSignals = priceAnalysis ? getTradingSignals(priceAnalysis) : []
 
-  // Financial news with sentiment (mock data)
+  // Financial news with sentiment
   const mockNews = [
     {
       title: `${data.name} Shows Strong Momentum in DeFi Applications`,
@@ -508,16 +495,6 @@ const ReactCoinsDetail = (props) => {
     ...market_processed_table_keys.map(item => ({ title: item, key: item, dataIndex: item }))
   ]
 
-  const {
-    coingecko_rank,
-    market_cap_rank,
-    developer_score,
-    community_score,
-    liquidity_score,
-    coingecko_score
-  } = data
-
-  const { community_data, developer_data } = data
   const { market_data, market_data_processed } = data
   const { last_updated, name, image, description } = data
 
@@ -558,7 +535,6 @@ const ReactCoinsDetail = (props) => {
                 image={image}
               />
 
-              {/* Enhanced Chart Card with filters */}
               <Card className="chart-card" style={{ marginBottom: '24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <Title level={3} style={titleStyle}>
@@ -705,7 +681,6 @@ const ReactCoinsDetail = (props) => {
                 </Card>
               )}
 
-              {/* Enhanced News Card */}
               <Card style={{ marginBottom: '24px' }}>
                 <Title level={3} style={titleStyle}>
                   <FileTextOutlined style={{ marginRight: '8px' }} />
@@ -743,7 +718,6 @@ const ReactCoinsDetail = (props) => {
                 </Paragraph>
               </Card>
 
-              {/* Tabs for detailed information */}
               <Tabs defaultActiveKey="overview" style={{ marginBottom: '24px' }}>
                 <TabPane
                   tab={<span><InfoCircleOutlined />Overview</span>}
@@ -752,14 +726,6 @@ const ReactCoinsDetail = (props) => {
                   <Card>
                     <Title level={4}>About {name}</Title>
                     <div dangerouslySetInnerHTML={{ __html: description?.en || 'No description available.' }} />
-                    <ReactCoinScores
-                      coingecko_rank={coingecko_rank}
-                      market_cap_rank={market_cap_rank}
-                      developer_score={developer_score}
-                      community_score={community_score}
-                      liquidity_score={liquidity_score}
-                      coingecko_score={coingecko_score}
-                    />
                   </Card>
                 </TabPane>
                 <TabPane
@@ -783,18 +749,6 @@ const ReactCoinsDetail = (props) => {
                   <div style={{ height: '250px' }}>
                     <Line data={chartTotalVolumesData} options={chartOptions} />
                   </div>
-                </TabPane>
-                <TabPane
-                  tab={<span><TeamOutlined />Community</span>}
-                  key="community"
-                >
-                  <ReactCoinCommunityStats data={community_data} />
-                </TabPane>
-                <TabPane
-                  tab={<span><CodeOutlined />Development</span>}
-                  key="development"
-                >
-                  <ReactCoinDeveloperStats data={developer_data} />
                 </TabPane>
               </Tabs>
             </React.Fragment>
