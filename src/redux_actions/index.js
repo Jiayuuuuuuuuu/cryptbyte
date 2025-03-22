@@ -14,6 +14,10 @@ export const GET_COURSES = 'GET_COURSES'
 export const GET_COURSE_DETAILS = 'GET_COURSE_DETAILS'
 export const UPDATE_COURSE_PROGRESS = 'UPDATE_COURSE_PROGRESS'
 export const UPDATE_WATCHLIST_DATA = 'UPDATE_WATCHLIST_DATA'
+export const GET_TRADING_SIGNALS = 'GET_TRADING_SIGNALS'
+export const ADD_TRADING_SIGNAL = 'ADD_TRADING_SIGNAL'
+export const UPDATE_TRADING_SIGNAL = 'UPDATE_TRADING_SIGNAL'
+export const REMOVE_TRADING_SIGNAL = 'REMOVE_TRADING_SIGNAL'
 
 export const addToWatchlist = (coin) => async (dispatch, getState) => {
   if (!coin.price || !coin.priceChange24h) {
@@ -264,5 +268,66 @@ export const updateCourseProgress = (courseId, moduleId, completed) => {
   return {
     type: 'UPDATE_COURSE_PROGRESS',
     payload: { courseId, moduleId, completed }
+  }
+}
+
+export const getTradingSignals = () => {
+  // In a real app, this would fetch from an API
+  // For now we'll return mock data
+  const mockSignals = [
+    {
+      id: 'signal-1',
+      coinId: 'bitcoin',
+      coinName: 'Bitcoin',
+      symbol: 'BTC',
+      price: 69420,
+      signalType: 'buy',
+      sharpeRatio: '2.1',
+      maxDrawdown: '-25.3',
+      tradeFrequency: '4.8',
+      confidence: '87.5',
+      timestamp: new Date().toISOString(),
+      isActive: true
+    },
+    {
+      id: 'signal-2',
+      coinId: 'ethereum',
+      coinName: 'Ethereum',
+      symbol: 'ETH',
+      price: 3950,
+      signalType: 'sell',
+      sharpeRatio: '1.9',
+      maxDrawdown: '-31.2',
+      tradeFrequency: '3.5',
+      confidence: '72.3',
+      timestamp: new Date().toISOString(),
+      isActive: true
+    }
+  ]
+
+  return {
+    type: GET_TRADING_SIGNALS,
+    payload: mockSignals
+  }
+}
+
+export const addTradingSignal = (signal) => {
+  return {
+    type: ADD_TRADING_SIGNAL,
+    payload: signal
+  }
+}
+
+export const updateTradingSignal = (signalId, updates) => {
+  return {
+    type: UPDATE_TRADING_SIGNAL,
+    payload: { signalId, updates }
+  }
+}
+
+export const removeTradingSignal = (signalId) => {
+  return {
+    type: REMOVE_TRADING_SIGNAL,
+    payload: signalId
   }
 }

@@ -12,6 +12,7 @@ import ProfilePage from './Profile/ProfilePage'
 import RewardsPage from './Rewards/RewardsPage'
 import CoursesPage from './Courses/LearningCourses'
 import GamePage from './Gamification/GamePage'
+import TradingSignals from './Signals/TradingSignals'
 
 export default class App extends Component {
   render () {
@@ -29,6 +30,7 @@ export default class App extends Component {
             <Route path='/watchlist' exact component={ReactWatchlist}/>
             <Route path='/course' exact component={CoursesPage}/>
             <Route path='/game' exact component={GamePage}/>
+            <Route path='/signals' exact component={TradingSignals}/>
           </Switch>
         </Layout>
         <ReactFooter/>

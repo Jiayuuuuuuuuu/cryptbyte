@@ -15,7 +15,8 @@ import {
   MenuOutlined,
   BookOutlined,
   CloseOutlined,
-  PlayCircleOutlined
+  PlayCircleOutlined,
+  BellOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
 
@@ -98,6 +99,15 @@ const ReactHeader = (props) => {
       label: (
         <Link to="/watchlist" onClick={() => handleMenuClick('watchlist')}>
           Watchlist
+        </Link>
+      )
+    },
+    {
+      key: 'signals',
+      icon: <BellOutlined style={iconStyle} />,
+      label: (
+        <Link to="/signals" onClick={() => handleMenuClick('signals')}>
+          Trading Signals
         </Link>
       )
     },
