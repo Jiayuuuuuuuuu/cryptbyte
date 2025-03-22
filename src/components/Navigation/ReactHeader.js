@@ -188,15 +188,6 @@ const ReactHeader = (props) => {
                 />
               </Col>
             )}
-            {isMobile && (
-              <Col>
-                <Link to="/" onClick={() => handleMenuClick('home')}>
-                  <Button type="text" style={{ color: '#fff', fontSize: '16px', padding: '0 10px' }}>
-                    <HomeOutlined style={iconStyle} />Home
-                  </Button>
-                </Link>
-              </Col>
-            )}
           </Row>
         </Col>
         <Col>

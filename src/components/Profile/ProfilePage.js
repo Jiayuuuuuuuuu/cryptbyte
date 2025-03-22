@@ -142,7 +142,6 @@ class ProfilePage extends Component {
     const currentTier = this.getCurrentTier()
     const nextTierInfo = this.getNextTierProgress()
 
-    // Table columns for trading history
     const columns = [
       {
         title: 'Date & Time',
@@ -150,68 +149,92 @@ class ProfilePage extends Component {
         key: 'date'
       },
       {
-        title: 'Pair',
-        dataIndex: 'pair',
-        key: 'pair'
+        title: 'Module',
+        dataIndex: 'module',
+        key: 'module'
       },
       {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        render: type => (
-          <Tag color={type === 'BUY' ? 'green' : 'red'}>
-            {type}
+        title: 'Step Completed',
+        dataIndex: 'step',
+        key: 'step',
+        render: step => (
+          <Tag color={step === 'Assessment' ? 'green' : 'blue'}>
+            {step}
           </Tag>
         )
       },
       {
-        title: 'Price',
-        dataIndex: 'price',
-        key: 'price'
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: status => (
+          <Tag color={status === 'Completed' ? 'green' : 'orange'}>
+            {status}
+          </Tag>
+        )
       },
       {
-        title: 'Result',
-        dataIndex: 'result',
-        key: 'result',
-        render: result => (
-          <span style={{ color: parseFloat(result) >= 0 ? 'green' : 'red' }}>
-            {parseFloat(result) >= 0 ? <RiseOutlined /> : <FallOutlined />} {result}%
-          </span>
-        )
+        title: 'Score',
+        dataIndex: 'score',
+        key: 'score',
+        render: score => score ? `${score}%` : '-'
       },
       {
         title: 'Tokens',
         dataIndex: 'tokens',
-        key: 'tokens'
+        key: 'tokens',
+        render: tokens => (
+          <span>
+            <TrophyOutlined style={{ color: '#FFD700' }} /> {tokens}
+          </span>
+        )
       }
     ]
 
-    const data = [
+    const learningHistoryData = [
       {
         key: '1',
         date: '2025-03-18 10:15:47',
-        pair: 'BTC/USD',
-        type: 'BUY',
-        price: '$68,250.75',
-        result: '+2.3',
-        tokens: 15
+        module: 'Technical Analysis Fundamentals',
+        step: 'Assessment',
+        status: 'Completed',
+        score: 85,
+        tokens: 20
       },
       {
         key: '2',
         date: '2025-03-17 14:22:31',
-        pair: 'ETH/USD',
-        type: 'SELL',
-        price: '$3,482.18',
-        result: '-1.2',
-        tokens: 5
+        module: 'Technical Analysis Fundamentals',
+        step: 'Practical Exercise',
+        status: 'Completed',
+        score: null,
+        tokens: 15
       },
       {
         key: '3',
         date: '2025-03-16 09:45:12',
-        pair: 'SOL/USD',
-        type: 'BUY',
-        price: '$145.62',
-        result: '+4.8',
+        module: 'Technical Analysis Fundamentals',
+        step: 'Reading Material',
+        status: 'Completed',
+        score: null,
+        tokens: 10
+      },
+      {
+        key: '4',
+        date: '2025-03-15 11:30:05',
+        module: 'Technical Analysis Fundamentals',
+        step: 'Video Lesson',
+        status: 'Completed',
+        score: null,
+        tokens: 10
+      },
+      {
+        key: '5',
+        date: '2025-03-12 16:22:18',
+        module: 'Introduction to Crypto Trading',
+        step: 'Assessment',
+        status: 'Completed',
+        score: 92,
         tokens: 25
       }
     ]
@@ -304,7 +327,7 @@ class ProfilePage extends Component {
                   <TabPane tab='Learning History' key='1'>
                     <Table
                       columns={columns}
-                      dataSource={data}
+                      dataSource={learningHistoryData}
                       pagination={{ pageSize: 5 }}
                     />
                   </TabPane>
@@ -422,12 +445,13 @@ class ProfilePage extends Component {
                       />
                     </Col>
                     <Col span={12}>
-                      <Statistic
-                        title='Current Course'
-                        value='Technical Analysis
-                        '
-                        prefix={<RiseOutlined />}
-                      />
+                      <div>
+                        <div className="ant-statistic-title">Current Course</div>
+                        <div className="ant-statistic-content" style={{ display: 'flex', alignItems: 'center' }}>
+                          <span className="ant-statistic-content-prefix" style={{ marginRight: '8px' }}><RiseOutlined /></span>
+                          <span className="ant-statistic-content-value">Technical Analysis</span>
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </Card>

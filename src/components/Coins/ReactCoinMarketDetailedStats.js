@@ -9,7 +9,7 @@ export default class ReactCoinMarketDetailedStats extends Component {
     const { data, columns } = this.props
     return (
       <React.Fragment>
-        <Title level={3} style={titleStyle}>Market Data (detailed)</Title>
+        <Title level={3} style={titleStyle}>Market Data (Detailed)</Title>
         <Table
           style={tableStyle}
           rowKey = "currency"
