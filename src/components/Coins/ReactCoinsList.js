@@ -15,10 +15,7 @@ const ReactCoinsList = () => {
   const coins = useSelector(state => state.coins.data)
   const loading = useSelector(state => state.coins.loading)
   const error = useSelector(state => state.coins.error)
-
-  // Get the watchlist array from the nested state structure
   const watchlistState = useSelector(state => state.watchlist)
-  // Ensure we have a valid array, even if empty
   const watchlist = (watchlistState && Array.isArray(watchlistState.watchlist))
     ? watchlistState.watchlist
     : []
@@ -63,7 +60,6 @@ const ReactCoinsList = () => {
   }, [coins])
 
   const isInWatchlist = (coinId) => {
-    // First check if watchlist is a valid array
     if (!Array.isArray(watchlist)) {
       return false
     }
@@ -73,12 +69,10 @@ const ReactCoinsList = () => {
   const handleWatchlistToggle = (coin) => {
     try {
       if (isInWatchlist(coin.id)) {
-        // Remove from watchlist
         dispatch(removeFromWatchlist(coin.id))
         message.success(`${coin.name} removed from watchlist`)
       } else {
-        // Add to watchlist
-        dispatch(addToWatchlist({ ...coin })) // Create a clean copy of the coin object
+        dispatch(addToWatchlist({ ...coin }))
         message.success(`${coin.name} added to watchlist`)
       }
     } catch (error) {
@@ -95,33 +89,24 @@ const ReactCoinsList = () => {
     } else if (coin.current_price < previousPrice) {
       return <span style={{ color: 'red' }}><ArrowDownOutlined /> {coin.current_price} USD</span>
     } else {
-      // Equal price case
       return <span><MinusOutlined /> {coin.current_price} USD</span>
     }
   }
 
   // Trading signal generator function
   const getTradingSignal = (coin) => {
-    // Simple moving average crossover strategy for demonstration
-    // In a real scenario, you'd implement more sophisticated algorithms or fetch from an API
-
-    // Using price change percentages for different time periods to generate signals
     const priceChange24h = coin.price_change_percentage_24h || 0
-    const priceChange7d = coin.price_change_percentage_7d_in_currency || 0 // You'd need to add this data field
+    const priceChange7d = coin.price_change_percentage_7d_in_currency || 0
     const volume = coin.total_volume || 0
     const marketCap = coin.market_cap || 0
 
-    // Simulate some technical indicators
     const rsi = Math.min(100, Math.max(0, 50 + priceChange24h * 2 + Math.random() * 10))
     const macdSignal = priceChange24h > priceChange7d ? 1 : -1
 
-    // Volume-based indicators
     const volumeTrend = volume > 1000000 ? 1 : 0
 
-    // Market cap consideration
     const marketCapFactor = marketCap > 1000000000 ? 1 : 0
 
-    // Combine factors for a final signal score
     let signalScore = 0
     signalScore += priceChange24h > 5 ? 2 : priceChange24h > 2 ? 1 : priceChange24h < -5 ? -2 : priceChange24h < -2 ? -1 : 0
     signalScore += rsi > 70 ? -1 : rsi < 30 ? 1 : 0
@@ -129,7 +114,6 @@ const ReactCoinsList = () => {
     signalScore += volumeTrend
     signalScore += marketCapFactor
 
-    // Return signal based on score
     if (signalScore >= 3) {
       return { signal: 'STRONG BUY', color: 'green', icon: <RiseOutlined />, score: signalScore }
     } else if (signalScore === 2) {
@@ -147,7 +131,6 @@ const ReactCoinsList = () => {
     }
   }
 
-  // Generate trading signal tooltip content
   const getTradingSignalTooltip = (coin) => {
     const priceChange24h = coin.price_change_percentage_24h || 0
     const rsi = Math.min(100, Math.max(0, 50 + priceChange24h * 2 + Math.random() * 10))
@@ -371,7 +354,6 @@ const ReactCoinsList = () => {
     }
   ]
 
-  // Card view for coins
   const renderCardView = () => {
     return (
       <Row gutter={[16, 16]}>

@@ -1,4 +1,4 @@
-import { ADD_TO_WATCHLIST, REMOVE_FROM_WATCHLIST } from '../redux_actions'
+import { ADD_TO_WATCHLIST, REMOVE_FROM_WATCHLIST, UPDATE_WATCHLIST_DATA } from '../redux_actions'
 
 const initialState = {
   watchlist: JSON.parse(localStorage.getItem('watchlist')) ?? []
@@ -15,6 +15,10 @@ const watchlistReducer = (state = initialState, action) => {
     const updatedRemoveWatchlist = state.watchlist.filter(coin => coin.id !== action.payload)
     localStorage.setItem('watchlist', JSON.stringify(updatedRemoveWatchlist))
     return { ...state, watchlist: updatedRemoveWatchlist }
+
+  case UPDATE_WATCHLIST_DATA:
+    localStorage.setItem('watchlist', JSON.stringify(action.payload))
+    return { ...state, watchlist: action.payload }
 
   default:
     return state
