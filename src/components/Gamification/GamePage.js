@@ -29,6 +29,9 @@ import { setHeaderMenuItem } from '../../redux_actions'
 import { addTokens } from '../../redux_actions/userActions'
 import TradingChallenge from './TradingChallenge'
 import ProgressTracker from './ProgressTracker'
+import bitcoinImage from '../../images/charts/bitcoin.png'
+import ethereumImage from '../../images/charts/ethereum.jpg'
+import altcoinImage from '../../images/charts/altcoin.jpg'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
@@ -64,7 +67,7 @@ const GamePage = (props) => {
       difficulty: 'Easy',
       tokens: 15,
       timeFrame: '4h',
-      image: 'https://via.placeholder.com/400x200',
+      image: bitcoinImage,
       chartData: {
         labels: ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM'],
         prices: [45200, 45500, 45300, 45150, 45050, 44900]
@@ -79,7 +82,7 @@ const GamePage = (props) => {
       difficulty: 'Medium',
       tokens: 25,
       timeFrame: '1d',
-      image: 'https://via.placeholder.com/400x200',
+      image: ethereumImage,
       chartData: {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         prices: [3200, 3150, 3050, 2950, 2900, 2875]
@@ -94,7 +97,7 @@ const GamePage = (props) => {
       difficulty: 'Hard',
       tokens: 40,
       timeFrame: '12h',
-      image: 'https://via.placeholder.com/400x200',
+      image: altcoinImage,
       chartData: {
         labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
         prices: [1.2, 1.35, 1.32, 1.36, 1.39, 1.41]
