@@ -23,14 +23,12 @@ const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 const { Panel } = Collapse
 
-// Mock data for the hero section
 const marketTrends = [
   { name: 'BTC', price: '$69,420', change: '+2.5%', sentiment: 'Bullish' },
   { name: 'ETH', price: '$3,950', change: '+1.8%', sentiment: 'Bullish' },
   { name: 'SOL', price: '$148.50', change: '-0.7%', sentiment: 'Neutral' }
 ]
 
-// Mock data for features
 const features = [
   {
     icon: <LineChartOutlined style={{ fontSize: 32, color: '#1890ff' }} />,
@@ -64,7 +62,6 @@ const features = [
   }
 ]
 
-// Mock data for recent signals
 const recentSignals = [
   {
     pair: 'BTC/USD',
@@ -86,7 +83,6 @@ const recentSignals = [
   }
 ]
 
-// Mock data for recent whale alerts
 const whaleAlerts = [
   {
     asset: 'BTC',
@@ -108,7 +104,6 @@ const whaleAlerts = [
   }
 ]
 
-// FAQ data
 const faqs = [
   {
     question: 'How does the AI sentiment analysis work?',
@@ -373,9 +368,11 @@ class ReactHome extends Component {
                   Complete courses, execute successful trades, and maintain daily streaks to earn tokens.
                   Unlock premium features and climb the ranks from Bronze to Premium tier.
                 </Paragraph>
-                <Button type="primary" style={{ background: '#fa8c16', borderColor: '#fa8c16' }}>
-                  Explore Now
-                </Button>
+                <Link to="/game">
+                  <Button type="primary" style={{ background: '#fa8c16', borderColor: '#fa8c16' }}>
+                    Explore Now
+                  </Button>
+                </Link>
               </Col>
               <Col xs={24} md={8} style={{ textAlign: 'center' }}>
                 <TrophyOutlined style={{ fontSize: 100, color: '#fa8c16' }} />
