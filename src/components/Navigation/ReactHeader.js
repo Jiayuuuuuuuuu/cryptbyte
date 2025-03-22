@@ -112,15 +112,6 @@ const ReactHeader = (props) => {
       )
     },
     {
-      key: 'rewards',
-      icon: <TrophyOutlined style={iconStyle} />,
-      label: (
-        <Link to="/rewards" onClick={() => handleMenuClick('rewards')}>
-          Rewards
-        </Link>
-      )
-    },
-    {
       key: 'course',
       icon: <BookOutlined style={iconStyle} />,
       label: (
@@ -135,6 +126,15 @@ const ReactHeader = (props) => {
       label: (
         <Link to="/game" onClick={() => handleMenuClick('gamification')}>
           Gamification
+        </Link>
+      )
+    },
+    {
+      key: 'rewards',
+      icon: <TrophyOutlined style={iconStyle} />,
+      label: (
+        <Link to="/rewards" onClick={() => handleMenuClick('rewards')}>
+          Rewards
         </Link>
       )
     }
