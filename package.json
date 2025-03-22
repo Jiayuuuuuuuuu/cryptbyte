@@ -2,7 +2,7 @@
   "name": "coin-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://danielc92.github.io/react-crypto-app",
+  "homepage": "http://localhost:3001/cryptbyte",
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "antd": "^4.21.7",
