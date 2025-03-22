@@ -17,17 +17,18 @@ import {
   Badge
 } from 'antd'
 import {
-  TrophyOutlined,
-  RiseOutlined,
   FallOutlined,
-  ClockCircleOutlined,
   DollarOutlined,
   LineChartOutlined,
   HistoryOutlined,
   LockOutlined,
   UnlockOutlined,
   UpCircleOutlined,
-  UserOutlined
+  UserOutlined,
+  BookOutlined,
+  TrophyOutlined,
+  ClockCircleOutlined,
+  RiseOutlined
 } from '@ant-design/icons'
 import { setHeaderMenuItem } from '../../redux_actions'
 
@@ -395,48 +396,40 @@ class ProfilePage extends Component {
                   />
                 </Card>
 
-                <Card title='Trading Stats' bordered={false} style={{ marginTop: 24 }}>
+                <Card title='Learning Progress' bordered={false} style={{ marginTop: 24 }}>
                   <Row gutter={[16, 16]}>
                     <Col span={12}>
                       <Statistic
-                        title='Average Profit'
-                        value={this.state.tradingStats.averageProfit + '%'}
+                        title='Courses Completed'
+                        value='1/3'
                         valueStyle={{ color: '#52c41a' }}
-                        prefix={<RiseOutlined />}
+                        prefix={<BookOutlined />}
                       />
                     </Col>
                     <Col span={12}>
                       <Statistic
-                        title='Biggest Win'
-                        value={this.state.tradingStats.biggestWin + '%'}
+                        title='Achievement Rate'
+                        value='85%'
                         valueStyle={{ color: '#52c41a' }}
-                        prefix={<UpCircleOutlined />}
+                        prefix={<TrophyOutlined />}
                       />
                     </Col>
                     <Col span={12}>
                       <Statistic
-                        title='Avg Hold Time'
-                        value={this.state.tradingStats.averageHoldTime}
+                        title='Study Time'
+                        value='12.5 hours'
                         prefix={<ClockCircleOutlined />}
                       />
                     </Col>
                     <Col span={12}>
                       <Statistic
-                        title='Trading Balance'
-                        value='$12,845.56'
-                        prefix={<DollarOutlined />}
+                        title='Current Course'
+                        value='Technical Analysis
+                        '
+                        prefix={<RiseOutlined />}
                       />
                     </Col>
                   </Row>
-                </Card>
-
-                <Card style={{ marginTop: 24 }}>
-                  <Button type='primary' block>
-                    Trade Now
-                  </Button>
-                  <Button style={{ marginTop: 16 }} block>
-                    View Leaderboard
-                  </Button>
                 </Card>
               </Col>
             </Row>
