@@ -296,6 +296,15 @@ class ProfilePage extends Component {
                           />
                         </Col>
                       </Row>
+                      <Button
+                        type="primary"
+                        icon={<TrophyOutlined />}
+                        size="large"
+                        style={{ marginTop: 16 }}
+                        onClick={() => this.props.history.push('/rewards')}
+                      >
+                        View Rewards
+                      </Button>
 
                       {currentTier !== 'premium' && (
                         <div style={{ marginTop: 24 }}>

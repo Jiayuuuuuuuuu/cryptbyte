@@ -132,15 +132,6 @@ const ReactHeader = (props) => {
       )
     },
     {
-      key: 'rewards',
-      icon: <TrophyOutlined style={iconStyle} />,
-      label: (
-        <Link to="/rewards" onClick={() => handleMenuClick('rewards')}>
-          Rewards
-        </Link>
-      )
-    },
-    {
       key: 'community',
       icon: <TeamOutlined style={iconStyle} />,
       label: (

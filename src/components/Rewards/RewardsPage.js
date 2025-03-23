@@ -25,7 +25,7 @@ import {
   ClockCircleOutlined,
   RocketOutlined,
   LockOutlined,
-  UnlockOutlined,
+  ArrowLeftOutlined,
   StarOutlined,
   FireOutlined,
   ThunderboltOutlined
@@ -173,7 +173,13 @@ class RewardsPage extends Component {
       <Layout className="layout">
         <Content style={{ padding: '0 50px', marginTop: 20 }}>
           <div className="site-layout-content" style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            {/* Top Section - Tokens & Streak */}
+            <Button
+              icon={<ArrowLeftOutlined />}
+              onClick={() => this.props.history.push('/profile')}
+              style={{ marginBottom: 16 }}
+            >
+              Back to Profile
+            </Button>
             <Row gutter={[24, 24]}>
               <Col xs={24} md={16}>
                 <Card bordered={false}>
