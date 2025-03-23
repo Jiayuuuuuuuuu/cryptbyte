@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { fetchCoinDetails, setSiderMenuItem, fetchCoinMarketDetails } from '../../redux_actions'
-import { Layout, Tag, Skeleton, Typography, Card, Alert, Tabs, Row, Col, Tooltip, Statistic, Space, Divider, Button } from 'antd'
+import { Layout, Tag, Skeleton, Typography, Card, Alert, Tabs, Row, Col, Tooltip, Statistic, Space, Divider, Button, Image } from 'antd'
 import { contentStyle, titleStyle } from '../../styles'
 import { Line } from 'react-chartjs-2'
 import { market_processed_table_keys, market_stat_keys } from '../../constants'
@@ -19,10 +19,39 @@ import {
   ArrowDownOutlined,
   EyeOutlined
 } from '@ant-design/icons'
+import image1H from '../../images/charts/1H.png'
+import image4H from '../../images/charts/4H.png'
+import image15M from '../../images/charts/15M.png'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 const { TabPane } = Tabs
+
+const BitcoinStaticChart = ({ timeFrame }) => {
+  const getImagePath = () => {
+    switch (timeFrame) {
+    case '10min':
+      return image15M
+    case '1H':
+      return image1H
+    case '4H':
+      return image4H
+    default:
+      return image1H
+    }
+  }
+
+  return (
+    <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Image
+        src={getImagePath()}
+        alt={`Bitcoin Price Chart (${timeFrame})`}
+        style={{ maxHeight: '100%', maxWidth: '100%' }}
+        preview={false}
+      />
+    </div>
+  )
+}
 
 const PriceChart = ({ data, loading, chartOptions, timeFrame }) => {
   if (loading) return <Skeleton active />
@@ -85,7 +114,6 @@ const ReactCoinsDetail = (props) => {
     setSiderMenuItem('coin-detail')
   }, [match.params, fetchCoinDetails, fetchCoinMarketDetails, setSiderMenuItem])
 
-  // Helper function to format chart data with appropriate date filtering
   const getChartData = (loading, data, key, title, colour, timeFrame) => {
     if (loading || !data || !data[key]) {
       return {
@@ -215,7 +243,6 @@ const ReactCoinsDetail = (props) => {
       color = 'red'
     }
 
-    // Technical signals
     const signals = []
     if (ma7 > ma20) {
       signals.push('Golden Cross (Short-term MA above Long-term MA): Bullish')
@@ -223,7 +250,6 @@ const ReactCoinsDetail = (props) => {
       signals.push('Death Cross (Short-term MA below Long-term MA): Bearish')
     }
 
-    // Calculate resistance and support
     const supportLevel = Math.min(...prices.slice(-20)) * 0.98
     const resistanceLevel = Math.max(...prices.slice(-20)) * 1.02
 
@@ -339,7 +365,9 @@ const ReactCoinsDetail = (props) => {
   const marketCapsLoading = !coinMarketKeys.includes('market_caps')
   const totalVolumesLoading = !coinMarketKeys.includes('total_volumes')
 
-  // Generate chart data for Chart.js with timeFrame
+  // Check if current coin is Bitcoin
+  const isBitcoin = !loading && data.id === 'bitcoin'
+
   const chartPricesData = getChartData(
     pricesLoading,
     chart_data,
@@ -367,12 +395,10 @@ const ReactCoinsDetail = (props) => {
     timeFrame
   )
 
-  // Get price analysis
   const priceAnalysis = !pricesLoading && chart_data.prices
     ? analyzePriceTrend(chart_data.prices)
     : null
 
-  // Mock trading signal logic - would be expanded in a real app
   const getTradingSignals = (priceAnalysis) => {
     if (!priceAnalysis) return []
 
@@ -409,7 +435,6 @@ const ReactCoinsDetail = (props) => {
 
   const tradingSignals = priceAnalysis ? getTradingSignals(priceAnalysis) : []
 
-  // Financial news with sentiment
   const mockNews = [
     {
       title: `${data.name} Shows Strong Momentum in DeFi Applications`,
@@ -437,7 +462,6 @@ const ReactCoinsDetail = (props) => {
     }
   ]
 
-  // Trading volume analysis
   const getVolumeAnalysis = () => {
     if (totalVolumesLoading || !chart_data.total_volumes) return null
 
@@ -471,6 +495,10 @@ const ReactCoinsDetail = (props) => {
   const volumeAnalysis = getVolumeAnalysis()
 
   const renderActiveChart = () => {
+    if (isBitcoin && ['10min', '1H', '4H'].includes(timeFrame) && selectedChartType === 'price') {
+      return <BitcoinStaticChart timeFrame={timeFrame} />
+    }
+
     switch (selectedChartType) {
     case 'price':
       return <PriceChart data={chartPricesData} loading={pricesLoading} chartOptions={chartOptions} timeFrame={timeFrame} />
