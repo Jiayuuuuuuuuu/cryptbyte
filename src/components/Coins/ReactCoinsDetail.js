@@ -42,11 +42,11 @@ const BitcoinStaticChart = ({ timeFrame }) => {
   }
 
   return (
-    <div style={{ height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ height: '1500px', position: 'relative', display: 'fixed', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
       <Image
         src={getImagePath()}
         alt={`Bitcoin Price Chart (${timeFrame})`}
-        style={{ maxHeight: '100%', maxWidth: '100%' }}
+        style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
         preview={false}
       />
     </div>
