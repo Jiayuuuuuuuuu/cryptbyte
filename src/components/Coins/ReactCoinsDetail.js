@@ -395,42 +395,38 @@ const ReactCoinsDetail = (props) => {
     timeFrame
   )
 
-  const priceAnalysis = !pricesLoading && chart_data.prices
-    ? analyzePriceTrend(chart_data.prices)
-    : null
+  // Mock price analysis for demo
+  const priceAnalysis = {
+    trend: 'Moderately Bullish',
+    strength: 'Low',
+    change: '1.17',
+    volatility: '0.40',
+    recommendation: 'The price is showing positive momentum, though the uptrend is modest.',
+    color: 'green',
+    supportLevel: '82146.55',
+    resistanceLevel: '86852.72',
+    movingAverages: {
+      ma7: '84320.45',
+      ma20: '82180.34'
+    }
+  }
 
   const getTradingSignals = (priceAnalysis) => {
-    if (!priceAnalysis) return []
-
-    const signals = []
-    if (parseFloat(priceAnalysis.change) > 5 && priceAnalysis.volatility < 3) {
-      signals.push({
-        name: 'Momentum Buy',
+    // Always return some sample signals for demo purposes
+    return [
+      {
+        name: 'BTC/USD Buy Signal',
         type: 'buy',
-        strength: 'Medium',
-        description: 'Strong uptrend with relatively low volatility'
-      })
-    }
-
-    if (parseFloat(priceAnalysis.change) < -5) {
-      signals.push({
-        name: 'Oversold Bounce',
+        strength: 'High',
+        description: 'Price: $83, 000 | Target: $87,000 | Stop: $80,000 | Confidence: 85%'
+      },
+      {
+        name: 'Support Bounce',
         type: 'watch',
         strength: 'Low',
-        description: 'Price dropped significantly, watch for reversal signals'
-      })
-    }
-
-    if (parseFloat(priceAnalysis.volatility) > 5) {
-      signals.push({
-        name: 'Volatility Warning',
-        type: 'caution',
-        strength: 'High',
-        description: 'Increased volatility detected, consider reducing position size'
-      })
-    }
-
-    return signals
+        description: 'Price bounced off support level, watch for confirmation of uptrend'
+      }
+    ]
   }
 
   const tradingSignals = priceAnalysis ? getTradingSignals(priceAnalysis) : []
@@ -463,32 +459,11 @@ const ReactCoinsDetail = (props) => {
   ]
 
   const getVolumeAnalysis = () => {
-    if (totalVolumesLoading || !chart_data.total_volumes) return null
-
-    const volumes = chart_data.total_volumes.map(item => item[1])
-    const avgVolume = volumes.reduce((sum, vol) => sum + vol, 0) / volumes.length
-    const latestVolume = volumes[volumes.length - 1]
-    const volumeChange = ((latestVolume - avgVolume) / avgVolume) * 100
-
-    let volumeTrend, volumeDescription
-    if (volumeChange > 50) {
-      volumeTrend = 'Significantly Higher'
-      volumeDescription = 'Unusual trading activity detected. Could indicate strong market interest or news impact.'
-    } else if (volumeChange > 20) {
-      volumeTrend = 'Higher than Average'
-      volumeDescription = 'Increased trading activity compared to average. May indicate growing interest.'
-    } else if (volumeChange >= -20) {
-      volumeTrend = 'Normal Range'
-      volumeDescription = 'Trading volume is within normal range.'
-    } else {
-      volumeTrend = 'Lower than Average'
-      volumeDescription = 'Below average trading activity. May indicate decreasing market interest.'
-    }
-
+    // Return hard-coded analysis for demo purposes
     return {
-      trend: volumeTrend,
-      change: volumeChange.toFixed(2),
-      description: volumeDescription
+      trend: 'Lower than Average',
+      change: '-50.75',
+      description: 'Below average trading activity. May indicate decreasing market interest.'
     }
   }
 
@@ -684,7 +659,7 @@ const ReactCoinsDetail = (props) => {
                         {tradingSignals.length > 0
                           ? (
                             tradingSignals.map((signal, index) => (
-                              <div key={index} style={{ marginBottom: '8px' }}>
+                              <div key={index} style={{ marginBottom: '12px' }}>
                                 <Space>
                                   <Tag color={getSignalTypeColor(signal.type)}>{signal.type.toUpperCase()}</Tag>
                                   <Text strong>{signal.name}</Text>
