@@ -13,7 +13,7 @@ import {
   Col,
   message
 } from 'antd'
-import { TagOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons'
+import { TagOutlined, FileTextOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import { createPost } from '../../redux_actions'
 
 const { Title, Text } = Typography
@@ -59,6 +59,13 @@ const CreatePost = ({ createPost, user }) => {
     <Layout style={{ padding: '0 24px 24px', minHeight: 'calc(100vh - 64px - 70px)' }}>
       <Row justify="center">
         <Col xs={24} sm={24} md={16} lg={12}>
+          <Button
+            icon={<ArrowLeftOutlined />}
+            onClick={() => history.push('/community')}
+            style={{ marginTop: 16 }}
+          >
+            Back
+          </Button>
           <Title level={2} style={{ marginTop: 20, textAlign: 'center' }}>
             Create New Post
           </Title>

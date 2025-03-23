@@ -17,7 +17,7 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 
-const { Title, Text, Paragraph } = Typography
+const { Text, Paragraph } = Typography
 
 const CommunityPost = ({ post, showFull = false }) => {
   const getTimeAgo = (dateString) => {

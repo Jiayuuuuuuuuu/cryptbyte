@@ -511,7 +511,6 @@ class RewardsPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // Mock user data - in a real app, this would come from your Redux store
     user: {
       name: 'Trader123',
       tokens: 780,

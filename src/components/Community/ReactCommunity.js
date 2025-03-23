@@ -32,7 +32,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons'
 import { getCommunityPosts, createPost } from '../../redux_actions'
-import CommunityPost from './CommunityPost' // Add this line
+import CommunityPost from './CommunityPost'
 
 const { Title, Text, Paragraph } = Typography
 const { TabPane } = Tabs
