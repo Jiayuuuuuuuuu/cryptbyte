@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Layout, Card, Table, Badge, Tabs, Button, Alert, notification, Switch, Tooltip, Progress, Empty, Tag, Space, Typography, Statistic, Row, Col } from 'antd'
+import { Layout, Card, Table, Badge, Tabs, Button, Alert, notification, Switch, Tooltip, Progress, Empty, Tag, Space, Typography, Statistic, Row, Col, Slider } from 'antd'
 import { RiseOutlined, FallOutlined, BellOutlined, BellFilled, InfoCircleOutlined, CheckCircleOutlined, CloseCircleOutlined, HistoryOutlined, LineChartOutlined, FireOutlined, ThunderboltOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import { updateWatchlistData } from '../../redux_actions'
-import { Pie } from 'recharts'
 
 const { Content } = Layout
 const { TabPane } = Tabs
@@ -20,6 +19,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
     profitableSignals: 0
   })
   const [loading, setLoading] = useState(true)
+  const [sharpeRatioCriteria, setSharpeRatioCriteria] = useState(1.8)
 
   // Calculate stats from signal history
   useEffect(() => {
@@ -43,7 +43,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
   useEffect(() => {
     setLoading(true)
 
-    // In a real app, this would come from WebSocket or API
     const mockSignalGeneration = () => {
       const newSignals = []
 
@@ -62,7 +61,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         // Randomly determine if we should generate a signal
         if (Math.random() > 0.5) return
 
-        // Generate metrics based on your success criteria
         const sharpeRatio = (Math.random() * 3).toFixed(2)
         const maxDrawdown = -(Math.random() * 50).toFixed(2)
         const tradeFrequency = (Math.random() * 10).toFixed(2)
@@ -71,7 +69,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
 
         // Create signal if criteria are met
         if (
-          parseFloat(sharpeRatio) >= 1.8 &&
+          parseFloat(sharpeRatio) >= sharpeRatioCriteria &&
           parseFloat(maxDrawdown) >= -40 &&
           parseFloat(tradeFrequency) >= 3
         ) {
@@ -119,14 +117,13 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
       setLoading(false)
     }
 
-    // Initial signal generation
     mockSignalGeneration()
 
     // Set up interval to periodically generate signals (simulating real-time)
     const intervalId = setInterval(mockSignalGeneration, 15000) // Every 15 seconds
 
     return () => clearInterval(intervalId)
-  }, [watchlist, notificationsEnabled])
+  }, [watchlist, notificationsEnabled, sharpeRatioCriteria])
 
   // Handle marking a signal as executed
   const handleExecuteSignal = (signalId) => {
@@ -492,6 +489,35 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
           </Col>
         </Row>
 
+        <Card style={{ marginBottom: '24px' }}>
+          <Space direction="vertical" style={{ width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text strong>Signal Generation Criteria</Text>
+              <Tooltip title="Adjust the minimum Sharpe Ratio required to generate trading signals">
+                <InfoCircleOutlined />
+              </Tooltip>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <div style={{ width: '160px' }}>
+                <Text>Sharpe Ratio (≥ {sharpeRatioCriteria})</Text>
+              </div>
+              <div style={{ flex: 1 }}>
+                <Slider
+                  min={1.8}
+                  max={3.5}
+                  step={0.1}
+                  value={sharpeRatioCriteria}
+                  onChange={(value) => setSharpeRatioCriteria(value)}
+                  tooltipVisible
+                  tooltipPlacement="top"
+                  tooltipFormatter={value => `${value}`}
+                />
+              </div>
+            </div>
+          </Space>
+        </Card>
+
         <Tabs defaultActiveKey="active" type="card">
           <TabPane
             tab={
@@ -557,7 +583,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         }
         description={
           <ul style={{ margin: '0 0 0 20px', padding: 0 }}>
-            <li><Text strong>Sharpe Ratio (SR) ≥ 1.8</Text> - Ensures risk-adjusted returns are sufficiently high</li>
+            <li><Text strong>Sharpe Ratio (SR) ≥ {sharpeRatioCriteria}</Text> - Ensures risk-adjusted returns are sufficiently high</li>
             <li><Text strong>Maximum Drawdown (MDD) ≥ -40%</Text> - Limits downside risk exposure</li>
             <li><Text strong>Trade Frequency ≥ 3%</Text> per data row - Ensures sufficient trading activity</li>
           </ul>
