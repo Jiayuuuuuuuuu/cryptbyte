@@ -42,7 +42,7 @@ const BitcoinStaticChart = ({ timeFrame }) => {
   }
 
   return (
-    <div style={{ height: '1500px', position: 'relative', display: 'fixed', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
+    <div style={{ height: '100%', position: 'relative', display: 'fixed', justifyContent: 'center', alignItems: 'center' }}>
       <Image
         src={getImagePath()}
         alt={`Bitcoin Price Chart (${timeFrame})`}
@@ -612,7 +612,7 @@ const ReactCoinsDetail = (props) => {
                     </Space>
                   </Space>
                 </div>
-                <div style={{ height: '350px' }}>
+                <div style={{ height: '100%' }}>
                   {renderActiveChart()}
                 </div>
               </Card>

@@ -67,7 +67,7 @@ const tierBenefits = {
     'All Silver benefits',
     'AI trade suggestions',
     'Unlimited simulated trades',
-    'Priority support',
+    'Advanced educational content',
     'Real-time alerts',
     'Custom indicators'
   ],
@@ -399,8 +399,8 @@ class RewardsPage extends Component {
                                         {tier === 'silver'
                                           ? '500 tokens required'
                                           : tier === 'gold'
-                                            ? '1,500 tokens required'
-                                            : '5,000 tokens required'}
+                                            ? 'RM 10/month'
+                                            : 'RM 25/month'}
                                       </Text>
                                     </div>
                                   </div>
