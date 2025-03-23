@@ -36,7 +36,6 @@ const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 const { TabPane } = Tabs
 
-// Mock tier data
 const tierData = {
   bronze: {
     name: 'Bronze',
@@ -74,13 +73,13 @@ class ProfilePage extends Component {
         { id: 3, type: 'lesson', tokens: 20, date: '2025-03-17 16:22:05', description: 'Completed Advanced Technical Analysis' },
         { id: 4, type: 'streak', tokens: 50, date: '2025-03-16 09:05:33', description: '10-day login streak bonus' }
       ],
-      tradingStats: {
-        winRate: 64,
-        totalTrades: 37,
-        averageProfit: 2.8,
-        biggestWin: 12.5,
-        biggestLoss: -4.2,
-        averageHoldTime: '3.2 hours'
+      learningStats: {
+        completionRate: 64,
+        totalModules: 37,
+        averageScore: 82.8,
+        highestScore: 95.5,
+        lowestScore: 74.2,
+        averageStudyTime: '3.2 hours'
       },
       achievements: [
         { name: 'First Trade', completed: true, reward: 50 },
@@ -93,11 +92,9 @@ class ProfilePage extends Component {
   }
 
   componentDidMount () {
-    // Set the current menu item when component mounts
     this.props.setHeaderMenuItem('profile')
   }
 
-  // Determine the current tier based on tokens
   getCurrentTier () {
     const { tokens } = this.props.user
     if (tokens >= tierData.premium.requiredTokens) return 'premium'
@@ -106,7 +103,6 @@ class ProfilePage extends Component {
     return 'bronze'
   }
 
-  // Calculate progress to the next tier
   getNextTierProgress () {
     const { tokens } = this.props.user
     const currentTier = this.getCurrentTier()
@@ -133,7 +129,7 @@ class ProfilePage extends Component {
 
     return {
       nextTier,
-      progress: Math.min(Math.max(progress, 0), 100) // Ensure between 0-100
+      progress: Math.min(Math.max(progress, 0), 100)
     }
   }
 
@@ -249,7 +245,7 @@ class ProfilePage extends Component {
                   <Row gutter={24} align='middle'>
                     <Col xs={24} md={6}>
                       <div style={{ textAlign: 'center' }}>
-                        <Badge count={<TrophyOutlined style={{ color: tierData[currentTier].color }} />}>
+                        <Badge>
                           <div style={{
                             width: 100,
                             height: 100,
@@ -286,16 +282,16 @@ class ProfilePage extends Component {
                         </Col>
                         <Col xs={24} sm={8}>
                           <Statistic
-                            title='Trading Win Rate'
-                            value={this.state.tradingStats.winRate + '%'}
+                            title='Learning Progress'
+                            value={this.state.learningStats.completionRate + '%'}
                             prefix={<LineChartOutlined />}
                             valueStyle={{ color: '#52c41a' }}
                           />
                         </Col>
                         <Col xs={24} sm={8}>
                           <Statistic
-                            title='Total Trades'
-                            value={this.state.tradingStats.totalTrades}
+                            title='Learning Streak'
+                            value={user.streak}
                             prefix={<HistoryOutlined />}
                           />
                         </Col>
@@ -308,7 +304,7 @@ class ProfilePage extends Component {
                             <Tag color={tierData[nextTierInfo.nextTier].color}>
                               {tierData[nextTierInfo.nextTier].name}
                             </Tag>
-                            <Text> - {tierData[nextTierInfo.nextTier].requiredTokens - user.tokens} more tokens needed</Text>
+                            <Text> {tierData[nextTierInfo.nextTier].requiredTokens - user.tokens} more tokens needed</Text>
                           </Paragraph>
                           <Progress
                             percent={nextTierInfo.progress}
@@ -466,7 +462,6 @@ class ProfilePage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    // Mock user data - in a real app, this would come from your Redux store
     user: {
       name: 'Trader123',
       tokens: 780,
