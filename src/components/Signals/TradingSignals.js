@@ -30,11 +30,22 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         (signal.signalType === 'sell' && Math.random() > 0.3)
       )
 
+      const hmmSignals = executed.filter(s => s.strategy.includes('HMM'))
+      const cnnSignals = executed.filter(s => s.strategy.includes('CNN'))
+      const rlSignals = executed.filter(s => s.strategy.includes('RL'))
+      const hybridSignals = executed.filter(s => s.strategy.includes('Hybrid') || s.strategy.includes('Adaptive'))
+
       setPerformanceData({
         totalSignals: signalHistory.length,
         successRate: executed.length ? Math.round((profitable.length / executed.length) * 100) : 0,
         avgConfidence: Math.round(signalHistory.reduce((acc, signal) => acc + parseFloat(signal.confidence), 0) / signalHistory.length),
-        profitableSignals: profitable.length
+        profitableSignals: profitable.length,
+        modelPerformance: {
+          hmm: hmmSignals.length ? Math.round((hmmSignals.filter(s => profitable.includes(s)).length / hmmSignals.length) * 100) : 0,
+          cnn: cnnSignals.length ? Math.round((cnnSignals.filter(s => profitable.includes(s)).length / cnnSignals.length) * 100) : 0,
+          rl: rlSignals.length ? Math.round((rlSignals.filter(s => profitable.includes(s)).length / rlSignals.length) * 100) : 0,
+          hybrid: hybridSignals.length ? Math.round((hybridSignals.filter(s => profitable.includes(s)).length / hybridSignals.length) * 100) : 0
+        }
       })
     }
   }, [signalHistory])
@@ -65,7 +76,38 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         const maxDrawdown = -(Math.random() * 50).toFixed(2)
         const tradeFrequency = (Math.random() * 10).toFixed(2)
         const timeframe = ['1h', '4h', '1d', '1w'][Math.floor(Math.random() * 4)]
-        const strategy = ['Moving Average', 'RSI', 'MACD', 'Bollinger Bands'][Math.floor(Math.random() * 4)]
+        const strategies = [
+          'HMM Trend Detection',
+          'CNN Pattern Recognition',
+          'RL Optimized Entry/Exit',
+          'HMM-CNN Hybrid',
+          'CNN-RL Adaptive',
+          'HMM-RL Predictive',
+          'Full Hybrid (HMM-CNN-RL)'
+        ]
+        const strategy = strategies[Math.floor(Math.random() * strategies.length)]
+
+        // Generate model weights based on strategy
+        const modelWeight = strategy.includes('Full Hybrid')
+          ? { hmm: 0.33, cnn: 0.33, rl: 0.34 }
+          : strategy.includes('HMM-CNN')
+            ? { hmm: 0.5, cnn: 0.5, rl: 0 }
+            : strategy.includes('CNN-RL')
+              ? { hmm: 0, cnn: 0.5, rl: 0.5 }
+              : strategy.includes('HMM-RL')
+                ? { hmm: 0.5, cnn: 0, rl: 0.5 }
+                : strategy.includes('HMM')
+                  ? { hmm: 1, cnn: 0, rl: 0 }
+                  : strategy.includes('CNN')
+                    ? { hmm: 0, cnn: 1, rl: 0 }
+                    : { hmm: 0, cnn: 0, rl: 1 }
+
+        // Generate model confidence scores
+        const modelConfidence = {
+          hmm: Math.round(Math.random() * 100),
+          cnn: Math.round(Math.random() * 100),
+          rl: Math.round(Math.random() * 100)
+        }
 
         // Create signal if criteria are met
         if (
@@ -93,6 +135,8 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
             potentialRoi,
             timeframe,
             strategy,
+            modelConfidence,
+            modelWeight,
             timestamp: new Date().toISOString(),
             isActive: true,
             expiresAt: new Date(Date.now() + 3600000).toISOString() // Expires in 1 hour
@@ -218,8 +262,41 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
       title: 'Strategy',
       dataIndex: 'strategy',
       key: 'strategy',
-      render: (strategy) => (
-        <Tag color="purple">{strategy}</Tag>
+      render: (strategy, record) => (
+        <Space direction="vertical" size={0}>
+          <Tag color={
+            strategy.includes('Full Hybrid')
+              ? 'magenta'
+              : strategy.includes('Hybrid') || strategy.includes('Adaptive')
+                ? 'purple'
+                : strategy.includes('HMM')
+                  ? 'blue'
+                  : strategy.includes('CNN')
+                    ? 'geekblue'
+                    : 'green'
+          }>{strategy}</Tag>
+          {record.modelWeight && (
+            <Tooltip title="Model Weight Distribution">
+              <div style={{ display: 'flex', fontSize: '11px', marginTop: '4px' }}>
+                {record.modelWeight.hmm > 0 && (
+                  <div style={{ marginRight: '4px' }}>
+                    HMM: {Math.round(record.modelWeight.hmm * 100)}%
+                  </div>
+                )}
+                {record.modelWeight.cnn > 0 && (
+                  <div style={{ marginRight: '4px' }}>
+                    CNN: {Math.round(record.modelWeight.cnn * 100)}%
+                  </div>
+                )}
+                {record.modelWeight.rl > 0 && (
+                  <div>
+                    RL: {Math.round(record.modelWeight.rl * 100)}%
+                  </div>
+                )}
+              </div>
+            </Tooltip>
+          )}
+        </Space>
       )
     },
     {
@@ -306,6 +383,53 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
             Dismiss
           </Button>
         </Space>
+      )
+    },
+    {
+      title: 'Model Confidence',
+      key: 'modelConfidence',
+      render: (_, record) => (
+        record.modelConfidence
+          ? (
+            <Tooltip title="Individual model confidence scores">
+              <Space direction="vertical" size={0}>
+                {record.modelWeight.hmm > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ width: '40px', fontSize: '12px' }}>HMM:</span>
+                    <Progress
+                      percent={record.modelConfidence.hmm}
+                      size="small"
+                      status={record.modelConfidence.hmm >= 70 ? 'success' : 'normal'}
+                      style={{ width: 70, marginLeft: '5px' }}
+                    />
+                  </div>
+                )}
+                {record.modelWeight.cnn > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ width: '40px', fontSize: '12px' }}>CNN:</span>
+                    <Progress
+                      percent={record.modelConfidence.cnn}
+                      size="small"
+                      status={record.modelConfidence.cnn >= 70 ? 'success' : 'normal'}
+                      style={{ width: 70, marginLeft: '5px' }}
+                    />
+                  </div>
+                )}
+                {record.modelWeight.rl > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ width: '40px', fontSize: '12px' }}>RL:</span>
+                    <Progress
+                      percent={record.modelConfidence.rl}
+                      size="small"
+                      status={record.modelConfidence.rl >= 70 ? 'success' : 'normal'}
+                      style={{ width: 70, marginLeft: '5px' }}
+                    />
+                  </div>
+                )}
+              </Space>
+            </Tooltip>
+          )
+          : <span>-</span>
       )
     }
   ]
@@ -487,6 +611,33 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
+          <Col span={8} style={{ marginTop: 20 }}>
+            <Card bordered={false}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Statistic
+                  title="HMM Model Success"
+                  value={performanceData.modelPerformance?.hmm || 0}
+                  suffix="%"
+                  valueStyle={{ color: '#1890ff' }}
+                />
+                <Statistic
+                  title="CNN Model Success"
+                  value={performanceData.modelPerformance?.cnn || 0}
+                  suffix="%"
+                  valueStyle={{ color: '#722ed1' }}
+                />
+                <Statistic
+                  title="RL Model Success"
+                  value={performanceData.modelPerformance?.rl || 0}
+                  suffix="%"
+                  valueStyle={{ color: '#52c41a' }}
+                />
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <Text type="secondary">Hybrid Model Success: {performanceData.modelPerformance?.hybrid || 0}%</Text>
+              </div>
+            </Card>
+          </Col>
         </Row>
 
         <Card style={{ marginBottom: '24px' }}>
@@ -578,14 +729,16 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         message={
           <Space>
             <InfoCircleOutlined />
-            <Text strong>AI Signal Generation Criteria</Text>
+            <Text strong>AI Signal Generation Hybrid Model System</Text>
           </Space>
         }
         description={
           <ul style={{ margin: '0 0 0 20px', padding: 0 }}>
-            <li><Text strong>Sharpe Ratio (SR) ≥ {sharpeRatioCriteria}</Text> - Ensures risk-adjusted returns are sufficiently high</li>
-            <li><Text strong>Maximum Drawdown (MDD) ≥ -40%</Text> - Limits downside risk exposure</li>
-            <li><Text strong>Trade Frequency ≥ 3%</Text> per data row - Ensures sufficient trading activity</li>
+            <li><Text strong>Hidden Markov Model (HMM)</Text> - Detects market regime changes and trend patterns</li>
+            <li><Text strong>Convolutional Neural Network (CNN)</Text> - Recognizes complex chart patterns and price formations</li>
+            <li><Text strong>Reinforcement Learning (RL)</Text> - Optimizes entry/exit points and adapts to changing market conditions</li>
+            <li><Text strong>Hybrid Models</Text> - Combine strengths of individual models for more robust predictions</li>
+            <li><Text strong>Signal Generation Criteria:</Text> Sharpe Ratio ≥ {sharpeRatioCriteria}, MDD ≥ -40%, Trading Frequency ≥ 3%</li>
           </ul>
         }
         type="info"
