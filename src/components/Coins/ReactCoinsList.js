@@ -25,7 +25,7 @@ const ReactCoinsList = () => {
   const [sortKey, setSortKey] = useState('current_price')
   const [sortOrder, setSortOrder] = useState('descend')
   const [refreshLoading, setRefreshLoading] = useState(false)
-  const [timeRange, setTimeRange] = useState('24h')
+  const [timeRange, setTimeRange] = useState('1h')
   const [viewMode, setViewMode] = useState('table')
 
   useEffect(() => {
@@ -269,17 +269,17 @@ const ReactCoinsList = () => {
           {timeRange} Change
           <Tooltip title="Select time period">
             <Select
-              size="small"
-              defaultValue="24h"
+              size="median"
+              defaultValue="1H"
               style={{ width: 60, marginLeft: 8 }}
               onChange={handleTimeRangeChange}
               value={timeRange}
               dropdownMatchSelectWidth={false}
             >
-              <Option value="1h">1h</Option>
-              <Option value="24h">24h</Option>
-              <Option value="7d">7d</Option>
-              <Option value="30d">30d</Option>
+              <Option value="10M">10M</Option>
+              <Option value="1H">1H</Option>
+              <Option value="4H">4H</Option>
+              <Option value="1D">1D</Option>
             </Select>
           </Tooltip>
         </div>
