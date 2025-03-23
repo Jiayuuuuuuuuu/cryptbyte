@@ -175,7 +175,15 @@ const ReactHeader = (props) => {
   ]
 
   return (
-    <Header className="header" style={{ padding: '0 20px' }}>
+    <Header className="header"
+      style=
+        {{
+          padding: '0 20px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          width: '100%'
+        }}>
       <Row justify="space-between" align="middle" style={{ width: '100%' }}>
         <Col>
           <Row align="middle">
