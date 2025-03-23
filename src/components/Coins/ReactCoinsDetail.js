@@ -8,6 +8,7 @@ import { market_processed_table_keys, market_stat_keys } from '../../constants'
 import ReactCoinMarketStats from './ReactCoinMarketStats'
 import ReactCoinMarketDetailedStats from './ReactCoinMarketDetailedStats'
 import ReactCoinDetailSummary from './ReactCoinDetailSummary'
+import ReactCoinsDetailNewsSection from './ReactCoinsDetailNewsSection'
 import {
   RiseOutlined,
   InfoCircleOutlined,
@@ -431,33 +432,6 @@ const ReactCoinsDetail = (props) => {
 
   const tradingSignals = priceAnalysis ? getTradingSignals(priceAnalysis) : []
 
-  const mockNews = [
-    {
-      title: `${data.name} Shows Strong Momentum in DeFi Applications`,
-      date: '2025-03-17',
-      source: 'CryptoDaily',
-      sentiment: 'positive'
-    },
-    {
-      title: `New Partnership Announced for ${data.name}`,
-      date: '2025-03-15',
-      source: 'BlockchainInsider',
-      sentiment: 'positive'
-    },
-    {
-      title: `${data.name} Technical Analysis: Support and Resistance Levels`,
-      date: '2025-03-14',
-      source: 'TradingView',
-      sentiment: 'neutral'
-    },
-    {
-      title: `Market Concerns: ${data.name} Facing Regulatory Scrutiny`,
-      date: '2025-03-12',
-      source: 'CoinDesk',
-      sentiment: 'negative'
-    }
-  ]
-
   const getVolumeAnalysis = () => {
     // Return hard-coded analysis for demo purposes
     return {
@@ -512,14 +486,6 @@ const ReactCoinsDetail = (props) => {
 
   const { market_data, market_data_processed } = data
   const { last_updated, name, image, description } = data
-
-  const getSentimentColor = (sentiment) => {
-    switch (sentiment) {
-    case 'positive': return 'green'
-    case 'negative': return 'red'
-    default: return 'orange'
-    }
-  }
 
   const getSignalTypeColor = (type) => {
     switch (type) {
@@ -698,38 +664,9 @@ const ReactCoinsDetail = (props) => {
               <Card style={{ marginBottom: '24px' }}>
                 <Title level={3} style={titleStyle}>
                   <FileTextOutlined style={{ marginRight: '8px' }} />
-                Market News & Sentiment
+                  Market News & Sentiment
                 </Title>
-                {mockNews.map((news, index) => (
-                  <Card
-                    key={index}
-                    size="small"
-                    style={{
-                      marginBottom: '8px',
-                      borderLeft: `3px solid ${getSentimentColor(news.sentiment)}`
-                    }}
-                    hoverable
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <div>
-                        <Space>
-                          <Text strong>{news.title}</Text>
-                          <Tag color={getSentimentColor(news.sentiment)}>
-                            {news.sentiment.charAt(0).toUpperCase() + news.sentiment.slice(1)}
-                          </Tag>
-                        </Space>
-                        <div>
-                          <Text type="secondary">Source: {news.source}</Text>
-                          <Text type="secondary" style={{ marginLeft: '16px' }}>{news.date}</Text>
-                        </div>
-                      </div>
-                      <Button size="small" icon={<EyeOutlined />}>Read</Button>
-                    </div>
-                  </Card>
-                ))}
-                <Paragraph type="secondary" style={{ marginTop: '16px' }}>
-                News and sentiment analysis would be integrated with a cryptocurrency news API in a production environment.
-                </Paragraph>
+                <ReactCoinsDetailNewsSection coinName={name} />
               </Card>
 
               <Tabs defaultActiveKey="overview" style={{ marginBottom: '24px' }}>
