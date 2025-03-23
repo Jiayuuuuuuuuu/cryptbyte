@@ -554,9 +554,9 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
           </Space>
         </div>
 
-        <Row gutter={16} style={{ marginBottom: '24px' }}>
-          <Col span={6}>
-            <Card bordered={false}>
+        <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
+          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="Active Signals"
                 value={activeSignals.length}
@@ -570,8 +570,8 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col span={6}>
-            <Card bordered={false}>
+          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="Signal Success Rate"
                 value={performanceData.successRate}
@@ -584,8 +584,8 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col span={6}>
-            <Card bordered={false}>
+          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="High Confidence Signals"
                 value={signalStats.highConfidence}
@@ -597,8 +597,8 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col span={6}>
-            <Card bordered={false}>
+          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="Avg. Signal Confidence"
                 value={performanceData.avgConfidence}
@@ -611,27 +611,33 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col span={8} style={{ marginTop: 20 }}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Card bordered={false}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Statistic
-                  title="HMM Model Success"
-                  value={performanceData.modelPerformance?.hmm || 0}
-                  suffix="%"
-                  valueStyle={{ color: '#1890ff' }}
-                />
-                <Statistic
-                  title="CNN Model Success"
-                  value={performanceData.modelPerformance?.cnn || 0}
-                  suffix="%"
-                  valueStyle={{ color: '#722ed1' }}
-                />
-                <Statistic
-                  title="RL Model Success"
-                  value={performanceData.modelPerformance?.rl || 0}
-                  suffix="%"
-                  valueStyle={{ color: '#52c41a' }}
-                />
+              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
+                  <Statistic
+                    title="HMM Model Success"
+                    value={performanceData.modelPerformance?.hmm || 0}
+                    suffix="%"
+                    valueStyle={{ color: '#1890ff' }}
+                  />
+                </div>
+                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
+                  <Statistic
+                    title="CNN Model Success"
+                    value={performanceData.modelPerformance?.cnn || 0}
+                    suffix="%"
+                    valueStyle={{ color: '#722ed1' }}
+                  />
+                </div>
+                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
+                  <Statistic
+                    title="RL Model Success"
+                    value={performanceData.modelPerformance?.rl || 0}
+                    suffix="%"
+                    valueStyle={{ color: '#52c41a' }}
+                  />
+                </div>
               </div>
               <div style={{ marginTop: 8 }}>
                 <Text type="secondary">Hybrid Model Success: {performanceData.modelPerformance?.hybrid || 0}%</Text>
