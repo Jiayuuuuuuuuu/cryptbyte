@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Typography, Card, Row, Col, Button, Statistic, Divider, Collapse, List, Tag, Avatar } from 'antd'
+import { Layout, Typography, Card, Row, Col, Button, Statistic, Divider, Collapse, List, Tag, Avatar, Input } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   RiseOutlined,
@@ -8,12 +8,16 @@ import {
   RocketOutlined,
   ThunderboltOutlined,
   BulbOutlined,
-  GlobalOutlined,
   LineChartOutlined,
   UserOutlined,
   BellOutlined,
   BookOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
+  TeamOutlined,
+  MessageOutlined,
+  EyeOutlined,
+  LikeOutlined,
+  SearchOutlined
 } from '@ant-design/icons'
 import { contentStyle } from '../../styles'
 import { connect } from 'react-redux'
@@ -22,6 +26,7 @@ import { setHeaderMenuItem } from '../../redux_actions'
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 const { Panel } = Collapse
+const { Search } = Input
 
 const marketTrends = [
   { name: 'BTC', price: '$69,420', change: '+2.5%', sentiment: 'Bullish' },
@@ -56,9 +61,9 @@ const features = [
     description: 'Comprehensive courses from beginner to advanced trading techniques and strategies.'
   },
   {
-    icon: <GlobalOutlined style={{ fontSize: 32, color: '#52c41a' }} />,
-    title: 'Global Market Coverage',
-    description: 'Analysis and signals for cryptocurrency around the clock.'
+    icon: <TeamOutlined style={{ fontSize: 32, color: '#52c41a' }} />,
+    title: 'Community Discussions',
+    description: 'Connect with other traders to share strategies, discuss market trends, and learn together.'
   }
 ]
 
