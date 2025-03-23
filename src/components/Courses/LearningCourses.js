@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { Layout, Typography, Row, Col, Card, Tag, Progress, Button, Divider, Tabs, Modal, List } from 'antd'
 import { BookOutlined, LockOutlined, CheckCircleOutlined, RightOutlined, TrophyOutlined, FieldTimeOutlined } from '@ant-design/icons'
 import { fetchCourses, getCourseDetails, updateCourseProgress } from '../../redux_actions'
@@ -55,29 +54,63 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
   }
 
   const calculateProgress = (course) => {
-    if (!courseDetails || courseDetails.id !== course.id) return 0
-    const completedModules = courseDetails.modules.filter(module => module.completed).length
-    return Math.round((completedModules / courseDetails.modules.length) * 100)
+    if (course.completed) {
+      return 100
+    }
+
+    if (courseDetails && courseDetails.id === course.id) {
+      if (courseDetails.modules && Array.isArray(courseDetails.modules)) {
+        const completedModules = courseDetails.modules.filter(module => module.completed).length
+        return Math.round((completedModules / courseDetails.modules.length) * 100)
+      }
+    }
+
+    return course.progress || 0
   }
 
-  // Filter courses based on user tier
   const getFilteredCourses = () => {
+    if (!courses || !Array.isArray(courses)) {
+      return []
+    }
+
     if (activeTab === '1') return courses
-    if (activeTab === '2') return courses.filter(course => course.level.toLowerCase() === 'beginner')
-    if (activeTab === '3') return courses.filter(course => course.level.toLowerCase() === 'intermediate')
-    if (activeTab === '4') return courses.filter(course => course.level.toLowerCase() === 'advanced')
+    if (activeTab === '2') return courses.filter(course => course.level && course.level.toLowerCase() === 'beginner')
+    if (activeTab === '3') return courses.filter(course => course.level && course.level.toLowerCase() === 'intermediate')
+    if (activeTab === '4') return courses.filter(course => course.level && course.level.toLowerCase() === 'advanced')
     return courses
   }
 
   const isCourseLocked = (course) => {
-    // Tier-based access logic
+    if (!course.level) return true
+
     if (course.level.toLowerCase() === 'advanced' && userTier !== 'gold' && userTier !== 'premium') {
       return true
     }
     if (course.level.toLowerCase() === 'intermediate' && userTier === 'bronze') {
       return true
     }
-    return !course.unlocked
+    return course.unlocked === false
+  }
+
+  const getCompletedCourses = () => {
+    if (!courses || !Array.isArray(courses)) {
+      return 0
+    }
+
+    return courses.filter(course => {
+      if (course.completed === true) {
+        return true
+      }
+
+      if (courseDetails && courseDetails.id === course.id) {
+        if (courseDetails.modules && Array.isArray(courseDetails.modules)) {
+          const completedModules = courseDetails.modules.filter(module => module.completed).length
+          return completedModules === courseDetails.modules.length
+        }
+      }
+
+      return false
+    }).length
   }
 
   return (
@@ -97,16 +130,12 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
               <div>
                 <Text>Completed Courses: </Text>
                 <Tag color="green">
-                  {courses.filter(course => {
-                    if (!courseDetails || courseDetails.id !== course.id) return false
-                    const completedModules = courseDetails.modules.filter(module => module.completed).length
-                    return completedModules === courseDetails.modules.length
-                  }).length}/{courses.length}
+                  {getCompletedCourses()}/{courses ? courses.length : 0}
                 </Tag>
               </div>
               <div>
                 <Text>Current Tier: </Text>
-                <Tag color="blue">{userTier.charAt(0).toUpperCase() + userTier.slice(1)}</Tag>
+                <Tag color="blue">{userTier ? userTier.charAt(0).toUpperCase() + userTier.slice(1) : 'Bronze'}</Tag>
               </div>
             </Card>
           </Col>
@@ -114,10 +143,14 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
 
         <Divider />
 
-        {/* Add CourseAchievements component here */}
+        {/* CourseAchievements component */}
         <Row gutter={[16, 24]}>
           <Col span={24}>
-            <CourseAchievements courses={courses} userTier={userTier} />
+            <CourseAchievements
+              courses={courses || []}
+              userTier={userTier || 'bronze'}
+              courseDetails={courseDetails}
+            />
           </Col>
         </Row>
 
@@ -162,14 +195,14 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
                       }}>
                         <LockOutlined style={{ fontSize: 48, color: '#fff' }} />
                         <Text style={{ color: '#fff', marginTop: 8 }}>
-                          {course.level.toLowerCase() === 'advanced' ? 'Gold tier required' : 'Silver tier required'}
+                          {course.level && course.level.toLowerCase() === 'advanced' ? 'Gold tier required' : 'Silver tier required'}
                         </Text>
                       </div>
                     )}
                   </div>
                 }
               >
-                <Tag color={getLevelColor(course.level)}>{course.level}</Tag>
+                <Tag color={getLevelColor(course.level || 'beginner')}>{course.level}</Tag>
                 <Title level={4}>{course.title}</Title>
                 <Paragraph ellipsis={{ rows: 2 }}>{course.description}</Paragraph>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
@@ -178,7 +211,7 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <BookOutlined style={{ marginRight: 8 }} />
-                  <Text>{course.modules} modules</Text>
+                  <Text>{course.modules || 0} modules</Text>
                 </div>
                 <Divider style={{ margin: '12px 0' }} />
                 <Progress percent={calculateProgress(course)} status="active" />
@@ -187,7 +220,7 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
           ))}
         </Row>
 
-        {/* Course Details Modal - Now using CourseDetail component */}
+        {/* Course Details Modal */}
         <Modal
           title={courseDetails?.title || 'Course Details'}
           visible={courseModalVisible}
@@ -199,7 +232,7 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
             <CourseDetail
               course={courseDetails}
               onModuleSelect={handleModuleClick}
-              user={user}
+              user={user || {}}
             />
           )}
         </Modal>
@@ -225,10 +258,10 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
 }
 
 const mapStateToProps = (state) => ({
-  courses: state.courses.list || [],
-  courseDetails: state.courses.currentCourse,
-  userTier: state.user.tier,
-  user: state.user
+  courses: state.courses?.list || [],
+  courseDetails: state.courses?.currentCourse || null,
+  userTier: state.user?.tier || 'bronze',
+  user: state.user || {}
 })
 
 const mapDispatchToProps = {
