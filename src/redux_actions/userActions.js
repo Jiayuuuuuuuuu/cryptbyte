@@ -37,7 +37,6 @@ export const addTrade = (trade) => ({
   payload: trade
 })
 
-// Example function for daily login reward
 export const processLoginReward = () => {
   return (dispatch, getState) => {
     const { user } = getState()
@@ -46,7 +45,6 @@ export const processLoginReward = () => {
 
     // Streak bonus
     if (user.streak > 0) {
-      // Additional tokens for streaks at certain thresholds
       if (user.streak % 5 === 0) {
         tokenReward += 25 // Bonus every 5 days
       }
@@ -55,18 +53,14 @@ export const processLoginReward = () => {
       }
     }
 
-    // Dispatch token addition
     dispatch(addTokens(tokenReward))
 
-    // Increment streak
     dispatch(incrementStreak())
 
-    // Check if the user should be promoted to next tier
     const { tokens, tier } = getState().user
 
     if (tier === 'bronze' && tokens >= 500) {
       dispatch(updateTier('silver'))
-      // Could also dispatch a notification or achievement here
     } else if (tier === 'silver' && tokens >= 1500) {
       dispatch(updateTier('gold'))
     } else if (tier === 'gold' && tokens >= 5000) {

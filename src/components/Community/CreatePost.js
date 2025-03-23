@@ -35,7 +35,6 @@ const CreatePost = ({ createPost, user }) => {
   const handleSubmit = (values) => {
     setSubmitting(true)
 
-    // Create the post object
     const newPost = {
       title: values.title,
       content: values.content,
@@ -44,13 +43,11 @@ const CreatePost = ({ createPost, user }) => {
       authorAvatar: user?.avatar || '/api/placeholder/40/40'
     }
 
-    // Dispatch the createPost action
     createPost(newPost)
 
     message.success('Post created successfully!')
     setSubmitting(false)
 
-    // Redirect to the community page
     history.push('/community')
   }
 

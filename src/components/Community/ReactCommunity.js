@@ -44,7 +44,6 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
   const [form] = Form.useForm()
   const [activeTab, setActiveTab] = useState('trending')
 
-  // Tags for filtering
   const popularTags = [
     'Bitcoin', 'Ethereum', 'Technical Analysis', 'Fundamental Analysis',
     'DeFi', 'NFTs', 'Altcoins', 'Trading Bots', 'Risk Management'
@@ -300,19 +299,19 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
               itemLayout="horizontal"
               dataSource={[
                 {
-                  name: 'crypto_wizard',
+                  name: 'CurryLaksa',
                   avatar: '/api/placeholder/40/40',
                   contributions: 127,
                   reputation: 4583
                 },
                 {
-                  name: 'eth_enthusiast',
+                  name: 'Kaizhiiii',
                   avatar: '/api/placeholder/40/40',
                   contributions: 89,
                   reputation: 3250
                 },
                 {
-                  name: 'data_trader',
+                  name: 'Ren Sheng',
                   avatar: '/api/placeholder/40/40',
                   contributions: 64,
                   reputation: 2198

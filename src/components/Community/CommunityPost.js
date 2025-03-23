@@ -20,7 +20,6 @@ import {
 const { Title, Text, Paragraph } = Typography
 
 const CommunityPost = ({ post, showFull = false }) => {
-  // Calculate time ago for display
   const getTimeAgo = (dateString) => {
     const now = new Date()
     const past = new Date(dateString)
@@ -32,7 +31,6 @@ const CommunityPost = ({ post, showFull = false }) => {
     return `${Math.floor(diffInSeconds / 86400)} days ago`
   }
 
-  // Actions to display under the post
   const actions = [
     <Tooltip key="views"title="Views">
       <Space>
