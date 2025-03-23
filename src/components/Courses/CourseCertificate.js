@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Typography, Card, Button, Modal, Divider, Tag, Space, Row, Col } from 'antd'
 import { TrophyOutlined, DownloadOutlined, ShareAltOutlined, PrinterOutlined, CheckCircleOutlined } from '@ant-design/icons'
-import logoImage from '../../images/logo/logo.png'
 
 const { Title, Paragraph, Text } = Typography
 
@@ -54,7 +53,7 @@ const CourseCertificate = ({ course, user }) => {
       >
         <div className="certificate" style={{ padding: 40, border: '10px solid #001529', position: 'relative' }}>
           <div style={{ position: 'absolute', top: 20, right: 20 }}>
-            <img src={logoImage} alt="Company Logo" style={{ height: 60 }} />
+            <img src="/api/placeholder/100/100" alt="Logo" />
           </div>
 
           <div style={{ textAlign: 'center', marginBottom: 30 }}>

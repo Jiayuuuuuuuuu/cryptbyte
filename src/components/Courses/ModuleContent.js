@@ -79,7 +79,7 @@ const ModuleContent = ({ module, onComplete }) => {
         <Card>
           <Title level={4}>Trading Simulation</Title>
           <Paragraph>
-            Apply what you&apos;ve learned through our virtual trading simulator. This risk-free environment
+            Apply what you&pos;ve learned through our virtual trading simulator. This risk-free environment
             allows you to practice implementing strategies without using real capital.
           </Paragraph>
 
