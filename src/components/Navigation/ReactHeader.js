@@ -15,7 +15,9 @@ import {
   MenuOutlined,
   BookOutlined,
   CloseOutlined,
+  TeamOutlined,
   PlayCircleOutlined,
+
   BellOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'
@@ -135,6 +137,15 @@ const ReactHeader = (props) => {
       label: (
         <Link to="/rewards" onClick={() => handleMenuClick('rewards')}>
           Rewards
+        </Link>
+      )
+    },
+    {
+      key: 'community',
+      icon: <TeamOutlined style={iconStyle} />,
+      label: (
+        <Link to="/community" onClick={() => handleMenuClick('community')}>
+          Community
         </Link>
       )
     }

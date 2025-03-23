@@ -13,6 +13,9 @@ import RewardsPage from './Rewards/RewardsPage'
 import CoursesPage from './Courses/LearningCourses'
 import GamePage from './Gamification/GamePage'
 import TradingSignals from './Signals/TradingSignals'
+import ReactCommunity from './Community/ReactCommunity'
+import PostDetail from './Community/PostDetail'
+import CreatePost from './Community/CreatePost'
 
 export default class App extends Component {
   render () {
@@ -31,6 +34,9 @@ export default class App extends Component {
             <Route path='/course' exact component={CoursesPage}/>
             <Route path='/game' exact component={GamePage}/>
             <Route path='/signals' exact component={TradingSignals}/>
+            <Route path='/community' exact component={ReactCommunity}/>
+            <Route path='/community/post/:postId' component={PostDetail}/>
+            <Route path='/community/create' component={CreatePost}/>
           </Switch>
         </Layout>
         <ReactFooter/>

@@ -18,6 +18,11 @@ export const GET_TRADING_SIGNALS = 'GET_TRADING_SIGNALS'
 export const ADD_TRADING_SIGNAL = 'ADD_TRADING_SIGNAL'
 export const UPDATE_TRADING_SIGNAL = 'UPDATE_TRADING_SIGNAL'
 export const REMOVE_TRADING_SIGNAL = 'REMOVE_TRADING_SIGNAL'
+export const GET_COMMUNITY_POSTS = 'GET_COMMUNITY_POSTS'
+export const GET_POST_DETAILS = 'GET_POST_DETAILS'
+export const CREATE_POST = 'CREATE_POST'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const LIKE_POST = 'LIKE_POST'
 
 export const addToWatchlist = (coin) => async (dispatch, getState) => {
   if (!coin.price || !coin.priceChange24h) {
@@ -329,5 +334,130 @@ export const removeTradingSignal = (signalId) => {
   return {
     type: REMOVE_TRADING_SIGNAL,
     payload: signalId
+  }
+}
+
+// Community action creators
+export const getCommunityPosts = () => {
+  // Mock data for community posts
+  const mockPosts = [
+    {
+      id: 'post-1',
+      title: 'My BTC Trading Strategy for Bear Markets',
+      content: 'I&apos; ve found that using a combination of RSI and MACD indicators...',
+      author: 'crypto_wizard',
+      authorAvatar: '/api/placeholder/40/40',
+      date: '2025-03-20T14:30:00Z',
+      tags: ['Bitcoin', 'Technical Analysis', 'Bear Market'],
+      likes: 42,
+      comments: 15,
+      views: 230
+    },
+    {
+      id: 'post-2',
+      title: 'Ethereum Staking vs. Trading: My Experience',
+      content: 'After 6 months of staking ETH and comparing results with my trading performance...',
+      author: 'eth_enthusiast',
+      authorAvatar: '/api/placeholder/40/40',
+      date: '2025-03-19T10:15:00Z',
+      tags: ['Ethereum', 'Staking', 'Passive Income'],
+      likes: 38,
+      comments: 22,
+      views: 187
+    },
+    {
+      id: 'post-3',
+      title: 'My AI-Based Altcoin Selection Framework',
+      content: 'I&apos ve developed a framework that uses sentiment analysis and on-chain metrics...',
+      author: 'data_trader',
+      authorAvatar: '/api/placeholder/40/40',
+      date: '2025-03-18T16:45:00Z',
+      tags: ['Altcoins', 'AI', 'Data Science'],
+      likes: 56,
+      comments: 19,
+      views: 312
+    }
+  ]
+
+  return {
+    type: GET_COMMUNITY_POSTS,
+    payload: mockPosts
+  }
+}
+
+export const getPostDetails = (postId) => {
+  // This would fetch a specific post with comments from an API
+  // For now using mock data
+  const mockPostDetails = {
+    id: postId,
+    title: 'My BTC Trading Strategy for Bear Markets',
+    content: 'I&aps ve found that using a combination of RSI and MACD indicators helps me identify good entry points during bear markets. When RSI drops below 30 and MACD shows signs of convergence, I start building a position gradually rather than going all in. This strategy has helped me accumulate Bitcoin at good prices during the last three downturns. What strategies do you use?',
+    author: 'crypto_wizard',
+    authorAvatar: '/api/placeholder/40/40',
+    reputation: 1250,
+    date: '2025-03-20T14:30:00Z',
+    tags: ['Bitcoin', 'Technical Analysis', 'Bear Market'],
+    likes: 42,
+    views: 230,
+    comments: [
+      {
+        id: 'comment-1',
+        author: 'hodl_king',
+        authorAvatar: '/api/placeholder/32/32',
+        content: 'Great strategy! I also use Bollinger Bands alongside RSI for confirmation.',
+        date: '2025-03-20T15:45:00Z',
+        likes: 7
+      },
+      {
+        id: 'comment-2',
+        author: 'ada_lover',
+        authorAvatar: '/api/placeholder/32/32',
+        content: 'Have you tried using volume indicators as well? I find they help confirm trend reversals.',
+        date: '2025-03-20T16:30:00Z',
+        likes: 4
+      }
+    ]
+  }
+
+  return {
+    type: GET_POST_DETAILS,
+    payload: mockPostDetails
+  }
+}
+
+export const createPost = (post) => {
+  // In a real app, this would send data to an API
+  return {
+    type: CREATE_POST,
+    payload: {
+      ...post,
+      id: `post-${Date.now()}`,
+      date: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+      views: 0
+    }
+  }
+}
+
+export const addComment = (postId, comment) => {
+  return {
+    type: ADD_COMMENT,
+    payload: {
+      postId,
+      comment: {
+        ...comment,
+        id: `comment-${Date.now()}`,
+        date: new Date().toISOString(),
+        likes: 0
+      }
+    }
+  }
+}
+
+export const likePost = (postId) => {
+  return {
+    type: LIKE_POST,
+    payload: postId
   }
 }

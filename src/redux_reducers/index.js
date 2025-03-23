@@ -14,6 +14,7 @@ import watchlistReducer from './watchlistReducer'
 import userReducer from './userReducer'
 import coursesReducer from './courseReducer'
 import tradingSignalsReducer from './tradingSignalsReducer' // Import the trading signals reducer
+import communityReducer from './communityReducer'
 
 const initialState = {
   data: [],
@@ -116,5 +117,6 @@ export const rootReducer = combineReducers({
   watchlist: watchlistReducer,
   user: userReducer,
   courses: coursesReducer,
-  tradingSignals: tradingSignalsReducer // Add the trading signals reducer to the root reducer
+  tradingSignals: tradingSignalsReducer,
+  community: communityReducer
 })
