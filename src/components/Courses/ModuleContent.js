@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, Steps, Button, Card, Tabs, Collapse, Divider } from 'antd'
 import {
   PlayCircleOutlined,
@@ -15,6 +15,10 @@ const { Panel } = Collapse
 
 const ModuleContent = ({ module, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0)
+
+  useEffect(() => {
+    setCurrentStep(0)
+  }, [module.id])
 
   const steps = [
     {
