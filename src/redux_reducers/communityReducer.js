@@ -1,4 +1,3 @@
-// /src/redux_reducers/communityReducer.js
 import {
   GET_COMMUNITY_POSTS,
   GET_POST_DETAILS,

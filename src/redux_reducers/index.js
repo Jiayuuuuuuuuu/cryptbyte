@@ -18,7 +18,7 @@ import communityReducer from './communityReducer'
 
 const initialState = {
   data: [],
-  lastFetched: null // Store last fetch time
+  lastFetched: null
 }
 
 const coinsTrendingReducer = (state = [], action) => {

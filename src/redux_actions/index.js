@@ -1,4 +1,10 @@
 import coinGecko from '../API'
+import avatarqy from '../images/avatar/qy.jpg'
+import avatarkz from '../images/avatar/kaizhi.jpeg'
+import avatarboon from '../images/avatar/boon.png'
+import avatarjy from '../images/avatar/jy.jpg'
+import avatarrs from '../images/avatar/rs.jpg'
+
 export const GET_COIN_LIST = 'GET_COIN_LIST'
 export const GET_COIN_DETAILS = 'GET_COIN_DETAILS'
 export const GET_COIN_CHART = 'GET_COIN_CHART'
@@ -277,8 +283,6 @@ export const updateCourseProgress = (courseId, moduleId, completed) => {
 }
 
 export const getTradingSignals = () => {
-  // In a real app, this would fetch from an API
-  // For now we'll return mock data
   const mockSignals = [
     {
       id: 'signal-1',
@@ -345,7 +349,7 @@ export const getCommunityPosts = () => {
       title: 'My BTC Trading Strategy for Bear Markets',
       content: 'I&apos; ve found that using a combination of RSI and MACD indicators...',
       author: 'CurryLaksa',
-      authorAvatar: '../images/avatar/kaizhi.jpeg',
+      authorAvatar: avatarqy,
       date: '2025-03-20T14:30:00Z',
       tags: ['Bitcoin', 'Technical Analysis', 'Bear Market'],
       likes: 42,
@@ -357,7 +361,7 @@ export const getCommunityPosts = () => {
       title: 'Ethereum Staking vs. Trading: My Experience',
       content: 'After 6 months of staking ETH and comparing results with my trading performance...',
       author: 'Kaizhiiii',
-      authorAvatar: '../images/avatar/qy.jpg',
+      authorAvatar: avatarkz,
       date: '2025-03-19T10:15:00Z',
       tags: ['Ethereum', 'Staking', 'Passive Income'],
       likes: 38,
@@ -369,7 +373,7 @@ export const getCommunityPosts = () => {
       title: 'My AI-Based Altcoin Selection Framework',
       content: 'I&apos ve developed a framework that uses sentiment analysis and on-chain metrics...',
       author: 'AhBoon',
-      authorAvatar: '../images/avatar/boon.png',
+      authorAvatar: avatarboon,
       date: '2025-03-18T16:45:00Z',
       tags: ['Altcoins', 'AI', 'Data Science'],
       likes: 56,
@@ -388,9 +392,9 @@ export const getPostDetails = (postId) => {
   const mockPostDetails = {
     id: postId,
     title: 'My BTC Trading Strategy for Bear Markets',
-    content: 'I&aps ve found that using a combination of RSI and MACD indicators helps me identify good entry points during bear markets. When RSI drops below 30 and MACD shows signs of convergence, I start building a position gradually rather than going all in. This strategy has helped me accumulate Bitcoin at good prices during the last three downturns. What strategies do you use?',
+    content: 'I&aposve found that using a combination of RSI and MACD indicators helps me identify good entry points during bear markets. When RSI drops below 30 and MACD shows signs of convergence, I start building a position gradually rather than going all in. This strategy has helped me accumulate Bitcoin at good prices during the last three downturns. What strategies do you use?',
     author: 'CurryLaksa',
-    authorAvatar: '../images/avatar/qy.jpg',
+    authorAvatar: avatarqy,
     reputation: 1250,
     date: '2025-03-20T14:30:00Z',
     tags: ['Bitcoin', 'Technical Analysis', 'Bear Market'],
@@ -400,7 +404,7 @@ export const getPostDetails = (postId) => {
       {
         id: 'comment-1',
         author: 'Ren Sheng',
-        authorAvatar: '/api/placeholder/32/32',
+        authorAvatar: avatarrs,
         content: 'Great strategy! I also use Bollinger Bands alongside RSI for confirmation.',
         date: '2025-03-20T15:45:00Z',
         likes: 7
@@ -408,7 +412,7 @@ export const getPostDetails = (postId) => {
       {
         id: 'comment-2',
         author: 'yuyu',
-        authorAvatar: '/api/placeholder/32/32',
+        authorAvatar: avatarjy,
         content: 'Have you tried using volume indicators as well? I find they help confirm trend reversals.',
         date: '2025-03-20T16:30:00Z',
         likes: 4
