@@ -11,7 +11,7 @@ const { Content } = Layout
 const { Title, Text, Paragraph } = Typography
 const { TabPane } = Tabs
 
-const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetails, updateCourseProgress, userTier, user }) => {
+const LearningCourses = ({ courses, courseDetails, fetchCourses, completedModules, getCourseDetails, updateCourseProgress, userTier, user }) => {
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [courseModalVisible, setCourseModalVisible] = useState(false)
   const [activeTab, setActiveTab] = useState('1')
@@ -54,18 +54,29 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
   }
 
   const calculateProgress = (course) => {
-    // Fixed: Check if courseDetails exists and matches the course ID
-    if (!courseDetails || courseDetails.id !== course.id) {
+    if (!course.modules || course.modules === 0) {
       return 0
     }
 
-    // Fixed: Check if modules property exists
-    if (!courseDetails.modules || !Array.isArray(courseDetails.modules)) {
-      return 0
-    }
+    // Get the modules from courseDetails if it's the current course
+    const isCurrentCourse = courseDetails && courseDetails.id === course.id
 
-    const completedModules = courseDetails.modules.filter(module => module.completed).length
-    return Math.round((completedModules / courseDetails.modules.length) * 100)
+    if (isCurrentCourse && courseDetails.modules && Array.isArray(courseDetails.modules)) {
+      const completedModules = courseDetails.modules.filter(module => module.completed).length
+      return Math.round((completedModules / courseDetails.modules.length) * 100)
+    } else {
+      // For other courses, check completedModules state to calculate progress
+      // First get all keys that start with this course's ID
+      const moduleKeys = Object.keys(completedModules).filter(key =>
+        key.startsWith(`${course.id}-`)
+      )
+
+      // Count how many modules are completed
+      const completedCount = moduleKeys.filter(key => completedModules[key]).length
+
+      // Calculate percentage based on total modules for this course
+      return Math.round((completedCount / course.modules) * 100)
+    }
   }
 
   // Filter courses based on user tier
@@ -101,16 +112,17 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
     }
 
     return courses.filter(course => {
-      if (!courseDetails) return false
+      // Get all module keys for this course
+      const moduleKeys = Object.keys(completedModules).filter(key =>
+        key.startsWith(`${course.id}-`)
+      )
 
-      // Check if this is the current selected course
-      if (courseDetails.id !== course.id) return false
+      // If no modules are tracked, it's not completed
+      if (moduleKeys.length === 0) return false
 
-      // Make sure modules exist and are in expected format
-      if (!courseDetails.modules || !Array.isArray(courseDetails.modules)) return false
-
-      const completedModules = courseDetails.modules.filter(module => module.completed).length
-      return completedModules === courseDetails.modules.length
+      // Course is completed if all modules are completed
+      // Compare with the total number of modules for this course
+      return moduleKeys.filter(key => completedModules[key]).length === course.modules
     }).length
   }
 
@@ -258,9 +270,11 @@ const LearningCourses = ({ courses, courseDetails, fetchCourses, getCourseDetail
   )
 }
 
+// Update mapStateToProps in LearningCourses.js
 const mapStateToProps = (state) => ({
   courses: state.courses?.list || [],
   courseDetails: state.courses?.currentCourse || null,
+  completedModules: state.courses?.completedModules || {},
   userTier: state.user?.tier || 'bronze',
   user: state.user || {}
 })

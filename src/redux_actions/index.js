@@ -201,7 +201,7 @@ export const getCourseDetails = (courseId) => {
         id: 1,
         title: 'Introduction to Blockchain',
         description: 'Understand the fundamentals of blockchain technology',
-        completed: true
+        completed: false // Set default to false, rely on state for real status
       },
       {
         id: 2,
@@ -222,7 +222,7 @@ export const getCourseDetails = (courseId) => {
         id: 1,
         title: 'Chart Patterns',
         description: 'Identify and interpret common chart patterns',
-        completed: true
+        completed: false // Set default to false, rely on state for real status
       },
       {
         id: 2,
@@ -348,7 +348,7 @@ export const getCommunityPosts = () => {
     {
       id: 'post-1',
       title: 'My BTC Trading Strategy for Bear Markets',
-      content: 'I&apos; ve found that using a combination of RSI and MACD indicators...',
+      content: 'I have found that using a combination of RSI and MACD indicators...',
       author: 'CurryLaksa',
       authorAvatar: avatarqy,
       date: '2025-03-20T14:30:00Z',
@@ -372,7 +372,7 @@ export const getCommunityPosts = () => {
     {
       id: 'post-3',
       title: 'My AI-Based Altcoin Selection Framework',
-      content: 'I&apos ve developed a framework that uses sentiment analysis and on-chain metrics...',
+      content: 'I have developed a framework that uses sentiment analysis and on-chain metrics...',
       author: 'AhBoon',
       authorAvatar: avatarboon,
       date: '2025-03-18T16:45:00Z',
@@ -393,7 +393,7 @@ export const getPostDetails = (postId) => {
   const mockPostDetails = {
     id: postId,
     title: 'My BTC Trading Strategy for Bear Markets',
-    content: 'I&aposve found that using a combination of RSI and MACD indicators helps me identify good entry points during bear markets. When RSI drops below 30 and MACD shows signs of convergence, I start building a position gradually rather than going all in. This strategy has helped me accumulate Bitcoin at good prices during the last three downturns. What strategies do you use?',
+    content: 'I have found that using a combination of RSI and MACD indicators helps me identify good entry points during bear markets. When RSI drops below 30 and MACD shows signs of convergence, I start building a position gradually rather than going all in. This strategy has helped me accumulate Bitcoin at good prices during the last three downturns. What strategies do you use?',
     author: 'CurryLaksa',
     authorAvatar: avatarqy,
     reputation: 1250,
