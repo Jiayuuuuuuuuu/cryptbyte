@@ -33,6 +33,9 @@ import {
 } from '@ant-design/icons'
 import { getCommunityPosts, createPost } from '../../redux_actions'
 import CommunityPost from './CommunityPost'
+import avatarqy from '../../images/avatar/qy.jpg'
+import avatarkz from '../../images/avatar/kaizhi.jpeg'
+import avatarboon from '../../images/avatar/boon.png'
 
 const { Title, Text, Paragraph } = Typography
 const { TabPane } = Tabs
@@ -68,7 +71,7 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
       content: values.content,
       tags: values.tags,
       author: user?.username || 'anonymous_user',
-      authorAvatar: user?.avatar || '/api/placeholder/40/40'
+      authorAvatar: user?.avatar
     })
     setIsModalVisible(false)
     form.resetFields()
@@ -173,7 +176,7 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
                       ]}
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={post.authorAvatar} />}
+                        avatar={<Avatar src={post.authorAvatar} icon={<UserOutlined/>} />}
                         title={
                           <Link to={`/community/post/${post.id}`}>
                             {post.title}
@@ -242,7 +245,7 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
                       ]}
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={post.authorAvatar} />}
+                        avatar={<Avatar src={post.authorAvatar} icon={<UserOutlined />} />}
                         title={
                           <Link to={`/community/post/${post.id}`}>
                             {post.title}
@@ -300,19 +303,19 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
               dataSource={[
                 {
                   name: 'CurryLaksa',
-                  avatar: '/api/placeholder/40/40',
+                  avatar: avatarqy,
                   contributions: 127,
                   reputation: 4583
                 },
                 {
                   name: 'Kaizhiiii',
-                  avatar: '/api/placeholder/40/40',
+                  avatar: avatarkz,
                   contributions: 89,
                   reputation: 3250
                 },
                 {
-                  name: 'Ren Sheng',
-                  avatar: '/api/placeholder/40/40',
+                  name: 'AhBoon',
+                  avatar: avatarboon,
                   contributions: 64,
                   reputation: 2198
                 }
