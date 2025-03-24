@@ -162,7 +162,7 @@ export const fetchCourses = () => {
       description: 'Learn the fundamentals of blockchain and cryptocurrency trading',
       level: 'Beginner',
       duration: '2 hours',
-      modules: 5,
+      modules: 3,
       unlocked: true
     },
     {
