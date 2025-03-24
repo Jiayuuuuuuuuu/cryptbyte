@@ -32,7 +32,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
 
       const hmmSignals = executed.filter(s => s.strategy.includes('HMM'))
       const cnnSignals = executed.filter(s => s.strategy.includes('CNN'))
-      const rlSignals = executed.filter(s => s.strategy.includes('RL'))
       const hybridSignals = executed.filter(s => s.strategy.includes('Hybrid') || s.strategy.includes('Adaptive'))
 
       setPerformanceData({
@@ -43,7 +42,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         modelPerformance: {
           hmm: hmmSignals.length ? Math.round((hmmSignals.filter(s => profitable.includes(s)).length / hmmSignals.length) * 100) : 0,
           cnn: cnnSignals.length ? Math.round((cnnSignals.filter(s => profitable.includes(s)).length / cnnSignals.length) * 100) : 0,
-          rl: rlSignals.length ? Math.round((rlSignals.filter(s => profitable.includes(s)).length / rlSignals.length) * 100) : 0,
           hybrid: hybridSignals.length ? Math.round((hybridSignals.filter(s => profitable.includes(s)).length / hybridSignals.length) * 100) : 0
         }
       })
@@ -79,34 +77,21 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         const strategies = [
           'HMM Trend Detection',
           'CNN Pattern Recognition',
-          'RL Optimized Entry/Exit',
-          'HMM-CNN Hybrid',
-          'CNN-RL Adaptive',
-          'HMM-RL Predictive',
-          'Full Hybrid (HMM-CNN-RL)'
+          'HMM-CNN Hybrid'
         ]
         const strategy = strategies[Math.floor(Math.random() * strategies.length)]
 
         // Generate model weights based on strategy
-        const modelWeight = strategy.includes('Full Hybrid')
-          ? { hmm: 0.33, cnn: 0.33, rl: 0.34 }
-          : strategy.includes('HMM-CNN')
-            ? { hmm: 0.5, cnn: 0.5, rl: 0 }
-            : strategy.includes('CNN-RL')
-              ? { hmm: 0, cnn: 0.5, rl: 0.5 }
-              : strategy.includes('HMM-RL')
-                ? { hmm: 0.5, cnn: 0, rl: 0.5 }
-                : strategy.includes('HMM')
-                  ? { hmm: 1, cnn: 0, rl: 0 }
-                  : strategy.includes('CNN')
-                    ? { hmm: 0, cnn: 1, rl: 0 }
-                    : { hmm: 0, cnn: 0, rl: 1 }
+        const modelWeight = strategy.includes('HMM-CNN')
+          ? { hmm: 0.5, cnn: 0.5 }
+          : strategy.includes('HMM')
+            ? { hmm: 1, cnn: 0 }
+            : { hmm: 0, cnn: 1 }
 
         // Generate model confidence scores
         const modelConfidence = {
           hmm: Math.round(Math.random() * 100),
-          cnn: Math.round(Math.random() * 100),
-          rl: Math.round(Math.random() * 100)
+          cnn: Math.round(Math.random() * 100)
         }
 
         // Create signal if criteria are met
@@ -265,15 +250,11 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
       render: (strategy, record) => (
         <Space direction="vertical" size={0}>
           <Tag color={
-            strategy.includes('Full Hybrid')
-              ? 'magenta'
-              : strategy.includes('Hybrid') || strategy.includes('Adaptive')
-                ? 'purple'
-                : strategy.includes('HMM')
-                  ? 'blue'
-                  : strategy.includes('CNN')
-                    ? 'geekblue'
-                    : 'green'
+            strategy.includes('Hybrid') || strategy.includes('Adaptive')
+              ? 'purple'
+              : strategy.includes('HMM')
+                ? 'blue'
+                : 'geekblue'
           }>{strategy}</Tag>
           {record.modelWeight && (
             <Tooltip title="Model Weight Distribution">
@@ -286,11 +267,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
                 {record.modelWeight.cnn > 0 && (
                   <div style={{ marginRight: '4px' }}>
                     CNN: {Math.round(record.modelWeight.cnn * 100)}%
-                  </div>
-                )}
-                {record.modelWeight.rl > 0 && (
-                  <div>
-                    RL: {Math.round(record.modelWeight.rl * 100)}%
                   </div>
                 )}
               </div>
@@ -411,17 +387,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
                       percent={record.modelConfidence.cnn}
                       size="small"
                       status={record.modelConfidence.cnn >= 70 ? 'success' : 'normal'}
-                      style={{ width: 70, marginLeft: '5px' }}
-                    />
-                  </div>
-                )}
-                {record.modelWeight.rl > 0 && (
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={{ width: '40px', fontSize: '12px' }}>RL:</span>
-                    <Progress
-                      percent={record.modelConfidence.rl}
-                      size="small"
-                      status={record.modelConfidence.rl >= 70 ? 'success' : 'normal'}
                       style={{ width: 70, marginLeft: '5px' }}
                     />
                   </div>
@@ -555,7 +520,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
         </div>
 
         <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
-          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="Active Signals"
@@ -570,7 +535,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="Signal Success Rate"
@@ -584,7 +549,7 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Col xs={12} sm={12} md={8} lg={8} xl={8}>
             <Card bordered={false} style={{ height: '100%' }}>
               <Statistic
                 title="High Confidence Signals"
@@ -597,24 +562,10 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
               </div>
             </Card>
           </Col>
-          <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-            <Card bordered={false} style={{ height: '100%' }}>
-              <Statistic
-                title="Avg. Signal Confidence"
-                value={performanceData.avgConfidence}
-                suffix="%"
-                prefix={<InfoCircleOutlined style={{ color: '#722ed1' }} />}
-                valueStyle={{ color: '#722ed1' }}
-              />
-              <div style={{ marginTop: 8 }}>
-                <Text type="secondary">Across {performanceData.totalSignals} total signals</Text>
-              </div>
-            </Card>
-          </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Card bordered={false}>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
+                <div style={{ minWidth: '180px', flex: '1 0 45%', marginBottom: '12px' }}>
                   <Statistic
                     title="HMM Model Success"
                     value={performanceData.modelPerformance?.hmm || 0}
@@ -622,20 +573,12 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
                     valueStyle={{ color: '#1890ff' }}
                   />
                 </div>
-                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
+                <div style={{ minWidth: '180px', flex: '1 0 45%', marginBottom: '12px' }}>
                   <Statistic
                     title="CNN Model Success"
                     value={performanceData.modelPerformance?.cnn || 0}
                     suffix="%"
                     valueStyle={{ color: '#722ed1' }}
-                  />
-                </div>
-                <div style={{ minWidth: '180px', flex: '1 0 30%', marginBottom: '12px' }}>
-                  <Statistic
-                    title="RL Model Success"
-                    value={performanceData.modelPerformance?.rl || 0}
-                    suffix="%"
-                    valueStyle={{ color: '#52c41a' }}
                   />
                 </div>
               </div>
@@ -742,7 +685,6 @@ const TradingSignals = ({ watchlist, updateWatchlistData }) => {
           <ul style={{ margin: '0 0 0 20px', padding: 0 }}>
             <li><Text strong>Hidden Markov Model (HMM)</Text> - Detects market regime changes and trend patterns</li>
             <li><Text strong>Convolutional Neural Network (CNN)</Text> - Recognizes complex chart patterns and price formations</li>
-            <li><Text strong>Reinforcement Learning (RL)</Text> - Optimizes entry/exit points and adapts to changing market conditions</li>
             <li><Text strong>Hybrid Models</Text> - Combine strengths of individual models for more robust predictions</li>
             <li><Text strong>Signal Generation Criteria:</Text> Sharpe Ratio ≥ {sharpeRatioCriteria}, MDD ≥ -40%, Trading Frequency ≥ 3%</li>
           </ul>
