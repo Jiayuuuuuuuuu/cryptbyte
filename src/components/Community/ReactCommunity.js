@@ -87,7 +87,7 @@ const ReactCommunity = ({ posts, getCommunityPosts, createPost, user }) => {
 
   return (
     <Layout style={{ padding: '0 24px 24px', minHeight: 'calc(100vh - 64px - 70px)' }}>
-      <Title level={2} style={{ marginTop: 20 }}>Community Discussions</Title>
+      <Title level={2} style={{ marginTop: 20 }}><MessageOutlined /> Community Discussions</Title>
       <Text type="secondary" style={{ marginBottom: 30, display: 'block' }}>
         Share trading strategies, discuss market trends, and learn from other traders
       </Text>

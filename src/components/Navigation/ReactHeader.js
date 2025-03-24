@@ -17,7 +17,6 @@ import {
   CloseOutlined,
   TeamOutlined,
   PlayCircleOutlined,
-
   BellOutlined
 } from '@ant-design/icons'
 import logoImage from '../../images/logo/logo.png'

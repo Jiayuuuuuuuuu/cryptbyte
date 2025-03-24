@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select, Tooltip, Card, Statistic, Row, Col, Badge } from 'antd'
-import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined, RiseOutlined, FallOutlined, DashboardOutlined, ReloadOutlined, InfoCircleOutlined } from '@ant-design/icons'
+import { ArrowUpOutlined, ArrowDownOutlined, StarOutlined, StarFilled, MinusOutlined, SearchOutlined, RiseOutlined, FallOutlined, DashboardOutlined, ReloadOutlined, InfoCircleOutlined, TransactionOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { contentStyle, tableStyle } from '../../styles'
 
@@ -426,7 +426,7 @@ const ReactCoinsList = () => {
       <Layout style={{ padding: '1rem' }}>
         <Content style={contentStyle}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <Title level={2}>Cryptocurrency Trading Dashboard</Title>
+            <Title level={2}><TransactionOutlined /> Cryptocurrency Trading Dashboard</Title>
             <Button
               type="primary"
               icon={<ReloadOutlined />}

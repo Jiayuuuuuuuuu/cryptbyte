@@ -3,6 +3,8 @@ import { fetchTrendingCoins, setSiderMenuItem } from '../../redux_actions'
 import { connect } from 'react-redux'
 import { Layout, Typography, Avatar, Card, Badge, Col, Row } from 'antd'
 import { contentStyle } from '../../styles'
+import { RiseOutlined } from '@ant-design/icons'
+
 const { Meta } = Card
 const { Content } = Layout
 const { Title, Paragraph } = Typography
@@ -18,7 +20,7 @@ class ReactTrendingCoins extends Component {
       <React.Fragment>
         <Layout style={{ padding: '1rem' }}>
           <Content style={contentStyle}>
-            <Title level={2}>Trending Coins</Title>
+            <Title level={2}><RiseOutlined /> Trending Coins</Title>
             <Paragraph>View coins that are trending today.</Paragraph>
 
             <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

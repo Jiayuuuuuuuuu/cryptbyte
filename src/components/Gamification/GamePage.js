@@ -22,7 +22,7 @@ import {
   ArrowDownOutlined,
   TrophyOutlined,
   InfoCircleOutlined,
-  RightOutlined,
+  PlayCircleOutlined,
   FireOutlined
 } from '@ant-design/icons'
 import { setHeaderMenuItem } from '../../redux_actions'
@@ -169,7 +169,7 @@ const GamePage = (props) => {
           <Row gutter={[24, 24]}>
             <Col xs={24} md={16}>
               <Card bordered={false}>
-                <Title level={2}>Trading Prediction Challenge</Title>
+                <Title level={2}><PlayCircleOutlined /> Trading Prediction Challenge</Title>
                 <Paragraph>
                   Test your market analysis skills and earn tokens! Study the charts, make predictions,
                   and learn from the outcomes. Each correct prediction earns you tokens to level up your account.
