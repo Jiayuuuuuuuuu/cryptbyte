@@ -29,6 +29,7 @@ export const GET_POST_DETAILS = 'GET_POST_DETAILS'
 export const CREATE_POST = 'CREATE_POST'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const LIKE_POST = 'LIKE_POST'
+export const UNLIKE_POST = 'UNLIKE_POST'
 
 export const addToWatchlist = (coin) => async (dispatch, getState) => {
   if (!coin.price || !coin.priceChange24h) {
@@ -461,3 +462,8 @@ export const likePost = (postId) => {
     payload: postId
   }
 }
+
+export const unlikePost = (postId) => ({
+  type: UNLIKE_POST,
+  payload: postId
+})

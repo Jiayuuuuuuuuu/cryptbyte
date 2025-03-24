@@ -28,14 +28,16 @@ import {
   ArrowLeftOutlined,
   TrophyOutlined
 } from '@ant-design/icons'
-import { getPostDetails, addComment, likePost } from '../../redux_actions'
+import { getPostDetails, addComment, likePost, unlikePost } from '../../redux_actions'
 const { Title, Text, Paragraph } = Typography
 const { TextArea } = Input
 
-const PostDetail = ({ currentPost, getPostDetails, addComment, likePost, user }) => {
+const PostDetail = ({ currentPost, getPostDetails, addComment, likePost, unlikePost, user, likedPosts }) => {
   const { postId } = useParams()
   const [commentForm] = Form.useForm()
   const [submitting, setSubmitting] = useState(false)
+
+  const isPostLiked = likedPosts && likedPosts[postId]
 
   useEffect(() => {
     getPostDetails(postId)
@@ -55,8 +57,12 @@ const PostDetail = ({ currentPost, getPostDetails, addComment, likePost, user })
     setSubmitting(false)
   }
 
-  const handleLike = () => {
-    likePost(postId)
+  const handleLikeToggle = () => {
+    if (isPostLiked) {
+      unlikePost(postId)
+    } else {
+      likePost(postId)
+    }
   }
 
   const getTimeAgo = (dateString) => {
@@ -137,16 +143,18 @@ const PostDetail = ({ currentPost, getPostDetails, addComment, likePost, user })
                 <Statistic
                   title="Likes"
                   value={currentPost.likes}
-                  prefix={<LikeOutlined />}
+                  prefix={
+                    <Tooltip title={isPostLiked ? 'Unlike' : 'Like'}>
+                      <LikeOutlined
+                        style={{
+                          cursor: 'pointer',
+                          color: isPostLiked ? '#1890ff' : 'inherit'
+                        }}
+                        onClick={handleLikeToggle}
+                      />
+                    </Tooltip>
+                  }
                 />
-                <Button
-                  type="text"
-                  icon={<LikeOutlined />}
-                  onClick={handleLike}
-                  style={{ marginTop: 8 }}
-                >
-                  Like this post
-                </Button>
               </Col>
               <Col span={8}>
                 <Statistic
@@ -294,13 +302,15 @@ const PostDetail = ({ currentPost, getPostDetails, addComment, likePost, user })
 
 const mapStateToProps = (state) => ({
   currentPost: state.community.currentPost,
-  user: state.user
+  user: state.user,
+  likedPosts: state.community.likedPosts
 })
 
 const mapDispatchToProps = {
   getPostDetails,
   addComment,
-  likePost
+  likePost,
+  unlikePost
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)
