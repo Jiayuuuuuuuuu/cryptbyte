@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import ReactSider from '../Navigation/ReactSider'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCoins, setSiderMenuItem, addToWatchlist, removeFromWatchlist } from '../../redux_actions'
 import { Layout, Table, Typography, Button, Tag, Spin, message, Input, Select, Tooltip, Card, Statistic, Row, Col, Badge } from 'antd'
