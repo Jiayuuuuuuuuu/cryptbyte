@@ -42,18 +42,46 @@ https://www.youtube.com/watch?v=PYUIcgUC6Rc
 ![Active Users](https://img.shields.io/badge/Active%20Users-5%2C843-blue)
 ![Whale Alerts](https://img.shields.io/badge/Daily%20Whale%20Alerts-28-orange)
 
-## 🛠️ Getting Started (Haven't Done)
+## 🛠️ Getting Started
 
 ### Prerequisites
+- Node.js (v18.0.0 or later)
+- npm (v9.0.0 or later)
 - Basic understanding of cryptocurrency trading
 - Modern web browser
-- Willingness to learn and improve trading skills
 
-### Quick Setup
-1. Visit [Cryptbyte Platform](https://www.cryptbyte.com)
-2. Click "Get Started"
-3. Complete initial onboarding
-4. Begin your AI-powered trading journey!
+### System Requirements
+- Operating System: Windows 10/11, macOS, or Linux
+- RAM: Minimum 8GB (16GB recommended)
+- Stable internet connection
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/Jiayuuuuuuuuu/cryptbyte.git
+```
+
+2. Navigate to the project directory
+```bash
+cd cryptbyte
+```
+
+3. Install dependencies
+```bash
+npm install
+```
+
+4. Start the development server
+```bash
+npm start
+```
+
+### Troubleshooting
+- Ensure Node.js and npm are correctly installed
+- Check your internet connection
+- Verify all dependencies are installed correctly
+- For any installation issues, run `npm cache clean --force` and retry
 
 
 ## 📄 Disclaimer
