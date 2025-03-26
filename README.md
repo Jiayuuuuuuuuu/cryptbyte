@@ -41,12 +41,6 @@ Cryptbyte is an innovative platform designed to revolutionize cryptocurrency tra
 
 https://www.youtube.com/watch?v=PYUIcgUC6Rc
 
-## 📊 Platform Performance (Front_end Demo Only)
-
-![AI Accuracy](https://img.shields.io/badge/AI%20Accuracy-73%25-brightgreen)
-![Active Users](https://img.shields.io/badge/Active%20Users-5%2C843-blue)
-![Whale Alerts](https://img.shields.io/badge/Daily%20Whale%20Alerts-28-orange)
-
 ## 🛠️ Getting Started
 
 ### Prerequisites
