@@ -14,9 +14,14 @@ Cryptbyte is an innovative platform designed to revolutionize cryptocurrency tra
   - Instant notifications on significant market-moving transactions
   - Stay ahead of major market movements
 
-- 📊 Smart Trade Signals
-  - AI-generated trade recommendations
-  - Comprehensive entry, exit, and risk management guidance
+- 📊 Advanced AI Trade Signals
+  - Cutting-edge hybrid AI signal generation
+  - Innovative machine learning approach combining:
+    * Hidden Markov Models (HMM)
+    * Convolutional Neural Networks (CNN)
+  - Adjustable signal generation criteria
+  - Dynamic shape ratio customization
+  - Adaptive trade recommendation engine
 
 - 🏆 Gamified Learning
   - Engaging educational approach to trading strategies
