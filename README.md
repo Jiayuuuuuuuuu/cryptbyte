@@ -36,13 +36,13 @@ Cryptbyte is an innovative platform designed to revolutionize cryptocurrency tra
 
 https://www.youtube.com/watch?v=PYUIcgUC6Rc
 
-## 📊 Platform Performance
+## 📊 Platform Performance (Front_end Demo Only)
 
 ![AI Accuracy](https://img.shields.io/badge/AI%20Accuracy-73%25-brightgreen)
 ![Active Users](https://img.shields.io/badge/Active%20Users-5%2C843-blue)
 ![Whale Alerts](https://img.shields.io/badge/Daily%20Whale%20Alerts-28-orange)
 
-## 🛠️ Getting Started
+## 🛠️ Getting Started (Haven't Done)
 
 ### Prerequisites
 - Basic understanding of cryptocurrency trading
@@ -55,38 +55,6 @@ https://www.youtube.com/watch?v=PYUIcgUC6Rc
 3. Complete initial onboarding
 4. Begin your AI-powered trading journey!
 
-## 🚀 How It Works
-
-1. **Learn**: Access 42 comprehensive courses
-2. **Analyze**: Utilize AI-powered sentiment analysis
-3. **Track**: Receive whale transaction alerts
-4. **Trade**: Get smart, AI-generated trade signals
-5. **Grow**: Earn tokens and improve your skills
-
-## 🎓 Learning Approach
-
-Cryptbyte transforms trading education through:
-- Interactive, gamified learning experience
-- Real-time market insights
-- Community-driven discussions
-- Continuous skill development
-
-## 🔒 Safety & Reliability
-
-- 73% AI Accuracy
-- Transparent trading signals
-- Comprehensive risk management
-- Community-verified strategies
-
-## 🤝 Community
-
-Join 5,843+ active traders in our vibrant community. Share insights, learn from peers, and grow together.
-
-## 📞 Contact & Support
-
-- Email: support@cryptbyte.com
-- Community Forum: [Cryptbyte Community](https://community.cryptbyte.com)
-- Twitter: [@CryptbyteAI](https://twitter.com/cryptbyteai)
 
 ## 📄 Disclaimer
 
@@ -97,8 +65,3 @@ Trading cryptocurrencies involves significant risk. Cryptbyte provides tools and
 - Advanced AI Technologies
 - NLP Sentiment Analysis
 - Blockchain Tracking Systems
-
-## 🌐 Project Links
-
-- Platform: [Cryptbyte.com](https://www.cryptbyte.com)
-- GitHub Repository: [github.com/cryptbyte/platform](https://github.com/cryptbyte/platform)
