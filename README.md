@@ -26,6 +26,16 @@ Cryptbyte is an innovative platform designed to revolutionize cryptocurrency tra
   - 42 in-depth courses covering various trading aspects
   - Structured curriculum for continuous improvement
 
+- 💬 Community Discussions
+  - Connect with other traders to share strategies
+  - Discuss real-time market trends
+  - Collaborative learning environment
+  - Expand your trading knowledge through peer insights
+
+## 📺 Demo Video
+
+https://www.youtube.com/watch?v=PYUIcgUC6Rc
+
 ## 📊 Platform Performance
 
 ![AI Accuracy](https://img.shields.io/badge/AI%20Accuracy-73%25-brightgreen)
@@ -87,10 +97,6 @@ Trading cryptocurrencies involves significant risk. Cryptbyte provides tools and
 - Advanced AI Technologies
 - NLP Sentiment Analysis
 - Blockchain Tracking Systems
-
-## 📺 Demo Video
-
-[Insert Link to Demo Video Pitch]
 
 ## 🌐 Project Links
 
